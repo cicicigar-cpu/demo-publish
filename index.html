@@ -1,0 +1,1450 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SocialResearch Pro 使用手册</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5f6b7a;
+      --line: #dce2ea;
+      --soft: #eef3f8;
+      --blue: #2f6fed;
+      --blue-dark: #174ea6;
+      --green: #198754;
+      --amber: #b7791f;
+      --radius: 8px;
+      --shadow: 0 12px 30px rgba(24, 35, 51, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 15px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    a { color: var(--blue-dark); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 284px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #fbfcfe;
+      overflow: auto;
+    }
+
+    .brand { margin-bottom: 26px; }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 2px 8px;
+      border: 1px solid #cbd8ec;
+      border-radius: 999px;
+      color: var(--blue-dark);
+      background: #edf4ff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav-title {
+      margin: 24px 0 10px;
+      color: #7b8794;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 6px;
+      color: #38455a;
+      font-size: 14px;
+    }
+
+    nav a:hover { background: #edf2f7; text-decoration: none; }
+
+    .main { padding: 34px 42px 72px; }
+
+    .hero {
+      margin-bottom: 24px;
+      padding: 40px 42px;
+      border: 1px solid #d7e2f0;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(47, 111, 237, 0.12), rgba(25, 135, 84, 0.08)),
+        var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .hero h2 {
+      margin: 0;
+      max-width: 860px;
+      font-size: 34px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      margin: 16px 0 0;
+      max-width: 900px;
+      color: #344054;
+      font-size: 17px;
+    }
+
+    .quick-read {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .quick-card {
+      padding: 14px 16px;
+      border: 1px solid #d8e2ef;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.76);
+    }
+
+    .quick-card strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--blue-dark);
+      font-size: 18px;
+    }
+
+    .quick-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    section {
+      margin-top: 28px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: 0 6px 18px rgba(24, 35, 51, 0.04);
+    }
+
+    section h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+
+    section h3 {
+      margin: 22px 0 10px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    section h4 {
+      margin: 16px 0 8px;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    section p {
+      margin: 8px 0;
+      color: #344054;
+    }
+
+    .lead {
+      max-width: 920px;
+      color: #475467;
+      font-size: 16px;
+    }
+
+    .callout {
+      margin: 18px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--blue);
+      border-radius: 6px;
+      background: #f1f6ff;
+    }
+
+    .callout strong { color: var(--blue-dark); }
+    .warning { border-left-color: var(--amber); background: #fff7e6; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .cards.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .card {
+      padding: 18px;
+      border: 1px solid #dbe3ee;
+      border-radius: var(--radius);
+      background: #fbfcff;
+    }
+
+    .card h3 { margin-top: 0; }
+
+    .tag {
+      display: inline-block;
+      margin: 4px 6px 4px 0;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #edf2f7;
+      color: #475467;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tag.blue { background: #e7f0ff; color: #175cd3; }
+    .tag.green { background: #e7f8ef; color: #087443; }
+    .tag.amber { background: #fff1d6; color: #9a5b00; }
+
+    .example {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid #d8e2ef;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #2f3a4c;
+      font-size: 14px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .step {
+      min-height: 112px;
+      padding: 14px;
+      border: 1px solid #d7dfeb;
+      border-radius: var(--radius);
+      background: #fbfcff;
+    }
+
+    .step .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .step strong { display: block; margin-bottom: 5px; }
+    .step span { color: var(--muted); font-size: 13px; }
+
+    .journey {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .journey-step {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 18px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid #dbe3ee;
+      border-radius: var(--radius);
+      background: #fbfcff;
+    }
+
+    .journey-step.no-media {
+      grid-template-columns: 1fr;
+    }
+
+    .journey-step h3 {
+      margin-top: 0;
+    }
+
+    .journey-step .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .note-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .note-item {
+      padding: 14px 16px;
+      border: 1px solid #dbe3ee;
+      border-radius: var(--radius);
+      background: #fbfcff;
+    }
+
+    .note-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--blue-dark);
+    }
+
+    .review-list {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .review-item {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 18px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid #dbe3ee;
+      border-radius: var(--radius);
+      background: #fbfcff;
+    }
+
+    .review-item h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 0;
+      color: #172033;
+    }
+
+    .review-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      flex: 0 0 26px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .review-item p strong,
+    .review-item li strong {
+      color: var(--blue-dark);
+    }
+
+    .review-media {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .media-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    figure {
+      margin: 0;
+      border: 1px solid #dbe3ee;
+      border-radius: var(--radius);
+      background: #fbfcff;
+      overflow: hidden;
+    }
+
+    .shot-button {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: #fff;
+      cursor: zoom-in;
+      text-align: left;
+    }
+
+    .shot-button img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+
+    figcaption {
+      padding: 10px 12px;
+      border-top: 1px solid #e5eaf1;
+      color: #667085;
+      font-size: 13px;
+    }
+
+    .zoom-hint {
+      display: inline-block;
+      margin-left: 8px;
+      color: var(--blue-dark);
+      font-weight: 700;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .table th,
+    .table td {
+      padding: 11px 12px;
+      border: 1px solid #dbe3ee;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .table th {
+      background: #f2f5f9;
+      color: #344054;
+    }
+
+    ul,
+    ol {
+      margin: 10px 0 10px 20px;
+      padding: 0;
+      color: #344054;
+    }
+
+    li { margin: 5px 0; }
+
+    details {
+      margin-top: 14px;
+      border-top: 1px solid #e5eaf1;
+      padding-top: 12px;
+      color: #475467;
+      font-size: 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      color: #344054;
+      font-weight: 800;
+    }
+
+    .template {
+      margin-top: 16px;
+      border: 1px solid #d8e2ef;
+      border-radius: var(--radius);
+      background: #0f172a;
+      color: #e6edf7;
+      overflow: hidden;
+    }
+
+    .template .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .copy-btn {
+      border: 1px solid #6b7b95;
+      border-radius: 6px;
+      background: #1e293b;
+      color: #e6edf7;
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      padding: 5px 9px;
+      white-space: nowrap;
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    .template.scrollable pre {
+      max-height: 66vh;
+      overflow: auto;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .placeholder {
+      min-height: 220px;
+      display: grid;
+      align-items: center;
+      border: 1px dashed #aab7c8;
+      border-radius: var(--radius);
+      background: repeating-linear-gradient(-45deg, #f8fafc, #f8fafc 12px, #eef2f7 12px, #eef2f7 24px);
+      overflow: hidden;
+    }
+
+    .placeholder-body {
+      margin: 18px;
+      padding: 18px;
+      border: 1px solid #d9e2ec;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .placeholder strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--amber);
+      font-size: 16px;
+    }
+
+    .placeholder dl {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 5px 10px;
+      margin: 0;
+      color: #475467;
+      font-size: 13px;
+    }
+
+    .placeholder dt {
+      color: #667085;
+      font-weight: 800;
+    }
+
+    .appendix-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .download-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 190px;
+      padding: 18px;
+      border: 1px solid #dbe3ee;
+      border-radius: var(--radius);
+      background: #fbfcff;
+    }
+
+    .download-card h3 {
+      margin: 0;
+      color: #172033;
+    }
+
+    .download-card p {
+      margin: 0;
+      color: #475467;
+    }
+
+    .download-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .download-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      margin-top: 2px;
+      padding: 8px 12px;
+      border: 1px solid #b7c9e8;
+      border-radius: 6px;
+      background: #edf4ff;
+      color: var(--blue-dark);
+      font-weight: 800;
+    }
+
+    .download-action:hover {
+      background: #dbeafe;
+      text-decoration: none;
+    }
+
+    .faq details {
+      padding: 12px 0;
+      border-top: 1px solid #e5eaf1;
+      font-size: 15px;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      background: rgba(9, 16, 29, 0.82);
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-panel {
+      width: min(96vw, 1500px);
+      max-height: 94vh;
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    .lightbox-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #e5eaf1;
+      color: #344054;
+      font-weight: 700;
+    }
+
+    .lightbox-close {
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: #f8fafc;
+      color: #172033;
+      cursor: pointer;
+      font: inherit;
+      padding: 4px 10px;
+    }
+
+    .lightbox-scroll {
+      max-height: calc(94vh - 48px);
+      overflow: auto;
+      background: #f7f8fb;
+    }
+
+    .lightbox-scroll img {
+      display: block;
+      max-width: none;
+      width: auto;
+      min-width: 70%;
+      margin: 0 auto;
+      background: #fff;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      color: #667085;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 1180px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        position: relative;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+      }
+      .main { padding: 24px 18px 48px; }
+      .quick-read,
+      .cards,
+      .cards.two,
+      .flow,
+      .journey-step,
+      .review-item,
+      .media-grid,
+      .media-grid.three,
+      .appendix-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body { background: #fff; font-size: 12px; }
+      .layout { display: block; }
+      .sidebar,
+      .copy-btn,
+      .lightbox { display: none; }
+      .main { padding: 0; }
+      .hero,
+      section {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="eyebrow">使用手册</span>
+        <h1>SocialResearch Pro</h1>
+        <p>用 Agent Flow 将高频商场社媒分析沉淀为可复用流程。</p>
+      </div>
+      <div class="nav-title">目录</div>
+      <nav>
+        <a href="#overview">1. 产品概览</a>
+        <a href="#scenarios">2. 典型使用场景</a>
+        <a href="#start">3. 使用旅程演示</a>
+        <a href="#check-flow">4. 工作流检查</a>
+        <a href="#prompt">5. 如何写好分析需求</a>
+        <a href="#capability">6. 数据能力说明</a>
+        <a href="#flow-notes">7. Agent Flow 注意事项</a>
+        <a href="#limits">8. 能力边界与常见问题</a>
+        <a href="#appendix">9. 附录</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="hero">
+        <h2>SocialResearch Pro 使用手册</h2>
+        <p>本手册说明如何使用 Agent Flow 发起一次完整的社媒专题分析：从选择场景、填写数据范围、输入分析需求，到检查工作流、运行报告和继续优化结果。</p>
+      </header>
+
+      <section id="overview">
+        <h2>1. 产品概览：Agent Flow 适合做什么</h2>
+        <p class="lead">聚合全量看板与 Agent Flow 面向<strong>不同使用场景</strong>，二者并非替代关系。聚合全量看板更适合用于灵活查数、筛选数据、查看明细和人工验证；Agent Flow 更适合用于承接一次完整的专题分析任务，系统可根据分析目标自动组织查数、内容归纳和报告洞察输出。</p>
+
+        <div class="cards two">
+          <article class="card">
+            <h3>Agent Flow</h3>
+            <p>适用于目标较明确、需要多步骤分析和结构化输出的专题任务。</p>
+            <div class="example">典型用法：用户只需输入分析对象、对比对象、时间范围、平台范围和希望回答的问题，系统即可按照分析目标自动完成数据查询、内容归纳、阶段性判断和报告生成。</div>
+          </article>
+          <article class="card">
+            <h3>聚合全量看板</h3>
+            <p>适合灵活筛选、查看明细、临时查数、手动验证数据。</p>
+            <div class="example">典型用法：用户可以根据业务需要，自主选择分析对象、时间范围、平台和指标，查看声量、互动量、NSR 等数据表现，并进一步下钻查看原帖明细等。</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="scenarios">
+        <h2>2. 典型使用场景</h2>
+
+        <div class="cards">
+          <article class="card">
+            <h3>场景一：商场竞品对标</h3>
+            <p>对比本品商场和竞品商场在社媒上的声量、互动量、NSR、平台表现和高互动内容。</p>
+            <span class="tag blue">长宁来福士</span><span class="tag blue">上海环球港</span><span class="tag blue">上海龙之梦</span>
+            <div class="example">典型问题：长宁来福士近 3 个月相比环球港、龙之梦，社媒表现处于什么位置？</div>
+          </article>
+
+          <article class="card">
+            <h3>场景二：商场口碑与消费场景</h3>
+            <p>分析用户对单个商场的主要讨论内容、正负向口碑、消费场景和高传播内容类型。</p>
+            <span class="tag green">餐饮</span><span class="tag green">展览</span><span class="tag green">拍照打卡</span><span class="tag green">亲子</span>
+            <div class="example">典型问题：用户来长宁来福士主要讨论什么？哪些场景更容易带来互动？</div>
+          </article>
+
+          <article class="card">
+            <h3>场景三：趋势主题机会</h3>
+            <p>围绕消费趋势或活动主题，判断其是否适合用于商场活动策划、招商方向或内容营销。</p>
+            <span class="tag amber">香氛</span><span class="tag amber">情绪价值</span><span class="tag amber">疗愈</span><span class="tag amber">悦己消费</span>
+            <div class="example">典型问题：“香氛 + 情绪价值”是否适合作为商场活动主题？</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="start">
+        <h2>3. 使用旅程演示</h2>
+        <p class="lead">使用主流程说明</p>
+
+        <div class="journey">
+          <div class="journey-step">
+            <div>
+              <h3><span class="num">1</span>登录系统</h3>
+              <p>使用数说账号进行登录即可。</p>
+              <ul>
+                <li>可使用聚合账户密码直接登录。</li>
+                <li>如客户环境登录页不同，可在此处替换为客户环境截图。</li>
+              </ul>
+            </div>
+            <figure>
+              <button class="shot-button" data-full="assets/images/step-01-login.png" data-caption="登录 SocialResearch Pro">
+                <img src="assets/images/step-01-login.png" alt="登录 SocialResearch Pro">
+              </button>
+              <figcaption>登录系统。</figcaption>
+            </figure>
+          </div>
+
+          <div class="journey-step">
+            <div>
+              <h3><span class="num">2</span>进入 Agent Flow</h3>
+              <p>路径：进入首页后选择“智能体能力”，下拉至底部，选择 Agent Flow 进入。</p>
+              <ul>
+                <li>Agent Flow 是用于发起自动化分析流程的入口。</li>
+                <li>进入后可填写需求，生成研究报告。</li>
+              </ul>
+            </div>
+            <div class="media-grid">
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-02-select-agent.png" data-caption="选择智能体能力">
+                  <img src="assets/images/step-02-select-agent.png" alt="选择智能体能力">
+                </button>
+                <figcaption>选择智能体能力。</figcaption>
+              </figure>
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-03-open-agent-flow.png" data-caption="进入 Agent Flow">
+                  <img src="assets/images/step-03-open-agent-flow.png" alt="进入 Agent Flow">
+                </button>
+                <figcaption>进入 Agent Flow。</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="journey-step">
+            <div>
+              <h3><span class="num">3</span>填写数据范围</h3>
+              <p>选择本次分析需要覆盖的研究周期、社媒站点和数据范围。</p>
+              <ul>
+                <li>时间必须使用明确的日期，例如 2026年4月20日–2026年5月10日。</li>
+                <li>平台范围应与本次分析问题一致，例如小红书、微博、抖音。</li>
+              </ul>
+            </div>
+            <figure>
+              <button class="shot-button" data-full="assets/images/step-04-config-time-site.png" data-caption="配置周期和站点">
+                <img src="assets/images/step-04-config-time-site.png" alt="配置周期和站点">
+              </button>
+              <figcaption>配置周期和站点。</figcaption>
+            </figure>
+          </div>
+
+          <div class="journey-step">
+            <div>
+              <h3><span class="num">4</span>输入分析需求</h3>
+              <p>在任务输入区写清楚本次分析的对象、对比对象、时间范围、平台范围和希望回答的问题。</p>
+              <ul>
+                <li>不要写一句话的分析需求，效果会很差；尽量把分析描述清楚，例如需要分析什么大命题，以及大命题之下可以拆分成什么小角度的研究。</li>
+                <li>如果数据范围在表单中无法筛选，也可以用自然语言补充说明，例如：数据范围使用 UGC 数据。</li>
+                <li>任务难度选择<strong>自动</strong>即可，通常无需更改。</li>
+                <li>一般从<strong>简单模式</strong>开始即可；如果选择<strong>详细模式</strong>，生成时间会更久一些。两种模式都可用，不会影响任务结果。</li>
+              </ul>
+            </div>
+            <figure>
+              <button class="shot-button" data-full="assets/images/step-05-enter-research-question.png" data-caption="填写分析需求">
+                <img src="assets/images/step-05-enter-research-question.png" alt="填写分析需求">
+              </button>
+              <figcaption>填写分析需求。</figcaption>
+            </figure>
+          </div>
+
+          <div class="journey-step">
+            <div>
+              <h3><span class="num">5</span>生成并检查工作流</h3>
+              <p>点击生成后，系统会根据分析需求自动拆解查询、处理和报告生成步骤。</p>
+              <ul>
+                <li>先看整体步骤是否符合业务逻辑。</li>
+                <li>通常只需要检查<strong>数据查询节点</strong>和<strong>最终报告生成节点</strong>，重点确认目标和查询条件；其他节点一般不用处理。数据查询节点的检查方式会在后文展开说明。</li>
+              </ul>
+            </div>
+            <figure>
+              <button class="shot-button" data-full="assets/images/step-06-generate-workflow.png" data-caption="自动生成工作流">
+                <img src="assets/images/step-06-generate-workflow.png" alt="自动生成工作流">
+              </button>
+              <figcaption>自动生成工作流。</figcaption>
+            </figure>
+          </div>
+
+          <div class="journey-step">
+            <div>
+              <h3><span class="num">6</span>运行、查看报告并继续追问</h3>
+              <p>确认工作流后点击运行。报告生成后，可在结果<strong>文件区</strong>预览或下载 HTML 文件，也可以通过对话助手继续补充分析。</p>
+              <ul>
+                <li>运行耗时会随任务复杂度和数据量变化，通常需要 <strong>40-60 分钟</strong>。</li>
+                <li>HTML 可以下载到本地文件后双击打开，通常会默认用浏览器打开；如打不开，请检查文件后缀是否为 <code>.html</code>。</li>
+                <li>后续可以通过对话助手，对报告结果进行小范围的改写或者样式优化。</li>
+              </ul>
+            </div>
+            <div class="media-grid">
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-14-run-workflow.png" data-caption="运行工作流">
+                  <img src="assets/images/step-14-run-workflow.png" alt="运行工作流">
+                </button>
+                <figcaption>运行工作流。</figcaption>
+              </figure>
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-15-preview-download-html.png" data-caption="预览或下载报告">
+                  <img src="assets/images/step-15-preview-download-html.png" alt="预览或下载报告">
+                </button>
+                <figcaption>预览或下载报告。</figcaption>
+              </figure>
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-16-report-qa.png" data-caption="继续追问报告">
+                  <img src="assets/images/step-16-report-qa.png" alt="继续追问报告">
+                </button>
+                <figcaption>继续追问报告。</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="journey-step">
+            <div>
+              <h3><span class="num">7</span>导入与导出工作流</h3>
+              <p>完成配置后的工作流可以导出保存，后续需要复用时再导入修改和重跑。</p>
+              <ul>
+                <li>适合将常用分析流程沉淀为可复用模板。</li>
+                <li>复用时建议重新检查<strong>分析对象</strong>、<strong>时间范围</strong>、<strong>平台范围</strong>和<strong>关键词</strong>。</li>
+              </ul>
+            </div>
+            <figure>
+              <button class="shot-button" data-full="assets/images/step-17-export-import-workflow.png" data-caption="导入与导出工作流">
+                <img src="assets/images/step-17-export-import-workflow.png" alt="导入与导出工作流">
+              </button>
+              <figcaption>导入与导出工作流。</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="check-flow">
+        <h2>4. 工作流生成后如何检查</h2>
+        <p class="lead">工作流生成后，<strong>不需要查看每一个节点</strong>，只需要关注<strong>数据查询节点</strong>和<strong>最终的报告生成节点</strong>，重点确认目标、步骤和查询条件是否符合业务需求。</p>
+
+        <div class="review-list">
+          <div class="review-item">
+            <div>
+              <h3><span class="review-num">1</span>检查节点大目标是否正确</h3>
+              <p>先打开关键数据查询节点，查看节点里的 <strong>Goal</strong> 是否说明要查询什么数据、如何整理，并供最后的报告生成使用。</p>
+              <ul>
+                <li>如果大目标偏了，建议先修改目标；这里不需要出现具体的报告撰写要求。</li>
+                <li>该示意图中，只有<strong>目标 Goal</strong> 信息是重要的，其他配置项无需关注。</li>
+              </ul>
+            </div>
+            <figure>
+              <button class="shot-button" data-full="assets/images/step-07-check-node-goal.png" data-caption="检查节点大目标">
+                <img src="assets/images/step-07-check-node-goal.png" alt="检查节点大目标">
+              </button>
+              <figcaption>检查节点大目标。</figcaption>
+            </figure>
+          </div>
+
+          <div class="review-item">
+            <div>
+              <h3><span class="review-num">2</span>生成 AI 详细计划，检查小目标</h3>
+              <p>切换编辑模式，并点击 <strong>AI 生成计划</strong>，查看计划中的小目标是否覆盖了要回答的问题。</p>
+              <ul>
+                <li>这里重点关注<strong>编辑模式后的内容</strong>，其他配置项无需关注。</li>
+                <li>重点看步骤顺序是否大致合理：先确认对象和范围，再查询数据，最后归纳内容并生成报告。</li>
+                <li>AI 生成计划后，会自主地规划步骤和选择对应的查询工具；查询工具通常不会出错，更重要的是关注每个步骤中的<strong>小目标</strong>是否偏离任务目的；如果偏离，可以修改。</li>
+              </ul>
+            </div>
+            <div class="review-media">
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-08-detail-mode.png" data-caption="切换编辑模式">
+                  <img src="assets/images/step-08-detail-mode.png" alt="切换编辑模式">
+                </button>
+                <figcaption>切换编辑模式。</figcaption>
+              </figure>
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-09-ai-upgrade-plan.png" data-caption="检查 AI 生成计划">
+                  <img src="assets/images/step-09-ai-upgrade-plan.png" alt="检查 AI 生成计划">
+                </button>
+                <figcaption>检查 AI 生成计划。</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="review-item">
+            <div>
+              <h3><span class="review-num">3</span>检查工具参数是否合理</h3>
+              <p>进入工具设置页面，点击 <strong>AI 自动生成参数</strong>，重点查看关键词、过滤词、时间范围、平台范围和排序方式是否正确。</p>
+              <ul>
+                <li>如果需要取原帖，特别注意<strong>原帖数量</strong>是否过多；通常 Top 100 条足够支撑分析。</li>
+                <li>参数确认后可以点击试调用，并拉到底部查看是否调用成功。</li>
+              </ul>
+            </div>
+            <div class="review-media">
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-10-tool-settings.png" data-caption="进入工具设置页面">
+                  <img src="assets/images/step-10-tool-settings.png" alt="进入工具设置页面">
+                </button>
+                <figcaption>进入工具设置页面。</figcaption>
+              </figure>
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-11-ai-generated-params.png" data-caption="检查工具参数">
+                  <img src="assets/images/step-11-ai-generated-params.png" alt="检查工具参数">
+                </button>
+                <figcaption>检查工具参数。</figcaption>
+              </figure>
+              <figure>
+                <button class="shot-button" data-full="assets/images/step-12-test-call-result.png" data-caption="确认试调用结果">
+                  <img src="assets/images/step-12-test-call-result.png" alt="确认试调用结果">
+                </button>
+                <figcaption>确认试调用结果。</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="review-item">
+            <div>
+              <h3><span class="review-num">4</span>检查报告结果节点目标</h3>
+              <p>最后查看报告生成节点，确认报告目标是否符合本次分析需求。</p>
+              <ul>
+                <li>重点看报告要回答的问题、输出结构和分析重点是否准确。</li>
+                <li>如果报告目标偏离需求，可以先修改该节点目标，再重新生成或运行。</li>
+              </ul>
+            </div>
+            <figure>
+              <button class="shot-button" data-full="assets/images/step-13-report-node.png" data-caption="检查报告生成节点">
+                <img src="assets/images/step-13-report-node.png" alt="检查报告生成节点">
+              </button>
+              <figcaption>检查报告生成节点。</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="prompt">
+        <h2>5. 如何写好分析需求</h2>
+        <p class="lead">Agent Flow 的生成质量，主要取决于分析需求是否清楚。切记，一句话需求生成的 Agent Flow 效果通常会比较差。</p>
+
+        <h3>探索性需求 Prompt 写法</h3>
+        <p>明确分析目的，但没有严格的报告图表结构要求，希望更多让 AI 自由发挥。</p>
+        <div class="template">
+          <div class="bar">
+            <span>探索性需求 Prompt 示例</span>
+            <button class="copy-btn" data-copy="explore-template">复制 Prompt</button>
+          </div>
+          <pre id="explore-template">请分析 2026 年五一期间长宁来福士在社媒上的表现，并对比上海环球港、上海龙之梦。
+
+我希望了解：
+1. 三家商场谁的声量、互动量和口碑表现更好；
+2. 长宁来福士相比竞品有哪些传播优势和短板；
+3. 用户主要在夸什么、吐槽什么；
+4. 哪些高互动内容值得长宁来福士后续借鉴；
+5. 给出内容营销和运营优化建议。
+
+数据范围：
+- 时间：2026年4月20日–2026年5月10日
+- 平台：小红书、微博、抖音
+- 指标：声量、互动量、NSR、Top N 原帖
+
+注意事项：
+- 允许你看着补充。</pre>
+        </div>
+
+        <h3>结构性需求 Prompt 写法</h3>
+        <p>明确分析目的，且每个章节的小命题、报告图表结构有严格要求，可以细化需求描述，支撑 AI 的产出更接近期望结果。</p>
+        <div class="template scrollable">
+          <div class="bar">
+            <span>结构性需求 Prompt 示例</span>
+            <button class="copy-btn" data-copy="structured-template">复制 Prompt</button>
+          </div>
+          <pre id="structured-template"># 长宁来福士五一期间社媒表现与竞品对标分析 Prompt
+
+## 分析任务
+
+请分析 **2026 年五一期间长宁来福士在社媒上的表现**，并对比 **上海环球港、上海龙之梦**，判断长宁来福士在同城商业体竞争中的社媒表现位置、内容传播优势、用户口碑表现和后续运营优化方向。
+
+## 分析对象与数据范围
+
+- **本品商场**：长宁来福士
+- **对比对象**：上海环球港、上海龙之梦
+- **时间范围**：2026年4月20日–2026年5月10日
+- **平台范围**：小红书、微博、抖音
+- **重点指标**：声量、互动量、NSR、平台分布、Top N 原帖、用户评论
+- **输出目标**：生成一份面向凯德国际商场运营、内容营销及项目管理团队的社媒表现分析报告
+
+---
+
+# 报告结构要求
+
+## 摘要
+
+请用 2–3 段总结本次分析的核心发现，包括长宁来福士相较竞品的整体位置、主要优势、主要短板和后续建议方向。
+
+---
+
+## 第一章 长宁来福士社媒表现概览
+
+### 1.1 平台声量与互动量分布
+
+分析长宁来福士在小红书、微博、抖音三个平台上的声量和互动量分布，判断哪个平台贡献了主要声量，哪个平台贡献了主要互动。
+
+**图表要求**：输出一张平台声量与互动量分布图，可使用双饼图、堆叠柱状图或分组柱状图。
+
+### 1.2 长宁来福士 NSR 趋势分析
+
+分析长宁来福士在三个平台上的 NSR 表现，判断整体口碑是否稳定，是否存在明显负面波动日期。
+
+**图表要求**：输出一张各平台每日 NSR 趋势折线图，并标注明显异常点。
+
+---
+
+## 第二章 竞品对标分析
+
+### 2.1 三家商场核心指标对比
+
+对比长宁来福士、上海环球港、上海龙之梦的总声量、总互动量和各平台 NSR，判断长宁来福士在三家商场中的整体位置。
+
+**图表要求**：输出一张三家商场核心指标对比表，并配合声量/互动量对比柱状图。
+
+### 2.2 各平台声量与互动量差异分析
+
+对比三家商场在小红书、微博、抖音三个平台上的声量和互动量，判断各商场的平台优势和传播结构差异。
+
+**图表要求**：输出两张分组柱状图，分别展示三家商场在各平台的声量对比和互动量对比。
+
+### 2.3 各平台 NSR 口碑差异分析
+
+对比三家商场在小红书、微博、抖音上的平均 NSR，判断哪家商场口碑更稳，长宁来福士是否存在平台口碑短板。
+
+**图表要求**：输出一张三家商场各平台平均 NSR 对比柱状图。
+
+---
+
+## 第三章 传播优劣势诊断与用户舆情洞察
+
+### 3.1 长宁来福士传播优势与短板总结
+
+基于前文数据，总结长宁来福士的核心传播优势和主要短板，每条判断都需要对应数据或内容证据。
+
+**图表要求**：输出一组“优势 / 短板”对照卡片或结构化表格。
+
+### 3.2 用户好评维度分析
+
+基于用户评论和高互动内容，归纳用户对长宁来福士的主要好评方向，例如活动体验、空间氛围、历史建筑、餐饮服务、打卡体验等。
+
+**图表要求**：输出一张好评关键词词云或好评主题分类图，并列举代表性评论。
+
+### 3.3 用户差评与体验短板分析
+
+基于用户负面评论和相关原帖，归纳长宁来福士的主要吐槽点，例如餐饮品质、活动规则、拥挤排队、停车动线、活动覆盖范围等。
+
+**图表要求**：输出一张差评关键词词云或吐槽主题分类图，并列举代表性评论。
+
+### 3.4 舆情波动原因分析
+
+分析 NSR 出现明显波动的日期，结合评论和原帖判断波动可能由什么内容或事件引发；若评论量较少，需要说明样本限制。
+
+**图表要求**：输出一张异常日期说明表，包含日期、平台、NSR 表现、可能原因和代表内容。
+
+---
+
+## 第四章 高互动内容创意与传播模式拆解
+
+### 4.1 长宁来福士 Top 高互动内容分析
+
+提取长宁来福士在各平台的 Top N 高互动原帖，分析这些内容的主题、形式、账号类型和高互动原因。
+
+**图表要求**：输出一张 Top 原帖列表，并可配合 Top 原帖互动量横向柱状图。
+
+### 4.2 竞品 Top 高互动内容对比
+
+对比上海环球港、上海龙之梦的高互动内容，识别竞品哪些内容类型、活动主题或传播方式值得长宁来福士参考。
+
+**图表要求**：输出一张三家商场 Top 内容对比表，说明各自高互动内容的出圈原因。
+
+### 4.3 可借鉴的内容传播模式
+
+总结五一期间更容易获得传播的内容模式，例如快闪活动、IP 联名、美陈打卡、明星粉丝、历史建筑叙事、亲子体验等。
+
+**图表要求**：输出一张“传播模式—代表内容—适用场景—可借鉴点”的表格。
+
+---
+
+## 第五章 营销策略建议与优化方案
+
+### 5.1 内容营销方向建议
+
+结合平台表现和高互动内容，给出长宁来福士后续在小红书、微博、抖音上的内容营销建议。
+
+**图表要求**：输出一张平台运营建议表，分别说明每个平台适合强化的内容类型和原因。
+
+### 5.2 商场运营服务优化线索
+
+结合用户吐槽和竞品对比，提出长宁来福士在商户管理、活动机制、停车动线、服务体验等方面可关注的优化线索。
+
+**图表要求**：输出一张运营优化建议表，区分“内容运营可改善的问题”和“需要线下运营改善的问题”。
+
+---
+
+## 第六章 总结与展望
+
+请总结长宁来福士在五一期间的整体表现，明确其在同城竞品中的核心位置，并给出下一阶段最值得优先推进的 3 条行动建议。
+
+---
+
+# 写作要求
+
+- 每一章先给结论，再给数据和内容证据。
+- 不要只罗列数据，需要解释数据背后的业务含义。
+- 所有关键判断都要尽量对应声量、互动量、NSR、Top 原帖或用户评论证据。
+- 不要把社媒热度直接等同于线下客流、销售额或招商效果。
+- 如果某个平台或某类评论样本量不足，需要明确说明。
+- 建议要具体到平台、内容主题或运营动作，避免写“加强运营”“提升传播”等空泛表达。</pre>
+        </div>
+
+        <h3>分析需求编写小结</h3>
+        <div class="note-list">
+          <div class="note-item">
+            <strong>先说明你要分析什么</strong>
+            <p>写清分析对象、对比对象和研究时间，例如“2026 年五一期间长宁来福士 vs 上海环球港、上海龙之梦”。</p>
+          </div>
+          <div class="note-item">
+            <strong>再说明你想回答什么问题</strong>
+            <p>例如谁的传播表现更好、用户主要夸什么和吐槽什么、哪些内容值得借鉴、后续应该怎么优化。</p>
+          </div>
+          <div class="note-item">
+            <strong>最后说明你希望如何输出</strong>
+            <p>如果对报告结构、章节小命题或图表有明确要求，可以直接写出来，系统会更容易生成符合预期的工作流和报告。</p>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="capability">
+        <h2>6. 数据能力说明</h2>
+        <p class="lead">这里的“智能体”可以理解为系统自动调用的数据能力。不需要记住底层工具名，只需要知道它能支持哪些分析。</p>
+
+        <h3>聚合智能体能力</h3>
+        <div class="cards two">
+          <article class="card">
+            <h3>查询指定关键词的整体表现</h3>
+            <p>查询指定关键词在指定社媒平台上的声量、互动量和 NSR 表现。</p>
+            <span class="tag blue">声量</span><span class="tag blue">互动量</span><span class="tag blue">NSR</span>
+          </article>
+          <article class="card">
+            <h3>查询社媒指标趋势</h3>
+            <p>查看相关社媒指标在指定时间范围内的变化趋势，用于识别峰值、波动和阶段差异。</p>
+            <span class="tag blue">趋势</span><span class="tag blue">峰值</span><span class="tag blue">波动</span>
+          </article>
+          <article class="card">
+            <h3>查询 Top N 原帖</h3>
+            <p>通常建议取互动量 Top 100 原帖进行分析，既满足分析需求，也不会消耗过多 token；可在详细计划中点开具体参数配置进行调整。</p>
+            <span class="tag green">高互动原帖</span><span class="tag green">代表内容</span>
+          </article>
+          <article class="card">
+            <h3>查询原帖评论数据</h3>
+            <p>查询相关原帖下的评论数据，用于进一步理解用户反馈、好评方向和负面体验。</p>
+            <span class="tag green">用户评论</span><span class="tag green">口碑线索</span>
+          </article>
+        </div>
+
+        <h3>网络搜索智能体</h3>
+        <p>网络搜索智能体可以用于补充公开资料、活动背景、品牌信息或行业趋势，但需要鉴别数据来源的可信度。涉及关键结论时，仍建议回到聚合数据、原帖或评论证据进行复核。</p>
+        <div class="warning callout">
+          <strong>使用建议：</strong>如果是严谨报告，请谨慎使用该智能体，并仔细核查数据来源是否真实。
+        </div>
+      </section>
+
+      <section id="flow-notes">
+        <h2>7. Agent Flow 使用注意事项</h2>
+        <p class="lead">在 Agent Flow 过程中，以下三点会明显影响工作流质量和最终报告可用性。</p>
+        <div class="quick-read">
+          <div class="quick-card">
+            <strong>分析需求要尽量清晰</strong>
+            <span>Prompt 写清楚分析对象、时间范围、平台范围和希望回答的问题，生成的工作流改动会少很多。</span>
+          </div>
+          <div class="quick-card">
+            <strong>重点关注步骤目标</strong>
+            <span>明确查询步骤是否大致符合业务逻辑，并查看关键词、过滤词等重点参数是否符合自身需求。</span>
+          </div>
+          <div class="quick-card">
+            <strong>不用一次完美</strong>
+            <span>初版报告出来后，可以继续追问，对可视化、某个论点的文案或报告样式做小范围优化。</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="limits">
+        <h2>8. 能力边界与常见问题</h2>
+        <p class="lead">Agent Flow 可以提升社媒分析效率，但仍依赖底层数据、关键词配置和标签质量。以下边界建议在正式使用前先了解。</p>
+
+        <div class="two-col">
+          <div class="card">
+            <h3>适合回答</h3>
+            <ul>
+              <li>某个商场在社媒上的声量和互动表现如何。</li>
+              <li>与竞品商场相比，当前处于什么位置。</li>
+              <li>用户主要讨论哪些内容、场景和口碑点。</li>
+              <li>某个趋势主题是否适合做活动策划或内容营销方向。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>不直接回答</h3>
+            <ul>
+              <li>商场真实客流变化。</li>
+              <li>门店销售额、租金收益和招商转化。</li>
+              <li>会员消费、交易数据和线下 ROI。</li>
+              <li>未开通数据源或未配置对象的表现。</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>常见问题</h3>
+        <div class="faq">
+          <details open>
+            <summary>需要自己从零搭建 Agent Flow 吗？</summary>
+            <p>建议尽量一次性写清楚分析需求。需求足够清楚的情况下，Agent Flow 生成的节点流一般不需要再做修改。</p>
+          </details>
+          <details>
+            <summary>Agent Flow 和聚合全量看板有什么区别？</summary>
+            <p>看板适合灵活查数和查看明细；Agent Flow 适合承接目标明确、需要多步骤分析和结构化输出的专题任务。</p>
+          </details>
+          <details>
+            <summary>如果结果不准，应该先改哪里？</summary>
+            <p>优先检查分析对象、关键词、过滤词、时间范围和平台范围。多数结果偏差来自对象召回不准或关键词边界不清。</p>
+          </details>
+          <details>
+            <summary>可以直接用结果判断线下客流或销售变化吗？</summary>
+            <p>不建议。Agent Flow 结果基于社媒数据，适合判断线上讨论热度、内容传播和口碑线索，不直接代表线下客流、销售额或招商转化。</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="appendix">
+        <h2>9. 附录</h2>
+        <p class="lead">以下附件可作为练习和复用参考：一份是可导入的<strong>工作流示例</strong>，一份是对应跑出的<strong>报告示例</strong>。</p>
+
+        <div class="appendix-grid">
+          <article class="download-card">
+            <h3>工作流示例</h3>
+            <p>可用于查看完整 Agent Flow 配置，也可在后续需要复用时导入系统，再按新的分析对象、时间范围、平台范围和关键词进行调整。</p>
+            <div class="download-meta">
+              <span class="tag blue">JSON</span>
+              <span class="tag green">可导入</span>
+              <span class="tag amber">工作流</span>
+            </div>
+            <a class="download-action" href="downloads/workflow-example.json" download="[工作流]长宁来福士五一社媒表现对比分析.json">下载工作流示例</a>
+          </article>
+
+          <article class="download-card">
+            <h3>报告示例</h3>
+            <p>用于参考最终报告的呈现方式，包括分析结构、内容归纳、图表组织和结论表达。实际结果会随数据范围、关键词和任务要求变化。</p>
+            <div class="download-meta">
+              <span class="tag blue">HTML</span>
+              <span class="tag green">本地浏览器打开</span>
+              <span class="tag amber">报告示例</span>
+            </div>
+            <a class="download-action" href="downloads/report-example.html" download="长宁来福士五一期间社媒表现分析报告.html">下载报告示例</a>
+          </article>
+        </div>
+      </section>
+
+      <p class="footer-note">SocialResearch Pro 使用手册。数据源、字段、平台和权限以客户实际开通范围为准。</p>
+    </main>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-label="图片放大预览">
+      <div class="lightbox-bar">
+        <span id="lightbox-caption">图片预览</span>
+        <button class="lightbox-close" id="lightbox-close" type="button">关闭</button>
+      </div>
+      <div class="lightbox-scroll">
+        <img id="lightbox-image" src="" alt="">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const id = button.getAttribute("data-copy");
+        const target = document.getElementById(id);
+        if (!target) return;
+        try {
+          await navigator.clipboard.writeText(target.innerText);
+          const oldText = button.innerText;
+          button.innerText = "已复制";
+          setTimeout(() => { button.innerText = oldText; }, 1400);
+        } catch (error) {
+          button.innerText = "请手动复制";
+        }
+      });
+    });
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const lightboxCaption = document.getElementById("lightbox-caption");
+
+    const closeLightbox = () => {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.removeAttribute("src");
+    };
+
+    document.querySelectorAll(".shot-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const src = button.getAttribute("data-full");
+        const caption = button.getAttribute("data-caption") || "图片预览";
+        lightboxImage.src = src;
+        lightboxImage.alt = caption;
+        lightboxCaption.textContent = caption;
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
+    });
+  </script>
+</body>
+</html>

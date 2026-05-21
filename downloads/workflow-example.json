@@ -1,0 +1,540 @@
+{
+  "version": "1.0",
+  "exported_at": "2026-05-21T03:35:30.022Z",
+  "workflow": {
+    "workflow_id": "wf_1779326568559_配置",
+    "name": "长宁来福士五一社媒表现对比分析工作流_配置_05/21_092248",
+    "description": "分析2026年五一期间长宁来福士在小红书、微博、抖音的社媒表现，并与上海环球港、上海龙之梦进行多维度对比",
+    "user_prompt": "使用聚合国内社媒数据查询智能体\n\n请分析 2026 年五一期间长宁来福士在社媒上的表现，并对比上海环球港、上海龙之梦。\n\n我希望了解：\n1. 三家商场谁的声量、互动量和口碑表现更好；\n2. 长宁来福士相比竞品有哪些传播优势和短板；\n3. 用户主要在夸什么、吐槽什么；\n4. 哪些高互动内容值得长宁来福士后续借鉴；\n5. 给出内容营销和运营优化建议。\n\n数据范围：\n- 时间：2026年4月20日–2026年5月10日\n- 平台：小红书、微博、抖音\n- 指标：声量、互动量、NSR、Top N 原帖",
+    "version": "1.0.0",
+    "nodes": [
+      {
+        "node_id": "node_start",
+        "node_type": "start",
+        "label": "开始",
+        "agent_name": null,
+        "agent_type": "data",
+        "edit_depth": "simple",
+        "max_plan_steps": 3,
+        "review_config": null,
+        "position": {
+          "x": 100,
+          "y": 300
+        },
+        "use_fixed_params": false
+      },
+      {
+        "node_id": "node_parallel",
+        "node_type": "parallel",
+        "label": "并行执行",
+        "agent_name": null,
+        "agent_type": "data",
+        "edit_depth": "simple",
+        "max_plan_steps": 3,
+        "branch_count": 3,
+        "review_config": null,
+        "position": {
+          "x": 300,
+          "y": 300
+        },
+        "use_fixed_params": false
+      },
+      {
+        "node_id": "node_data_metrics",
+        "node_type": "agent",
+        "label": "基础指标对比查询",
+        "agent_name": "聚合国内社媒数据查询智能体",
+        "agent_type": "data",
+        "goal": "调用聚合国内社媒数据查询智能体，针对长宁来福士、上海环球港、上海龙之梦三个目标对象，检索 2026 年 4 月 20 日至 2026 年 5 月 10 日期间在小红书、微博、抖音平台的社媒表现数据。具体任务包括：1. 统计并对比三家商场在各平台的整体声量（发帖量）、总互动量（点赞、收藏、评论、转发等）及 NSR（净推荐值）口碑得分；2. 产出结构化的基础指标对比结论，明确长宁来福士在数据量级与口碑水位上的市场位置，为后续竞争优势分析及用户诉求洞察提供量化证据。请严格沿用时间范围约束：start=2026-04-20, end=2026-05-10。",
+        "edit_depth": "detailed",
+        "plan_steps": [
+          {
+            "tasks": [
+              {
+                "task_id": 1,
+                "description": "查询关键词“长宁来福士”在 2026-04-20 至 2026-05-10 期间，在“种草平台”、“微博”、“抖音”三个平台的声量（发帖量）和互动量（点赞、收藏、评论、转发等）的站点分布数据，以获取各平台的总量统计。",
+                "test_result": {
+                  "summary": "试调用成功"
+                },
+                "tool_params": {
+                  "endStr": "2026-05-10",
+                  "keywords": [
+                    "长宁来福士"
+                  ],
+                  "startStr": "2026-04-20",
+                  "rawDataSources": [
+                    "种草平台",
+                    "微博",
+                    "抖音"
+                  ],
+                  "aggDistributionTypes": [
+                    "站点类型"
+                  ]
+                },
+                "params_source": "tested",
+                "tool_or_agent_name": "getVolumeDistribution"
+              },
+              {
+                "task_id": 2,
+                "description": "查询关键词“上海环球港”在 2026-04-20 至 2026-05-10 期间，在“种草平台”、“微博”、“抖音”三个平台的声量（发帖量）和互动量（点赞、收藏、评论、转发等）的站点分布数据，以获取各平台的总量统计。",
+                "tool_or_agent_name": "getVolumeDistribution"
+              },
+              {
+                "task_id": 3,
+                "description": "查询关键词“上海龙之梦”在 2026-04-20 至 2026-05-10 期间，在“种草平台”、“微博”、“抖音”三个平台的声量（发帖量）和互动量（点赞、收藏、评论、转发等）的站点分布数据，以获取各平台的总量统计。",
+                "tool_or_agent_name": "getVolumeDistribution"
+              }
+            ],
+            "step_id": 1,
+            "description": "步骤 1",
+            "dependencies": []
+          },
+          {
+            "tasks": [
+              {
+                "task_id": 4,
+                "description": "查询关键词“长宁来福士”在 2026-04-20 至 2026-05-10 期间，在“种草平台”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "test_result": {
+                  "summary": "试调用成功"
+                },
+                "tool_params": {
+                  "endStr": "2026-05-10",
+                  "keywords": [
+                    "长宁来福士"
+                  ],
+                  "startStr": "2026-04-20",
+                  "filterAds": false,
+                  "volumeType": [],
+                  "statisticBy": "day",
+                  "rawDataSource": "种草平台"
+                },
+                "params_source": "tested",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              },
+              {
+                "task_id": 5,
+                "description": "查询关键词“长宁来福士”在 2026-04-20 至 2026-05-10 期间，在“微博”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              },
+              {
+                "task_id": 6,
+                "description": "查询关键词“长宁来福士”在 2026-04-20 至 2026-05-10 期间，在“抖音”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              },
+              {
+                "task_id": 7,
+                "description": "查询关键词“上海环球港”在 2026-04-20 至 2026-05-10 期间，在“种草平台”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              },
+              {
+                "task_id": 8,
+                "description": "查询关键词“上海环球港”在 2026-04-20 至 2026-05-10 期间，在“微博”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              },
+              {
+                "task_id": 9,
+                "description": "查询关键词“上海环球港”在 2026-04-20 至 2026-05-10 期间，在“抖音”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              },
+              {
+                "task_id": 10,
+                "description": "查询关键词“上海龙之梦”在 2026-04-20 至 2026-05-10 期间，在“种草平台”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              },
+              {
+                "task_id": 11,
+                "description": "查询关键词“上海龙之梦”在 2026-04-20 至 2026-05-10 期间，在“微博”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              },
+              {
+                "task_id": 12,
+                "description": "查询关键词“上海龙之梦”在 2026-04-20 至 2026-05-10 期间，在“抖音”的 NSR（净情感度）趋势数据，用于评估口碑得分。",
+                "tool_or_agent_name": "getNSRTrendStatistics"
+              }
+            ],
+            "step_id": 2,
+            "description": "步骤 2",
+            "dependencies": []
+          },
+          {
+            "tasks": [
+              {
+                "task_id": 13,
+                "description": "读取 Step 1 和 Step 2 获取的长宁来福士、上海环球港、上海龙之梦在各平台的声量、互动量及 NSR 数据。对比三家商场的各项指标，产出结构化的对比结论，明确长宁来福士在数据量级与口碑水位上的市场位置，并总结其竞争优势与用户诉求洞察的量化依据。",
+                "tool_or_agent_name": "AnalysisAgent"
+              }
+            ],
+            "step_id": 3,
+            "description": "步骤 3",
+            "dependencies": [
+              1,
+              2
+            ]
+          }
+        ],
+        "max_plan_steps": 3,
+        "review_config": null,
+        "position": {
+          "x": 500,
+          "y": 100
+        },
+        "use_fixed_params": false
+      },
+      {
+        "node_id": "node_data_raffles_details",
+        "node_type": "agent",
+        "label": "长宁来福士评价与原帖查询",
+        "agent_name": "聚合国内社媒数据查询智能体",
+        "agent_type": "data",
+        "goal": "调用 Hermes ODP 工具检索 2026 年 4 月 20 日至 2026 年 5 月 10 日期间，长宁来福士在小红书、微博、抖音三个平台的原始帖子与评论数据。重点识别并归纳用户反馈的具体维度（如：餐饮、美陈、服务、交通动线等），细化区分正面褒扬与负面吐槽的具体内容；同时筛选并提取互动量 Top N 的标杆原帖及其核心互动指标，输出结构化的口碑结论与高互动素材，为后续分析长宁来福士的传播优劣势及运营建议提供事实支撑。请严格沿用时间范围约束：start=2026-04-20, end=2026-05-10。",
+        "edit_depth": "detailed",
+        "plan_steps": [
+          {
+            "tasks": [
+              {
+                "task_id": 1,
+                "description": "在“种草平台”检索关键词为“长宁来福士”的原始帖子，时间范围 2026-04-20 至 2026-05-10，按互动量从高到低排序，获取前 500 条数据，需包含作者、内容、互动量、发布时间等信息。",
+                "tool_params": {
+                  "count": 100,
+                  "endStr": "2026-05-10",
+                  "keywords": [
+                    "长宁来福士"
+                  ],
+                  "sortType": "互动量",
+                  "startStr": "2026-04-20",
+                  "rawDataSource": "种草平台"
+                },
+                "params_source": "manual",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              },
+              {
+                "task_id": 2,
+                "description": "在“微博”检索关键词为“长宁来福士”的原始帖子，时间范围 2026-04-20 至 2026-05-10，按互动量从高到低排序，获取前 500 条数据，需包含作者、内容、互动量、发布时间等信息。",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              },
+              {
+                "task_id": 3,
+                "description": "在“抖音”检索关键词为“长宁来福士”的原始帖子，时间范围 2026-04-20 至 2026-05-10，按互动量从高到低排序，获取前 500 条数据，需包含作者、内容、互动量、发布时间等信息。",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              },
+              {
+                "task_id": 4,
+                "description": "在“种草平台”检索关键词为“长宁来福士”的帖子下的用户评论，时间范围 2026-04-20 至 2026-05-10，获取前 500 条评论，需包含评论正文、互动量、情感属性等信息。",
+                "tool_params": {
+                  "count": 500,
+                  "endStr": "2026-05-10",
+                  "keywords": [
+                    "长宁来福士"
+                  ],
+                  "sortType": "互动量",
+                  "startStr": "2026-04-20",
+                  "rawDataSource": "种草平台"
+                },
+                "params_source": "manual",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              },
+              {
+                "task_id": 5,
+                "description": "在“微博”检索关键词为“长宁来福士”的帖子下的用户评论，时间范围 2026-04-20 至 2026-05-10，获取前 500 条评论，需包含评论正文、互动量、情感属性等信息。",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              },
+              {
+                "task_id": 6,
+                "description": "在“抖音”检索关键词为“长宁来福士”的帖子下的用户评论，时间范围 2026-04-20 至 2026-05-10，获取前 500 条评论，需包含评论正文、互动量、情感属性等信息。",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              }
+            ],
+            "step_id": 1,
+            "description": "步骤 1",
+            "dependencies": []
+          },
+          {
+            "tasks": [
+              {
+                "task_id": 7,
+                "description": "综合分析 Step 1 中获取的小红书（种草平台）、微博、抖音三个平台的原始帖子与评论数据。1. 识别并归纳用户反馈的具体维度（如餐饮、美陈、服务、交通动线等）；2. 细化区分正面褒扬与负面吐槽的具体内容；3. 筛选并提取各平台互动量 Top 5 的标杆原帖及其核心互动指标（点赞、转发、评论等）；4. 输出结构化的口碑结论，为后续分析长宁来福士的传播优劣势提供事实支撑。",
+                "tool_or_agent_name": "AnalysisAgent"
+              }
+            ],
+            "step_id": 2,
+            "description": "步骤 2",
+            "dependencies": [
+              1
+            ]
+          }
+        ],
+        "max_plan_steps": 3,
+        "review_config": null,
+        "position": {
+          "x": 500,
+          "y": 300
+        },
+        "use_fixed_params": false
+      },
+      {
+        "node_id": "node_data_competitors_details",
+        "node_type": "agent",
+        "label": "竞品评价与原帖查询",
+        "agent_name": "聚合国内社媒数据查询智能体",
+        "agent_type": "data",
+        "goal": "调用聚合国内社媒数据查询智能体，检索 2026 年 4 月 20 日至 2026 年 5 月 10 日期间，竞品对象‘上海环球港’与‘上海龙之梦’在小红书、微博、抖音平台上的高互动原帖（Top N）及核心用户评价。重点提取能够反映竞品传播亮点、用户正向反馈（夸赞点）与负向反馈（吐槽点）的典型内容，输出结构化的原始数据证据，为后续分析长宁来福士的竞争优劣势及运营优化建议提供对比基准。请严格沿用时间范围约束：start=2026-04-20, end=2026-05-10。",
+        "edit_depth": "detailed",
+        "plan_steps": [
+          {
+            "tasks": [
+              {
+                "task_id": 1,
+                "description": "在‘种草平台’检索关键词为‘上海环球港’的高互动原帖，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条帖子，用于提取传播亮点。",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              },
+              {
+                "task_id": 2,
+                "description": "在‘微博’检索关键词为‘上海环球港’的高互动原帖，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条帖子，用于提取传播亮点。",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              },
+              {
+                "task_id": 3,
+                "description": "在‘抖音’检索关键词为‘上海环球港’的高互动原帖，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条帖子，用于提取传播亮点。",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              },
+              {
+                "task_id": 4,
+                "description": "在‘种草平台’检索关键词为‘上海龙之梦’的高互动原帖，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条帖子，用于提取传播亮点。",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              },
+              {
+                "task_id": 5,
+                "description": "在‘微博’检索关键词为‘上海龙之梦’的高互动原帖，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条帖子，用于提取传播亮点。",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              },
+              {
+                "task_id": 6,
+                "description": "在‘抖音’检索关键词为‘上海龙之梦’的高互动原帖，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条帖子，用于提取传播亮点。",
+                "tool_or_agent_name": "fetchSocialMediaPosts"
+              }
+            ],
+            "step_id": 1,
+            "description": "步骤 1",
+            "dependencies": []
+          },
+          {
+            "tasks": [
+              {
+                "task_id": 7,
+                "description": "在‘种草平台’检索包含关键词‘上海环球港’的帖子下的用户评论，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条评论，重点关注用户对商场的正负向评价。",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              },
+              {
+                "task_id": 8,
+                "description": "在‘微博’检索包含关键词‘上海环球港’的帖子下的用户评论，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条评论，重点关注用户对商场的正负向评价。",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              },
+              {
+                "task_id": 9,
+                "description": "在‘抖音’检索包含关键词‘上海环球港’的帖子下的用户评论，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条评论，重点关注用户对商场的正负向评价。",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              },
+              {
+                "task_id": 10,
+                "description": "在‘种草平台’检索包含关键词‘上海龙之梦’的帖子下的用户评论，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条评论，重点关注用户对商场的正负向评价。",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              },
+              {
+                "task_id": 11,
+                "description": "在‘微博’检索包含关键词‘上海龙之梦’的帖子下的用户评论，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条评论，重点关注用户对商场的正负向评价。",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              },
+              {
+                "task_id": 12,
+                "description": "在‘抖音’检索包含关键词‘上海龙之梦’的帖子下的用户评论，时间范围为 2026-04-20 至 2026-05-10，按互动量排序，获取前 500 条评论，重点关注用户对商场的正负向评价。",
+                "tool_or_agent_name": "fetchSocialMediaComments"
+              }
+            ],
+            "step_id": 2,
+            "description": "步骤 2",
+            "dependencies": []
+          },
+          {
+            "tasks": [
+              {
+                "task_id": 13,
+                "description": "读取 Step 1 中 Task 1, 2, 3 获取的帖子内容以及 Step 2 中 Task 7, 8, 9 获取的评论数据，综合分析‘上海环球港’在 2026-04-20 至 2026-05-10 期间的传播亮点、用户正向反馈（夸赞点）与负向反馈（吐槽点），并提取典型内容证据。",
+                "tool_or_agent_name": "AnalysisAgent"
+              },
+              {
+                "task_id": 14,
+                "description": "读取 Step 1 中 Task 4, 5, 6 获取的帖子内容以及 Step 2 中 Task 10, 11, 12 获取的评论数据，综合分析‘上海龙之梦’在 2026-04-20 至 2026-05-10 期间的传播亮点、用户正向反馈（夸赞点）与负向反馈（吐槽点），并提取典型内容证据。",
+                "tool_or_agent_name": "AnalysisAgent"
+              }
+            ],
+            "step_id": 3,
+            "description": "步骤 3",
+            "dependencies": [
+              1,
+              2
+            ]
+          }
+        ],
+        "max_plan_steps": 3,
+        "review_config": null,
+        "position": {
+          "x": 500,
+          "y": 500
+        },
+        "use_fixed_params": false
+      },
+      {
+        "node_id": "node_merge",
+        "node_type": "merge",
+        "label": "数据合并",
+        "agent_name": null,
+        "agent_type": "data",
+        "edit_depth": "simple",
+        "max_plan_steps": 3,
+        "input_count": 3,
+        "merge_strategy": "wait_all",
+        "review_config": null,
+        "position": {
+          "x": 727.757683741648,
+          "y": 300
+        },
+        "use_fixed_params": false
+      },
+      {
+        "node_id": "node_output_report",
+        "node_type": "agent",
+        "label": "生成分析报告",
+        "agent_name": "研究报告",
+        "agent_type": "output",
+        "task": "整合上游提供的 2026-04-20 至 2026-05-10 期间小红书、微博、抖音数据，撰写长宁来福士五一期间社媒表现分析报告。报告需涵盖：1. 竞品对标分析：对比长宁来福士与上海环球港、上海龙之梦在声量、互动量及 NSR 口碑上的差异；2. 传播优劣势诊断：明确长宁来福士在三大平台的市场表现位次及核心短板；3. 舆情深度总结：通过对文本数据的聚类，提炼用户针对长宁来福士的核心好评与差评点；4. 高互动内容拆解：基于 Top N 原帖数据，总结值得借鉴的内容创意与传播模式；5. 营销策略建议：基于以上分析，给出针对性的内容营销方向及商场运营优化方案。",
+        "edit_depth": "simple",
+        "max_plan_steps": 3,
+        "review_config": null,
+        "position": {
+          "x": 935.4681514476615,
+          "y": 300
+        },
+        "use_fixed_params": false
+      },
+      {
+        "node_id": "node_end",
+        "node_type": "end",
+        "label": "结束",
+        "agent_name": null,
+        "agent_type": "data",
+        "edit_depth": "simple",
+        "max_plan_steps": 3,
+        "review_config": null,
+        "position": {
+          "x": 1100,
+          "y": 300
+        },
+        "use_fixed_params": false
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": "edge_start_to_parallel",
+        "source_node_id": "node_start",
+        "target_node_id": "node_parallel"
+      },
+      {
+        "edge_id": "edge_parallel_to_metrics",
+        "source_node_id": "node_parallel",
+        "target_node_id": "node_data_metrics"
+      },
+      {
+        "edge_id": "edge_parallel_to_raffles",
+        "source_node_id": "node_parallel",
+        "target_node_id": "node_data_raffles_details"
+      },
+      {
+        "edge_id": "edge_parallel_to_competitors",
+        "source_node_id": "node_parallel",
+        "target_node_id": "node_data_competitors_details"
+      },
+      {
+        "edge_id": "edge_metrics_to_merge",
+        "source_node_id": "node_data_metrics",
+        "target_node_id": "node_merge"
+      },
+      {
+        "edge_id": "edge_raffles_to_merge",
+        "source_node_id": "node_data_raffles_details",
+        "target_node_id": "node_merge"
+      },
+      {
+        "edge_id": "edge_competitors_to_merge",
+        "source_node_id": "node_data_competitors_details",
+        "target_node_id": "node_merge"
+      },
+      {
+        "edge_id": "edge_merge_to_output",
+        "source_node_id": "node_merge",
+        "target_node_id": "node_output_report"
+      },
+      {
+        "edge_id": "edge_output_to_end",
+        "source_node_id": "node_output_report",
+        "target_node_id": "node_end"
+      }
+    ],
+    "execution_mode": "serial",
+    "created_at": "2026-05-20T16:50:00.681505+08:00",
+    "updated_at": "2026-05-20T16:50:00.681536+08:00",
+    "created_by": null,
+    "tags": [],
+    "metadata": {
+      "sites": [
+        "xiaohongshu",
+        "douyin",
+        "weibo"
+      ],
+      "time_range": {
+        "end": "2026-05-10",
+        "start": "2026-04-20"
+      },
+      "post_process_summary": {
+        "enabled": true,
+        "warnings": [],
+        "warning_count": 0
+      },
+      "normalized_constraints": {
+        "alias_map": {
+          "RED": "小红书",
+          "XHS": "小红书",
+          "red": "小红书",
+          "xhs": "小红书",
+          "weibo": "微博",
+          "zhihu": "知乎",
+          "douyin": "抖音",
+          "bilibili": "哔哩哔哩",
+          "Xiaohongshu": "小红书",
+          "xiaohongshu": "小红书",
+          "种草平台": "小红书"
+        },
+        "time_scope": {
+          "end": "2026-05-10",
+          "start": "2026-04-20"
+        },
+        "output_type": "report",
+        "platform_scope": [
+          "小红书",
+          "抖音",
+          "微博"
+        ],
+        "datasource_scope": null,
+        "user_requirement": "使用聚合国内社媒数据查询智能体\n\n请分析 2026 年五一期间长宁来福士在社媒上的表现，并对比上海环球港、上海龙之梦。\n\n我希望了解：\n1. 三家商场谁的声量、互动量和口碑表现更好；\n2. 长宁来福士相比竞品有哪些传播优势和短板；\n3. 用户主要在夸什么、吐槽什么；\n4. 哪些高互动内容值得长宁来福士后续借鉴；\n5. 给出内容营销和运营优化建议。\n\n数据范围：\n- 时间：2026年4月20日–2026年5月10日\n- 平台：小红书、微博、抖音\n- 指标：声量、互动量、NSR、Top N 原帖"
+      }
+    },
+    "max_execution_time": null,
+    "auto_save_checkpoint": true,
+    "execution_strategy": "normal",
+    "execution_results": null,
+    "latest_execution_id": null,
+    "latest_task_id": null,
+    "active_task_ids": [],
+    "active_tasks": [],
+    "task_id": null
+  }
+}
