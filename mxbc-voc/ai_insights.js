@@ -119,6 +119,7 @@
 
   let activeReport = embedContext === "service" ? "complaint" : "delivery";
   let activeTemplate = activeReport;
+  let lastFilters = {};           // ═ 记住看板传来的筛选条件
 
   function renderHistory() {
     $("#historyList").innerHTML = Object.entries(reports).map(([key, report]) => `
@@ -162,6 +163,7 @@
         <div class="thread-bubble">
           <div class="answer-tags"><span>深度研究结果</span><span>${report.type}</span></div>
           <h3>${report.title}</h3>
+          ${Object.keys(lastFilters).length > 0 ? `<p class="filter-mention">已基于当前筛选条件生成报告，本次口径为：${Object.entries(lastFilters).map(([k,v]) => `${k}：${Array.isArray(v)?v.join('、'):v}`).join(' / ')}。</p>` : ''}
           <div class="layer-tabs" data-report-key="${key}">
             <button class="layer-tab ${activeLayer === "summary" ? "active" : ""}" data-layer="summary">摘要洞察</button>
             <button class="layer-tab ${activeLayer === "detail" ? "active" : ""}" data-layer="detail">详细分析</button>
@@ -243,9 +245,17 @@
       if (key && templates[key]) {
         openConfig(key);
         const filters = event.data.filters || {};
+        lastFilters = filters;
         if (Object.keys(filters).length > 0) {
           setTimeout(() => {
             preFillConfig(key, filters);
+            // 在配置面板展示当前筛选条件
+            const filterStr = Object.entries(filters).map(([k,v]) => `${k}：${Array.isArray(v)?v.join('、'):v}`).join('　');
+            const filterDiv = document.getElementById('currentFilters');
+            if (filterDiv) {
+              filterDiv.innerHTML = `<span class="filter-dot"></span>当前来自看板：${filterStr}`;
+              filterDiv.classList.add('show');
+            }
             // 预填完成后自动生成报告
             setTimeout(() => {
               const genBtn = $("#generateReport");

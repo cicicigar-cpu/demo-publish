@@ -1334,8 +1334,8 @@
         <div class="sample-note">当前筛选同步自顶部控件：${escapeHtml([d.filterState.region, d.filterState.platform, d.filterState.issue].join(" / "))}</div>
       </div>
       ${kpis([
-        { label: "高风险区域数", value: "12", note: "风险指数高于 80 的区域" },
-        { label: "高风险门店数", value: "86", note: "负向率与强负向双高" },
+        { label: "待排查区域线索数", value: "12", note: "风险指数高于 80 的区域" },
+        { label: "待排查门店线索数", value: "86", note: "负向率与强负向双高" },
         { label: "区域平均负向率", value: percent(d.summary.negativeRate), note: "当前筛选下区域均值" },
         { label: "强负向高发区域", value: "华南", note: "包装与食安风险偏高" },
         { label: "食安风险门店数", value: "23", note: "异物/变质/不适相关" },
@@ -1794,9 +1794,46 @@
   }
 
   function serviceEvidence(problem) {
-    const negative = problem.keywords.concat(["离谱", "失望", "欺骗", "无语", "投诉", "避雷", "不一致", "难喝", "发白", "少加料", "恶心", "曝光", "退钱"]);
-    const positive = ["好喝", "清爽", "解腻", "性价比", "包装干净", "口感不错", "服务及时", "回复快", "新品惊喜", "推荐", "会回购", "味道浓"];
-    const cloud = (words, tone) => `<div class="radar-word-cloud ${tone}">${words.concat(words.slice(0, 7)).map((word, index) => `<span style="--size:${16 + ((index * 7) % 28)}px;--x:${8 + ((index * 17) % 76)}%;--y:${10 + ((index * 29) % 74)}%;--rotate:${index % 5 === 0 ? -4 : index % 7 === 0 ? 4 : 0}deg">${escapeHtml(word)}</span>`).join("")}</div>`;
+    // 大幅扩展关键词，确保每个问题至少有 18-25 个词
+    const baseNegative = problem.keywords && problem.keywords.length > 0
+      ? problem.keywords
+      : ["问题", "异常", "投诉", "反馈"];
+    const extraNegative = ["离谱", "失望", "欺骗", "无语", "投诉", "避雷", "不一致", "难喝",
+      "发白", "少加料", "恶心", "曝光", "退钱", "变质", "异物", "毛发", "态度差",
+      "推诿", "不解决", "等太久", "冷掉了", "太甜", "没味道", "有异味", "分量少",
+      "包装破损", "洒了", "做错了", "不认账"];
+    const negative = baseNegative.concat(extraNegative).slice(0, 28);
+
+    const positive = ["好喝", "清爽", "解腻", "性价比", "包装干净", "口感不错", "服务及时",
+      "回复快", "新品惊喜", "推荐", "会回购", "味道浓", "很满意", "速度快", "态度好",
+      "料很足", "很实惠", "经常买", "出餐快", "干净卫生"];
+
+    const cloud = (words, tone) => {
+      if (!Array.isArray(words) || words.length === 0) {
+        return '<div class="tag-cloud ' + tone + '"><span class="tag-cloud-empty">暂无数据</span></div>';
+      }
+      // 去重
+      var seen = {};
+      var deduped = [];
+      for (var i = 0; i < words.length; i++) {
+        var w = String(words[i]).trim();
+        if (w && !seen[w]) { seen[w] = true; deduped.push(w); }
+      }
+      // 字号池：大词在前，小词在后
+      var sizes = [36, 32, 28, 26, 24, 22, 20, 18, 16, 16, 14, 14, 14, 14, 14, 14, 14, 14];
+      // 打乱顺序（Fisher-Yates），让大小词交错
+      for (var i = deduped.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = deduped[i]; deduped[i] = deduped[j]; deduped[j] = tmp;
+      }
+      var html = '<div class="tag-cloud ' + tone + '">';
+      for (var i = 0; i < deduped.length; i++) {
+        var sz = sizes[Math.min(i, sizes.length - 1)];
+        html += '<span style="font-size:' + sz + 'px">' + escapeHtml(deduped[i]) + '</span>';
+      }
+      html += '</div>';
+      return html;
+    };
     const posts = [
       ["抖音", "雪王观察员", "河南", problem.product, problem.evidence, "8,462", "2026-05-21 15:07", "愤怒"],
       ["小红书", "甜味研究所", "广东", problem.product, "同一个产品两次买到的状态差异很大，颜色和加料完全不一致，门店出品需要好好检查。", "1,284", "2026-05-21 18:42", "失望"],
@@ -1987,26 +2024,26 @@
       <div class="data-status">内部热线：已接入，更新至 2026-05-21 23:59　在线客服：已接入　外卖评价：已接入　社媒数据：已接入；提示：部分社媒地域无法定位门店。</div>
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>全渠道客诉监测总览</div>
-          <p>先观察社媒、热线和在线客服的整体规模与情感走势，再进入重点问题归因。</p>
+          <div class="page-title"><span class="title-mark"></span>客服 VOC 监测总览</div>
+          <p>先以热线和在线客服识别内部客诉主线，再结合外卖评价与社媒判断外部反馈和外溢风险。</p>
         </div>
         <div class="sample-note">当前筛选：${escapeHtml(filterText)}</div>
       </div>
       ${kpis([
-        { label: "全渠道业务量", value: fmt(totalFeedback), note: "社媒 + 热线 + 在线客服" },
-        { label: "社媒声量", value: fmt(Math.round(s.socialSame.summary.total * factor)), note: "微博 / 小红书 / 抖音 / 快手" },
-        { label: "社媒负面声量", value: fmt(socialNegative), note: `负向率 ${percent(s.socialSame.summary.negativeRate)}` },
-        { label: "热线声量 / 负面声量", value: `${fmt(Math.round(s.complaint.summary.hotline * factor))} / ${fmt(Math.round(s.complaint.summary.hotline * .743 * factor))}`, note: "总接入量与负向客诉量" },
-        { label: "在线声量 / 负面声量", value: `${fmt(Math.round(s.complaint.summary.online * factor))} / ${fmt(Math.round(s.complaint.summary.online * .743 * factor))}`, note: "总会话量与负向会话量" },
+        { label: "VOC 反馈总量", value: fmt(totalFeedback), note: "社媒（线索）+ 热线 + 在线客服" },
+        { label: "社媒声量", value: fmt(Math.round(s.socialSame.summary.total * factor)), note: "微博 / 小红书 / 抖音 / 快手（外部线索）" },
+        { label: "社媒负向线索", value: fmt(socialNegative), note: `负向率 ${percent(s.socialSame.summary.negativeRate)}` },
+        { label: "热线客诉 / 高压情绪", value: `${fmt(Math.round(s.complaint.summary.hotline * factor))} / ${fmt(Math.round(s.complaint.summary.hotline * .743 * factor))}`, note: "总接入量 / 强负向客诉量" },
+        { label: "在线客服客诉 / 高压情绪", value: `${fmt(Math.round(s.complaint.summary.online * factor))} / ${fmt(Math.round(s.complaint.summary.online * .743 * factor))}`, note: "总会话量 / 强负向会话量" },
       ])}
-      <div class="section-label">全渠道规模与趋势</div>
+      <div class="section-label">内部客诉与外部反馈趋势</div>
       <div class="service-overview-grid">
         ${card("各平台规模与情感分布", channelSentimentChart(s))}
-        ${card("全渠道业务量与负面趋势", allChannelTrend(s, factor), `<div class="card-tools"><span class="active">按小时</span><span>按天</span><span>按周</span></div>`)}
+        ${card("内部客诉与外部反馈趋势ⓛ", allChannelTrend(s, factor), `<div class="card-tools"><span class="active">按小时</span><span>按天</span><span>按周</span></div>`)}
       </div>
       <div class="section-label">重点问题发现与归因</div>
       <div class="service-workbench">
-        ${card("重点问题排行榜", table(["排名", "问题", "风险", "全渠道", "内部", "社媒", "外溢评分", "环比"], (rows.length ? rows : serviceProblems).map((item, index) => [
+        ${card("重点问题排行榜", table(["排名", "问题", "风险", "综合问题量", "内部客诉", "外部公开反馈", "外溢评分ⓘ", "环比"], (rows.length ? rows : serviceProblems).map((item, index) => [
           index + 1,
           `<button class="link-btn" data-service-issue="${index}">${escapeHtml(item.issue)}</button>`,
           `<span class="badge ${item.risk === "P1" ? "red" : item.risk === "P2" ? "amber" : ""}">${escapeHtml(item.risk)}</span>`,
@@ -2022,7 +2059,7 @@
         ${card("内外部来源拆解", sourceBreakdown(selected))}
         ${card("当前问题归因概览", serviceAttribution(selected))}
         ${card("产品 × 问题热力图", productIssueHeatmap(selected))}
-        ${card("问题区域分布 TOP 榜", table(["排名", "区域", "全渠道", "内部", "社媒", "风险评分", "环比"], [
+        ${card("问题区域分布 TOP 榜", table(["排名ⓘ", "区域", "综合问题量", "内部客诉", "外部公开反馈", "风险评分", "环比"], [
           ["1", "河南", "46", "5", "41", "86", "+52%"],
           ["2", "广东", "38", "7", "31", "79", "+35%"],
           ["3", "山东", "29", "5", "24", "73", "+28%"],
@@ -2035,7 +2072,7 @@
     $("#warning").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>问题分析</div>
+          <div class="page-title"><span class="title-mark"></span>重点问题预警</div>
           <p>判断哪些问题正在从内部投诉变成外部舆情，哪些问题需要同步品牌、公关、产品或区域运营。</p>
         </div>
       </div>
@@ -2047,13 +2084,13 @@
       ])}
       <div class="warning-grid">
         ${card("内外部风险四象限", warningQuadrant())}
-        ${card("预警问题列表", table(["等级", "问题", "风险类型", "命中规则", "主要来源", "风险阶段"], serviceProblems.slice(0, 4).map((item, index) => [
+        ${card("预警问题列表", table(["等级ⓘ", "问题", "风险类型", "命中规则", "主要来源", "风险阶段", "客服动作ⓘ"], serviceProblems.slice(0, 4).map((item, index) => [
           item.risk,
           `<button class="link-btn" data-service-issue="${index}">${escapeHtml(item.issue)}</button>`,
           item.type,
           index === 0 ? "互动突增 + 品质质疑" : index === 1 ? "食安标签 + 强负向" : "客诉量持续上升",
           item.platforms,
-          ["快速上升", "内外共振", "持续高位", "跨平台扩散"][index],
+          ["快速上升", "内外共振", "持续高位", "跨平台扩散"][index], ["当天确认", "转品控", "转区域运营", "持续观察"][index]
         ])))}
       </div>
       <div class="warning-detail-head">
@@ -2077,16 +2114,16 @@
     $("#serviceRegions").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>区域分析</div>
+          <div class="page-title"><span class="title-mark"></span>区域线索与门店排查</div>
           <p>从全国、区域、城市和门店维度辅助定位责任单元，并用原声证据支撑区域排查。</p>
         </div>
         <div class="sample-note">社媒地域为传播区域或用户属地参考，不直接等同于涉事门店。</div>
       </div>
       ${kpis([
-        { label: "高风险区域数", value: "16", note: "风险指数高于阈值" },
-        { label: "高风险门店数", value: "48", note: "需区域排查" },
-        { label: "风险最高省份", value: "河南", note: "AB货 / 品质质疑" },
-        { label: "环比增幅最高区域", value: "广东 +35%", note: "食安与异味问题上升" },
+        { label: "待排查区域线索数", value: "16", note: "风险指数高于阈值" },
+        { label: "待排查门店线索数", value: "48", note: "需区域排查" },
+        { label: "传播/客诉综合风险最高", value: "河南", note: "AB货 / 品质质疑" },
+        { label: "环比增幅最高（线索）", value: "广东 +35%", note: "食安与异味问题上升" },
         { label: "内外共振问题数", value: "9", note: "客服与社媒同步升高" },
       ])}
       <div class="region-grid">

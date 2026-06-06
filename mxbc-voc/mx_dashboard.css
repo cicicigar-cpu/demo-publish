@@ -155,6 +155,15 @@ a {
   transform: translateY(-32px);
 }
 
+.portal-subtitle {
+  margin: 18px auto 0;
+  max-width: 540px;
+  color: #5a6478;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
 .menu-logo {
   display: inline-flex;
   align-items: center;
@@ -2230,31 +2239,60 @@ body[data-app="delivery"] .kpi-grid {
   height: 500px;
 }
 
-.radar-word-cloud {
-  width: 100%;
-  height: 100%;
-  position: relative;
+/* === 标签云（替代词云）=== */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  min-height: 120px;
 }
-
-.radar-word-cloud span {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  transform: translate(-50%, -50%) rotate(var(--rotate));
-  color: #607fcf;
-  font-size: var(--size);
-  font-weight: 700;
+.tag-cloud span {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
   white-space: nowrap;
+  line-height: 1.4;
+  cursor: default;
+  transition: transform .15s, box-shadow .15s;
 }
-
-.radar-word-cloud.negative span:nth-child(4n+1) { color: #ef4b65; }
-.radar-word-cloud.negative span:nth-child(4n+2) { color: #7862e6; }
-.radar-word-cloud.negative span:nth-child(4n+3) { color: #2898dc; }
-.radar-word-cloud.negative span:nth-child(4n) { color: #f0a91e; }
-.radar-word-cloud.positive span:nth-child(4n+1) { color: #14a77f; }
-.radar-word-cloud.positive span:nth-child(4n+2) { color: #2b8fe7; }
-.radar-word-cloud.positive span:nth-child(4n+3) { color: #ec9f18; }
-.radar-word-cloud.positive span:nth-child(4n) { color: #7569df; }
+.tag-cloud span:hover {
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+.tag-cloud.negative span {
+  background: #fde8ec;
+  color: #c53030;
+}
+.tag-cloud.negative span:nth-child(4n+2) {
+  background: #fde8ec;
+  color: #9b2c2c;
+}
+.tag-cloud.negative span:nth-child(4n+3) {
+  background: #fff5f5;
+  color: #c53030;
+  border: 1px solid #fc8181;
+}
+.tag-cloud.positive span {
+  background: #e6fffa;
+  color: #276749;
+}
+.tag-cloud.positive span:nth-child(4n+2) {
+  background: #e6fffa;
+  color: #2f855a;
+}
+.tag-cloud.positive span:nth-child(4n+3) {
+  background: #f0fff4;
+  color: #276749;
+  border: 1px solid #9ae6b4;
+}
+.tag-cloud-empty {
+  color: #a0aec0;
+  font-size: 13px;
+}
 
 .original-post-list {
   height: 500px;
@@ -2600,5 +2638,102 @@ body[data-app="delivery"] .kpi-grid {
 .risk-child-weight {
   text-align: right;
   font-weight: 700;
+  font-size: 12px;
+}
+
+/* === 词云面板布局 === */
+.radar-evidence-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.radar-cloud-panel,
+.original-post-panel {
+  background: #fafbfd;
+  border-radius: 8px;
+  padding: 14px;
+}
+.radar-cloud-panel header,
+.original-post-panel header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.cloud-tabs button {
+  background: none;
+  border: 1px solid #d4daf0;
+  border-radius: 14px;
+  padding: 3px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.cloud-tabs button.active {
+  background: #1687ff;
+  color: #fff;
+  border-color: #1687ff;
+}
+.cloud-stage > div {
+  margin-top: 8px;
+}
+
+/* === 情感堆叠条 === */
+.sentiment-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  font-size: 13px;
+}
+.sentiment-row strong {
+  min-width: 56px;
+  text-align: right;
+  color: #354057;
+}
+.sentiment-row small {
+  color: #8a94aa;
+  min-width: 48px;
+  font-size: 11px;
+}
+.sentiment-stack {
+  flex: 1;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
+  display: flex;
+  background: #e8ecf3;
+}
+.sentiment-stack i {
+  flex-shrink: 0;
+  height: 100%;
+  transition: width .2s;
+}
+.sentiment-stack .positive { background: #22c55e; }
+.sentiment-stack .neutral  { background: #e2e8f0; }
+.sentiment-stack .negative { background: #ef4b6c; }
+.sentiment-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: #667087;
+  margin-top: 4px;
+}
+.sentiment-legend span::before {
+  content: "";
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.sentiment-legend .positive::before { background: #22c55e; }
+.sentiment-legend .neutral::before  { background: #e2e8f0; }
+.sentiment-legend .negative::before { background: #ef4b6c; }
+
+/* === 热力图单元格优化 === */
+.service-heatmap span {
+  font-weight: 700;
+  text-shadow: 0 0 4px rgba(255,255,255,.85), 0 0 2px rgba(255,255,255,.9);
+  color: #1a2744;
   font-size: 12px;
 }

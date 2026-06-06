@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>全渠道客诉与舆情外溢监测 - 蜜雪冰城 POC</title>
+  <title>客服 VOC 与外溢风险看板 - 蜜雪冰城 POC</title>
   <link rel="stylesheet" href="./mx_dashboard.css?v=20260606h">
 </head>
 <body data-app="service">
@@ -14,15 +14,15 @@
         <span>数说雷达</span>
       </a>
       <div class="side-section">分析看板</div>
-      <button class="side-item tab active" data-target="complaint"><span class="side-dot"></span><span>全渠道监测总览</span></button>
-      <button class="side-item tab" data-target="warning"><span class="side-dot"></span><span>问题分析</span></button>
-      <button class="side-item tab" data-target="serviceRegions"><span class="side-dot"></span><span>区域分析</span></button>
+      <button class="side-item tab active" data-target="complaint"><span class="side-dot"></span><span>客服 VOC 监测总览</span></button>
+      <button class="side-item tab" data-target="warning"><span class="side-dot"></span><span>重点问题预警</span></button>
+      <button class="side-item tab" data-target="serviceRegions"><span class="side-dot"></span><span>区域线索与门店排查</span></button>
       <div class="side-section">AI Agent</div>
       <button class="side-item tab" data-target="aiInsights"><span class="side-dot"></span><span>AI 洞察</span></button>
     </aside>
     <main class="main">
       <header class="topbar">
-        <div class="top-title"><span class="hamburger">☰</span><span>全渠道客诉与舆情外溢监测</span></div>
+        <div class="top-title"><span class="hamburger">☰</span><span>客服 VOC 与外溢风险看板</span></div>
         <div class="top-actions"><span>中文⌄</span><span>帮助</span><span>通知</span><span class="avatar">账号</span><span>欢迎！蜜雪客诉部</span></div>
       </header>
       <section class="filterbar">
@@ -34,6 +34,7 @@
         <label class="filter-control"><span>风险等级</span><select id="serviceRisk"><option value="全部">全部</option><option>P1 高风险</option><option>P2 中高风险</option><option>P3 一般风险</option><option>观察信号</option></select></label>
         <button class="ai-report-btn" data-template="complaint">生成 AI 报告</button>
       </section>
+      <div class="filter-note">热线/在线客服为内部客诉主口径；外卖评价、社媒为外部反馈与外溢风险补充口径。</div>
       <section class="content">
         <div id="complaint" class="page active"></div>
         <div id="warning" class="page"></div>
