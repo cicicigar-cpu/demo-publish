@@ -384,21 +384,32 @@ body.ai-tab-active .content {
 .filter-control {
   min-width: 0;
   height: 40px;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 10px;
+  padding: 0 12px;
   border: 1px solid #dfe4ee;
-  border-radius: 2px;
+  border-radius: 6px;
   color: #505a70;
   background: #fff;
   font-size: 13px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.filter-control:hover {
+  border-color: #b0bacb;
+}
+
+.filter-control:focus-within {
+  border-color: #2787f5;
+  box-shadow: 0 0 0 3px rgba(39,135,245,.12);
 }
 
 .filter-control span {
   color: #313a50;
+  font-size: 13px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .filter-control select {
@@ -409,6 +420,14 @@ body.ai-tab-active .content {
   color: #667087;
   background: transparent;
   font: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23667087' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 12px;
+  padding-right: 20px;
 }
 
 .filter-control.wide {
@@ -1433,38 +1452,77 @@ body[data-app="delivery"] .kpi-grid {
   white-space: nowrap;
 }
 
-.sentiment-clouds {
-  min-height: 360px;
+.wordcloud-section {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  padding: 4px 0 0;
+  gap: 14px;
+  padding: 0;
 }
 
-.sentiment-cloud {
-  min-width: 0;
+.wordcloud-card {
   border: 1px solid #edf0f6;
+  border-radius: 6px;
   background: #fff;
+  overflow: hidden;
 }
 
-.cloud-label {
-  width: max-content;
-  margin: 12px;
-  padding: 5px 12px;
-  color: #68738a;
-  background: #f4f5f9;
-  font-size: 12px;
+.wordcloud-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #edf0f6;
+  font-size: 13px;
   font-weight: 800;
+  color: #313a50;
+  background: #fafbfe;
 }
 
-.cloud-label.positive {
-  color: #6354d8;
-  background: #eeeaff;
+.wordcloud-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.cloud-label.negative {
-  color: #d83c58;
-  background: #fff0f3;
+.wordcloud-dot.positive {
+  background: #1687ff;
+}
+
+.wordcloud-dot.negative {
+  background: #ef4b6c;
+}
+
+.wordcloud-canvas {
+  min-height: 160px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-content: center;
+  justify-content: center;
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.wordcloud-canvas .word-item {
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.5px;
+  transition: transform .12s ease, opacity .12s ease;
+  cursor: default;
+}
+
+.wordcloud-canvas .word-item:hover {
+  transform: scale(1.18) !important;
+  opacity: 1 !important;
+}
+
+.wordcloud-canvas.negative .word-item:hover {
+  color: #ef4b6c !important;
+}
+
+.wordcloud-canvas.positive .word-item:hover {
+  color: #1687ff !important;
 }
 
 .cloud-stage {
@@ -1600,14 +1658,6 @@ body[data-app="delivery"] .kpi-grid {
 
 .ai-report-btn:active {
   transform: translateY(0);
-}
-
-body[data-app="service"] .ai-report-btn {
-  background: linear-gradient(135deg, #6c5ce7, #4834d4);
-}
-
-body[data-app="service"] .ai-report-btn:hover {
-  box-shadow: 0 4px 14px rgba(108,92,231,.35);
 }
 
 .social-post-tags {
@@ -1799,7 +1849,7 @@ body[data-app="service"] .ai-report-btn:hover {
 
 .service-overview-grid {
   display: grid;
-  grid-template-columns: minmax(460px, 1.05fr) minmax(420px, .95fr);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
   gap: 16px;
   margin-top: 16px;
 }
@@ -2262,6 +2312,10 @@ body[data-app="service"] .ai-report-btn:hover {
   .service-mid-grid,
   .warning-grid,
   .warning-detail-head,
+  .evidence-split,
+  .linked-dimensions,
+  .evidence-split,
+  .linked-dimensions,
   .evidence-split,
   .linked-dimensions,
   .issue-summary-row {

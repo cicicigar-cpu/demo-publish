@@ -404,11 +404,15 @@
     const source = (items || []).length ? items : [{ name: "暂无对应证据词", value: 1 }];
     const max = Math.max(...source.map(item => Number(item.value || 0)), 1);
     const palette = tone === "positive"
-      ? ["#7569df", "#1687ff", "#20b7b3", "#84a82a", "#ecb400"]
-      : ["#ef4b6c", "#7569df", "#1687ff", "#e58b21", "#54647f"];
-    return `<div class="cloud-stage ${tone}">${source.slice(0, 18).map((item, index) => `
-      <span title="出现 ${fmt(item.value)} 次" style="font-size:${15 + Math.round(Number(item.value || 0) / max * 34)}px;color:${palette[index % palette.length]}">${escapeHtml(item.name)}</span>
-    `).join("")}</div>`;
+      ? ["#1687ff", "#20b7b3", "#7569df", "#84a82a", "#ecb400", "#0961d6", "#0ea5a0", "#5b4ec9"]
+      : ["#ef4b6c", "#e58b21", "#7569df", "#1687ff", "#54647f", "#d63a5a", "#c47618", "#4a5a6f"];
+    const rotations = [0, 0, 0, -90, 0, 0, -90, 0, 0, 0, 0, -90, 0, 0, 0, -90, 0, 0];
+    return `<div class="wordcloud-canvas ${tone}">${source.slice(0, 20).map((item, index) => {
+      const size = 14 + Math.round(Number(item.value || 0) / max * 32);
+      const rotate = rotations[index % rotations.length];
+      const opacity = Math.max(0.55, Number(item.value || 0) / max);
+      return `<span title="出现 ${fmt(item.value)} 次" class="word-item" style="font-size:${size}px;color:${palette[index % palette.length]};opacity:${opacity.toFixed(2)};${rotate ? `transform:rotate(${rotate}deg)` : ""}">${escapeHtml(item.name)}</span>`;
+    }).join("")}</div>`;
   }
 
   function evidenceKeywordSets(node, d) {
@@ -501,9 +505,15 @@
       ? (profileQuotes.concat(matched).length ? profileQuotes.concat(matched) : (d.examples || [])).slice(0, 5)
       : (d.examples || []).slice(0, 5);
     const evidenceWords = evidenceKeywordSets(node, d);
-    const cloud = `<div class="sentiment-clouds">
-      <div class="sentiment-cloud"><div class="cloud-label positive">正面证据词</div>${comparisonCloud(evidenceWords.positive, "positive")}</div>
-      <div class="sentiment-cloud"><div class="cloud-label negative">负面证据词</div>${comparisonCloud(evidenceWords.negative, "negative")}</div>
+    const cloud = `<div class="wordcloud-section">
+      <div class="wordcloud-card">
+        <div class="wordcloud-header"><span class="wordcloud-dot positive"></span>正面词云</div>
+        ${comparisonCloud(evidenceWords.positive, "positive")}
+      </div>
+      <div class="wordcloud-card">
+        <div class="wordcloud-header"><span class="wordcloud-dot negative"></span>负面词云</div>
+        ${comparisonCloud(evidenceWords.negative, "negative")}
+      </div>
     </div>`;
 
     return `<div class="evidence-grid">
@@ -513,7 +523,7 @@
       ], d.hourly.map(x => x.hour), 230))}
       ${card("平台分布", platformColumns(p))}
       ${card("区域 / 门店 Top 榜", table(["排名", "区域/门店", "评论量", "问题量", "负向占比", "风险", "环比"], regionRows), `<div class="card-tools"><span class="active">${node.label ? "当前标签" : "当前层级"}</span></div>`)}
-      ${card("正负面特征词云", cloud)}
+      ${card("", cloud)}
       <section class="card evidence-quotes">
         <div class="card-header"><div class="card-title"><span class="mini-mark"></span>口碑原帖</div><div class="card-tools"><span class="active">按时间</span><span>按风险</span></div></div>
         ${deliveryPosts(quotes, node.name)}
@@ -1281,9 +1291,12 @@
   function allChannelTrend(s, factor) {
     const hourly = s.hourly || [];
     return svgLine("allChannelTrend", [
-      { name: "社媒内容量", values: hourly.map(item => Math.round(item.socialPosts * factor)), color: colors[0] },
-      { name: "社媒负向量", values: hourly.map(item => Math.round(item.socialPosts * item.socialNegativeRate / 100 * factor)), color: colors[1] },
-      { name: "热线与在线客服", values: hourly.map(item => Math.round(item.complaints * factor)), color: colors[3] },
+      { name: "社媒声量", values: hourly.map(item => Math.round(item.socialPosts * factor)), color: colors[0] },
+      { name: "社媒负面声量", values: hourly.map(item => Math.round(item.socialPosts * item.socialNegativeRate / 100 * factor)), color: colors[1] },
+      { name: "热线声量", values: hourly.map(item => Math.round(item.complaints * .93 * factor)), color: colors[2] },
+      { name: "热线负面声量", values: hourly.map(item => Math.round(item.complaints * .93 * .743 * factor)), color: colors[3] },
+      { name: "在线声量", values: hourly.map(item => Math.round(item.complaints * .07 * factor)), color: colors[4] },
+      { name: "在线负面声量", values: hourly.map(item => Math.round(item.complaints * .07 * .743 * factor)), color: colors[5] },
     ], hourly.map(item => item.hour), 290);
   }
 
@@ -1524,19 +1537,15 @@
       </div>
       ${kpis([
         { label: "全渠道业务量", value: fmt(totalFeedback), note: "社媒 + 热线 + 在线客服" },
-        { label: "社媒内容量", value: fmt(Math.round(s.socialSame.summary.total * factor)), note: "微博 / 小红书 / 抖音 / 快手" },
-        { label: "社媒负向声量", value: fmt(socialNegative), note: `负向率 ${percent(s.socialSame.summary.negativeRate)}` },
-        { label: "热线业务量 / 负向量", value: `${fmt(Math.round(s.complaint.summary.hotline * factor))} / ${fmt(Math.round(s.complaint.summary.hotline * .743 * factor))}`, note: "总接入量与负向客诉量" },
-        { label: "在线客服业务量 / 负向量", value: `${fmt(Math.round(s.complaint.summary.online * factor))} / ${fmt(Math.round(s.complaint.summary.online * .743 * factor))}`, note: "总会话量与负向会话量" },
-        { label: "高风险问题数", value: fmt(Math.round(52 * factor)), note: "P1 / P2 问题组" },
+        { label: "社媒声量", value: fmt(Math.round(s.socialSame.summary.total * factor)), note: "微博 / 小红书 / 抖音 / 快手" },
+        { label: "社媒负面声量", value: fmt(socialNegative), note: `负向率 ${percent(s.socialSame.summary.negativeRate)}` },
+        { label: "热线声量 / 负面声量", value: `${fmt(Math.round(s.complaint.summary.hotline * factor))} / ${fmt(Math.round(s.complaint.summary.hotline * .743 * factor))}`, note: "总接入量与负向客诉量" },
+        { label: "在线声量 / 负面声量", value: `${fmt(Math.round(s.complaint.summary.online * factor))} / ${fmt(Math.round(s.complaint.summary.online * .743 * factor))}`, note: "总会话量与负向会话量" },
       ])}
       <div class="section-label">全渠道规模与趋势</div>
-      <div class="full-section">
-        ${card("全渠道业务量与负向趋势", allChannelTrend(s, factor), `<div class="card-tools"><span class="active">按小时</span><span>按天</span><span>按周</span></div>`)}
-      </div>
       <div class="service-overview-grid">
         ${card("各平台规模与情感分布", channelSentimentChart(s))}
-        ${card("热线与在线客服业务量及负向趋势", internalBusinessTrend(s, factor), `<div class="card-tools"><span class="active">业务量</span><span>负向量</span></div>`)}
+        ${card("全渠道业务量与负面趋势", allChannelTrend(s, factor), `<div class="card-tools"><span class="active">按小时</span><span>按天</span><span>按周</span></div>`)}
       </div>
       <div class="section-label">重点问题发现与归因</div>
       <div class="service-workbench">
@@ -1569,7 +1578,7 @@
     $("#warning").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>预警中心与外溢风险监测</div>
+          <div class="page-title"><span class="title-mark"></span>问题分析</div>
           <p>判断哪些问题正在从内部投诉变成外部舆情，哪些问题需要同步品牌、公关、产品或区域运营。</p>
         </div>
       </div>
@@ -1611,7 +1620,7 @@
     $("#serviceRegions").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>区域与门店风险定位</div>
+          <div class="page-title"><span class="title-mark"></span>区域分析</div>
           <p>从全国、区域、城市和门店维度辅助定位责任单元，并用原声证据支撑区域排查。</p>
         </div>
         <div class="sample-note">社媒地域为传播区域或用户属地参考，不直接等同于涉事门店。</div>
