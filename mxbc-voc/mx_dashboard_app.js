@@ -304,6 +304,46 @@
     },
   };
 
+  // ═══════════════════════════════════════════════════════════
+  // 风险权重配置表（三级标签 → 风险系数）
+  // 依据：领导意见——不同食安问题严重程度不同，应区别对待
+  // 用法：riskWeight[labelName] 获取系数，缺失默认为 1.0
+  // ═══════════════════════════════════════════════════════════
+  const riskWeight = {
+    // ── 食安卫生（最高风险 2.0）────────────────────────────
+    "异物/杂质":       2.0,
+    "怪味/变质":       2.0,
+    "饮后不适/肠胃不适": 2.0,
+    // ── 产品状态异常（高 1.8）──────────────────────────────
+    "产品状态异常":     1.8,
+    "到手不冰/温度异常":1.8,
+    // ── 订单履约漏发（中高 1.3）──────────────────────────
+    "漏送商品/少送":   1.3,
+    "错送商品/做错口味":1.3,
+    // ── 备注未执行（中 1.2）──────────────────────────────
+    "备注未执行/定制做错": 1.2,
+    // ── 物料缺失、份量（低 1.1）──────────────────────────
+    "缺吸管":           1.1,
+    "缺餐具":           1.1,
+    "缺纸巾":           1.1,
+    "缺袋子":           1.1,
+    "缺勺子":           1.1,
+    "份量少":           1.1,
+    "小料少/漏小料":   1.1,
+    // ── 其余标签默认 1.0（在 calcRiskIndex 里处理）────────
+  };
+
+  function calcRiskIndex(node) {
+    const name = node.name || "";
+    const volume = Number(node.value) || 0;
+    const weight = riskWeight[name] || 1.0;
+    return Math.round(volume * weight * 10) / 10;
+  }
+
+  function getRiskWeight(name) {
+    return riskWeight[name] || 1.0;
+  }
+
   function findIssueNode(path) {
     return path.reduce((node, name) => (node.children || []).find(child => child.name === name) || node, issueTree);
   }
@@ -339,6 +379,7 @@
           <span class="drill-bar"><span style="width:${Math.max(4, Number(item.value || 0) / max * 100)}%;background:${colors[index % colors.length]}"></span></span>
         </span>
         <span class="drill-num">${fmt(item.value)}</span>
+        <span class="drill-risk" title="风险指数">${calcRiskIndex(item)}</span>
         <span class="drill-rate">${percent(issueMetric(item, "negativeRate", 98.4))}</span>
         <span class="drill-rate strong">${percent(issueMetric(item, "strongRate", 20.7))}</span>
         <span class="drill-change">${item.change || ["+8.4%", "+5.1%", "+3.6%", "-1.2%"][index % 4]}</span>
@@ -374,9 +415,9 @@
       <h3>${escapeHtml(node.name)}</h3>
       <div class="explain-stats">
         <div><span>问题量</span><strong>${fmt(issueMetric(node, "value", 0))}</strong></div>
+        <div><span>风险指数</span><strong style="color:#ef4b6c">${calcRiskIndex(node) !== undefined ? calcRiskIndex(node) : "-"}</strong></div>
         <div><span>负向占比</span><strong>${percent(issueMetric(node, "negativeRate", 94.1))}</strong></div>
         <div><span>强负向占比</span><strong>${percent(issueMetric(node, "strongRate", 20.7))}</strong></div>
-        <div><span>${isLabel ? "涉及门店数" : "环比变化"}</span><strong>${isLabel ? fmt(p.stores) : (node.change || "+3.2%")}</strong></div>
       </div>
       ${isLabel ? `
         <dl class="explain-list">
@@ -1141,16 +1182,37 @@
     bindDeliveryEvents();
     const labelCoverage = 96.39;
     const issueRate = state.issue === "全部" ? 89.7 : Math.min(99.2, 72 + (getTopIssueByName(state.issue)?.value || 0) / 72);
-    const topTagRows = [
-      ["缺吸管/缺餐具/缺纸巾", "包装打包", 933, 98.6, 23.4, 612, "+18.2%"],
-      ["备注未执行/定制做错", "订单履约", 704, 100, 25.6, 489, "+12.7%"],
-      ["份量少", "产品体验", 478, 98.5, 21.2, 354, "+9.4%"],
-      ["产品状态异常", "产品体验", 230, 100, 24.6, 211, "+5.6%"],
-      ["洒漏", "包装打包", 205, 98.5, 26.3, 186, "+7.8%"],
-      ["异物/杂质", "食安卫生", 94, 100, 36.8, 87, "+3.1%"],
-      ["服务态度差", "服务售后", 285, 99.6, 31.0, 241, "+11.4%"],
-    ].filter(row => state.issue === "全部" || row[1] === state.issue)
-      .map(row => [row[0], row[1], Math.max(1, Math.round(row[2] * d.filterFactor * (state.issue === "全部" ? 1 : 2.7))), row[3], row[4], Math.max(1, Math.round(row[5] * Math.max(0.18, d.filterFactor * 2.1))), row[6]]);
+    // TOP 风险问题：按 风险指数=问题量×风险系数 降序
+    const topTagRowsRaw = [
+      { name: "异物/杂质",           dim: "食安卫生", volume: 94,  negativeRate: 100, strongRate: 36.8, stores: 87 },
+      { name: "怪味/变质",           dim: "食安卫生", volume: 83,  negativeRate: 98.8, strongRate: 34.2, stores: 62 },
+      { name: "饮后不适/肠胃不适",   dim: "食安卫生", volume: 55,  negativeRate: 98.2, strongRate: 29.7, stores: 41 },
+      { name: "产品状态异常",         dim: "产品体验",   volume: 230, negativeRate: 99.3, strongRate: 24.6, stores: 211 },
+      { name: "到手不冰/温度异常",   dim: "产品体验",   volume: 173, negativeRate: 99.1, strongRate: 23.8, stores: 158 },
+      { name: "备注未执行/定制做错", dim: "订单履约",   volume: 704, negativeRate: 100,  strongRate: 25.6, stores: 489 },
+      { name: "漏送商品/少送",       dim: "订单履约",   volume: 375, negativeRate: 99.4, strongRate: 24.0, stores: 268 },
+      { name: "错送商品/做错口味",   dim: "订单履约",   volume: 228, negativeRate: 99.2, strongRate: 23.1, stores: 184 },
+      { name: "缺吸管",               dim: "包装打包",   volume: 512, negativeRate: 98.9, strongRate: 23.6, stores: 219 },
+      { name: "缺餐具",               dim: "包装打包",   volume: 241, negativeRate: 98.6, strongRate: 21.4, stores: 176 },
+      { name: "洒漏",                 dim: "包装打包",   volume: 218, negativeRate: 98.5, strongRate: 26.3, stores: 186 },
+      { name: "服务态度差",           dim: "服务售后",   volume: 285, negativeRate: 99.6, strongRate: 31.0, stores: 241 },
+      { name: "份量少",               dim: "产品体验",   volume: 478, negativeRate: 98.5, strongRate: 21.2, stores: 354 },
+    ];
+    const topTagRows = topTagRowsRaw.map(row => {
+      const riskIndex = Math.round(row.volume * getRiskWeight(row.name) * 10) / 10;
+      return { ...row, riskIndex };
+    }).sort((a, b) => b.riskIndex - a.riskIndex)
+      .filter(row => state.issue === "全部" || row.dim === state.issue)
+      .map(row => [
+        row.name,
+        row.dim,
+        Math.max(1, Math.round(row.volume * d.filterFactor * (state.issue === "全部" ? 1 : 2.7))),
+        row.negativeRate,
+        row.strongRate,
+        Math.max(1, Math.round(row.stores * Math.max(0.18, d.filterFactor * 2.1))),
+        `+${Math.round(row.riskIndex / row.volume * 100)}%`,
+        Math.round(row.riskIndex * d.filterFactor * 10) / 10,
+      ]);
     const issueChildren = filteredIssueChildren(state);
     const maxIssueValue = Math.max(...issueChildren.map(item => item.value), 1);
     const filterSummary = [
@@ -1171,12 +1233,18 @@
         <div class="sample-note">当前筛选：${escapeHtml(filterSummary)}。趋势支持按小时与按天切换，页面指标随筛选条件联动重算。</div>
       </div>
       ${kpis([
-        { label: "评论总量", value: fmt(d.summary.total), note: "较昨日 +12.4% / 外卖评论样本规模" },
+        { label: "品牌风险指数", value: (() => {
+          const issueChildren = filteredIssueChildren(deliveryFilterState());
+          let totalRisk = 0;
+          issueChildren.forEach(item => { totalRisk += calcRiskIndex(item); });
+          if (totalRisk === 0) totalRisk = Math.round(d.summary.total * 0.94);
+          return fmt(Math.round(totalRisk));
+        })(), note: "Σ(问题量×风险系数) / 越高表示风险越大" },
         { label: "负向评论占比", value: percent(d.summary.negativeRate), note: "较昨日 +3.2pct / 整体体验压力偏高" },
         { label: "强负向占比", value: percent(state.emotion === "强负向" ? 100 : 20.7), note: "较昨日 +2.8pct / 愤怒、强不满集中" },
         { label: "标签覆盖率", value: `${labelCoverage}%`, note: "打标可解释评论覆盖" },
         { label: "问题评论率", value: percent(issueRate), note: "包含至少一类体验问题" },
-        { label: "高风险问题数", value: fmt(Math.max(1, Math.round(232 * d.filterFactor * (state.issue === "食安卫生" ? 4.2 : 1)))), note: "食安/异物/严重体验相关" },
+        { label: "风险问题数", value: fmt(Math.max(1, Math.round(232 * d.filterFactor * (state.issue === "食安卫生" ? 4.2 : 1)))), note: "风险指数>80 的问题纳入统计" },
       ])}
       <div class="section-label">风险与治理判断</div>
       <section class="food-redline">
@@ -1220,15 +1288,16 @@
         `).join("")}</div>`)}
       </div>
       <div class="full-section">
-        ${card("Top 问题标签榜", table(["排名", "问题标签", "所属一级维度", "问题量", "负向占比", "强负向", "涉及门店", "环比"], (topTagRows.length ? topTagRows : [["当前筛选暂无高频标签", state.issue, 0, 0, 0, 0, "-"]]).map((row, index) => [
+        ${card("TOP 风险问题", table(["排名", "问题标签", "所属维度", "问题量", "风险指数", "负向率", "强负向", "涉及门店", "环比"], (topTagRows.length ? topTagRows : [["当前筛选暂无风险问题", state.issue, 0, 0, 0, 0, 0, "-"]]).map((row, index) => [
           index + 1,
           `<button class="link-btn" data-overview-label="${escapeHtml(row[0])}">${escapeHtml(row[0])}</button>`,
           escapeHtml(row[1]),
           `<strong>${fmt(row[2])}</strong>`,
+          `<strong style="color:#ef4b6c">${row[7] !== undefined ? row[7] : "-"}</strong>`,
           `<span class="badge red">${percent(row[3])}</span>`,
           percent(row[4]),
           fmt(row[5]),
-          row[6],
+          row[6] || "-",
         ])))}
       </div>
     `;

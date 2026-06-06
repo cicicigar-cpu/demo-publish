@@ -1280,6 +1280,15 @@ body[data-app="delivery"] .kpi-grid {
   font-size: 13px;
 }
 
+.drill-risk {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ef4b6c;
+  min-width: 48px;
+  display: inline-block;
+  text-align: right;
+}
+
 .drill-num {
   font-weight: 800;
 }
