@@ -152,6 +152,15 @@
     $("#configMask").hidden = true;
   }
 
+  window.addEventListener("message", (event) => {
+    if (event.data && event.data.action === "openTemplate") {
+      const key = event.data.template;
+      if (key && templates[key]) {
+        openConfig(key);
+      }
+    }
+  });
+
   renderHistory();
   $$(".mode-tab").forEach(tab => tab.addEventListener("click", () => setMode(tab.dataset.mode)));
   $$("[data-template]").forEach(button => button.addEventListener("click", () => openConfig(button.dataset.template)));

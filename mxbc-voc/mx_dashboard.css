@@ -1578,14 +1578,36 @@ body[data-app="delivery"] .kpi-grid {
   font-size: 11px;
 }
 
-.social-post-foot button {
-  margin-left: auto;
-  padding: 0;
+.ai-report-btn {
+  height: 40px;
+  padding: 0 20px;
   border: 0;
-  color: #7569df;
-  background: transparent;
+  border-radius: 4px;
+  color: #fff;
+  background: linear-gradient(135deg, #1687ff, #0961d6);
   font: inherit;
+  font-size: 13px;
   font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: box-shadow .15s ease, transform .15s ease;
+}
+
+.ai-report-btn:hover {
+  box-shadow: 0 4px 14px rgba(22,135,255,.35);
+  transform: translateY(-1px);
+}
+
+.ai-report-btn:active {
+  transform: translateY(0);
+}
+
+body[data-app="service"] .ai-report-btn {
+  background: linear-gradient(135deg, #6c5ce7, #4834d4);
+}
+
+body[data-app="service"] .ai-report-btn:hover {
+  box-shadow: 0 4px 14px rgba(108,92,231,.35);
 }
 
 .social-post-tags {

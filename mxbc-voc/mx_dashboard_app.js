@@ -1663,5 +1663,22 @@
     const app = document.body.dataset.app;
     if (app === "delivery") renderDelivery();
     if (app === "service") renderService();
+
+    $$(".ai-report-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const template = btn.dataset.template;
+        const aiTab = document.querySelector('.tab[data-target="aiInsights"]');
+        if (aiTab) aiTab.click();
+        const iframe = document.querySelector(".ai-embed-frame");
+        if (!iframe) return;
+        const send = () => {
+          if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage({ action: "openTemplate", template }, "*");
+          }
+        };
+        iframe.addEventListener("load", send);
+        setTimeout(send, 300);
+      });
+    });
   });
 })();
