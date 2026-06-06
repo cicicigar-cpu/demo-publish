@@ -157,9 +157,65 @@
       const key = event.data.template;
       if (key && templates[key]) {
         openConfig(key);
+        const filters = event.data.filters || {};
+        if (Object.keys(filters).length > 0) {
+          setTimeout(() => preFillConfig(key, filters), 0);
+        }
       }
     }
   });
+
+  function preFillConfig(key, filters) {
+    const template = templates[key];
+    if (!template) return;
+    const form = $("#configForm");
+    if (!form) return;
+    template.fields.forEach((field) => {
+      const [label, type] = field;
+      const value = filters[label];
+      if (!value) return;
+      if (type === "select") {
+        const fieldLabels = form.querySelectorAll(".config-field");
+        for (const fl of fieldLabels) {
+          const span = fl.querySelector("span");
+          if (span && span.textContent.trim() === label) {
+            const select = fl.querySelector("select");
+            if (select) select.value = value;
+            break;
+          }
+        }
+      } else if (type === "multi") {
+        const fieldsets = form.querySelectorAll(".config-options");
+        for (const fs of fieldsets) {
+          const legend = fs.querySelector("legend");
+          if (legend && legend.textContent.trim() === label) {
+            const checkboxes = fs.querySelectorAll("input[type='checkbox']");
+            checkboxes.forEach(cb => cb.checked = false);
+            const values = Array.isArray(value) ? value : [value];
+            const labels = fs.querySelectorAll("label");
+            labels.forEach(lbl => {
+              const span = lbl.querySelector("span");
+              if (span && values.includes(span.textContent.trim())) {
+                const cb = lbl.querySelector("input[type='checkbox']");
+                if (cb) cb.checked = true;
+              }
+            });
+            break;
+          }
+        }
+      } else if (type === "text") {
+        const fieldLabels = form.querySelectorAll(".config-field");
+        for (const fl of fieldLabels) {
+          const span = fl.querySelector("span");
+          if (span && span.textContent.trim() === label) {
+            const input = fl.querySelector("input");
+            if (input) input.value = value;
+            break;
+          }
+        }
+      }
+    });
+  }
 
   renderHistory();
   $$(".mode-tab").forEach(tab => tab.addEventListener("click", () => setMode(tab.dataset.mode)));

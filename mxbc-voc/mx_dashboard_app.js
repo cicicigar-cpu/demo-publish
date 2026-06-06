@@ -1658,6 +1658,36 @@
     });
   }
 
+  function collectFilters() {
+    const app = document.body.dataset.app;
+    const filters = {};
+    if (app === "delivery") {
+      const platform = $("#filterPlatform")?.value;
+      if (platform && platform !== "全部平台") filters["外卖平台"] = [platform];
+      const region = $("#filterRegion")?.value;
+      if (region && region !== "全国") filters["区域"] = region;
+      const issue = $("#filterIssue")?.value;
+      if (issue && issue !== "全部问题") filters["问题维度"] = [issue];
+      const emotion = $("#filterEmotion")?.value;
+      if (emotion && emotion !== "全部情感") filters["情感"] = [emotion];
+      const time = $("#filterTime")?.value;
+      if (time) filters["时间"] = time;
+      const subject = $("#filterSubject")?.value;
+      if (subject && subject !== "全部主体") filters["问题主体"] = subject;
+    }
+    if (app === "service") {
+      const time = $("#serviceTime")?.value;
+      if (time) filters["时间周期"] = time;
+      const source = $("#serviceSource")?.value;
+      if (source && source !== "全部") filters["平台"] = [source];
+      const issueDim = $("#serviceIssueDim")?.value;
+      if (issueDim && issueDim !== "全部维度") filters["问题维度"] = [issueDim];
+      const region = $("#serviceRegion")?.value;
+      if (region && region !== "全国") filters["区域"] = region;
+    }
+    return filters;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     setupTabs();
     const app = document.body.dataset.app;
@@ -1667,13 +1697,14 @@
     $$(".ai-report-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const template = btn.dataset.template;
+        const filters = collectFilters();
         const aiTab = document.querySelector('.tab[data-target="aiInsights"]');
         if (aiTab) aiTab.click();
         const iframe = document.querySelector(".ai-embed-frame");
         if (!iframe) return;
         const send = () => {
           if (iframe.contentWindow) {
-            iframe.contentWindow.postMessage({ action: "openTemplate", template }, "*");
+            iframe.contentWindow.postMessage({ action: "openTemplate", template, filters }, "*");
           }
         };
         iframe.addEventListener("load", send);
