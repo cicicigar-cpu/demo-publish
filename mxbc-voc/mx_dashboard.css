@@ -522,7 +522,7 @@ body.ai-tab-active .content {
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 14px;
   margin-bottom: 16px;
 }
@@ -777,7 +777,7 @@ body[data-app="service"] .filterbar {
 }
 
 body[data-app="service"] .kpi-grid {
-  grid-template-columns: repeat(6, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
 body[data-app="service"] .tab.active,
@@ -836,7 +836,7 @@ body[data-app="delivery"] .sidebar .tab.active {
 }
 
 body[data-app="delivery"] .kpi-grid {
-  grid-template-columns: repeat(6, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
 .dashboard-head {
@@ -2480,4 +2480,125 @@ body[data-app="delivery"] .kpi-grid {
   .menu-logo {
     font-size: 34px;
   }
+}
+
+/* ── 问题风险归因页面（P1 重设计）────────────── */
+
+/* 风险维度条：带风险等级标识 */
+.risk-dimension-bars .linked-bar {
+  position: relative;
+}
+.risk-badge {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 52px;
+  text-align: center;
+}
+.risk-badge-high { color: #d63a5a; background: #fff0f3; }
+.risk-badge-medium { color: #e58b21; background: #fff7ec; }
+.risk-badge-low { color: #20b7b3; background: #edfafa; }
+
+.risk-index-label {
+  color: #ef4b6c;
+  font-size: 11px;
+  min-width: 90px;
+  text-align: right;
+}
+
+/* 风险等级边框标识 */
+.risk-bar.risk-high { border-left: 3px solid #d63a5a; }
+.risk-bar.risk-medium { border-left: 3px solid #f5a623; }
+.risk-bar.risk-low { border-left: 3px solid #20b7b3; }
+
+/* 风险归因摘要卡片 */
+.risk-explain .risk-level-banner {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: #f8fafe;
+  margin: 14px 0;
+}
+.risk-level-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 100px;
+}
+.risk-level-main span:last-child {
+  color: #8a94aa;
+  font-size: 11px;
+}
+.risk-level-detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px 16px;
+  flex: 1;
+}
+.risk-level-detail div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.risk-level-detail span {
+  color: #8a94aa;
+  font-size: 10px;
+}
+.risk-level-detail strong {
+  font-size: 14px;
+}
+
+/* 子问题风险排序 */
+.risk-children {
+  margin: 14px 0;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f6f8fc;
+}
+.risk-children-title {
+  color: #5a6479;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.risk-child-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 80px 48px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid #eaedf3;
+  font-size: 13px;
+}
+.risk-child-row:last-child { border-bottom: none; }
+.risk-child-rank {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #e9edf5;
+  color: #5a6479;
+  font-size: 11px;
+  font-weight: 700;
+}
+.risk-child-name {
+  color: #2a3448;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.risk-child-index {
+  text-align: right;
+  color: #ef4b6c;
+  font-weight: 700;
+}
+.risk-child-weight {
+  text-align: right;
+  font-weight: 700;
+  font-size: 12px;
 }

@@ -135,6 +135,7 @@
   }
 
   let currentDeliveryData = null;
+  let mockByTag = {};
   let deliveryEventsBound = false;
   let deliveryFiltersBound = false;
   let issuePath = [];
@@ -302,6 +303,116 @@
       words: ["不接", "联系不上", "没人管", "不回复", "电话", "解决"],
       quotes: ["遇到问题不及时接客户电话。", "商家不解决问题也不承认。", "联系不上门店。"]
     },
+    "口味不合预期/难喝": {
+      value: 387, negativeRate: 98.2, strongRate: 19.4, stores: 268, platform: "美团 / 饿了么", region: "河南 / 广东 / 四川", subject: "产品制作", nature: "高频口味落差，需核对出品标准", action: "抽检口味一致性与配方执行",
+      words: ["难喝", "味道怪", "不好喝", "跟以前不一样", "口味变了", "失望", "浪费钱", "不推荐"],
+      quotes: ["今天这杯跟之前完全不一样，味道很怪。", "说了不要珍珠还是放了，难喝死了。", "每次口味都不一样，太不稳定了。"]
+    },
+    "口味偏淡/水感重": {
+      value: 323, negativeRate: 98.8, strongRate: 18.6, stores: 241, platform: "饿了么 / 美团", region: "广东 / 浙江 / 山东", subject: "产品制作", nature: "高频体验落差，需核对出品标准", action: "抽检出品浓度与配方",
+      words: ["水", "淡", "没味道", "跟白开水一样", "稀", "不够浓", "掺水", "水感"],
+      quotes: ["怎么跟喝水一样，一点味道都没有。", "这杯也太淡了，感觉兑了很多水。", "味道比店里喝的差远了，跟白开水一样。"]
+    },
+    "甜度偏高/太甜": {
+      value: 162, negativeRate: 97.5, strongRate: 16.8, stores: 138, platform: "美团 / 饿了么", region: "浙江 / 江苏 / 湖南", subject: "产品制作", nature: "糖度控制偏差", action: "核实糖浆量与标准配方",
+      words: ["太甜", "齁甜", "甜得发腻", "糖太多", "甜度不对", "没法喝", "腻", "超标"],
+      quotes: ["三分糖比全糖还甜，根本没法喝。", "甜得发腻，这糖量超标了吧。", "说了少糖结果跟没说一样，齁甜。"]
+    },
+    "缺餐具": {
+      value: 241, negativeRate: 98.2, strongRate: 20.8, stores: 167, platform: "美团 / 饿了么", region: "河南 / 广东 / 江苏", subject: "门店打包", nature: "高频、低复杂度、强可控", action: "纳入打包复核 SOP",
+      words: ["勺子", "没有", "漏放", "餐具", "缺", "不给", "漏了"],
+      quotes: ["没有勺子怎么吃，配送连餐具都不给。", "点了粥不给勺子，让我用手抓吗？", "每次都漏放餐具，能不能认真点。"]
+    },
+    "缺纸巾": {
+      value: 116, negativeRate: 97.4, strongRate: 18.9, stores: 89, platform: "饿了么 / 美团", region: "广东 / 湖北", subject: "门店打包", nature: "高频低复杂度，强可控", action: "打包复核清单纳入纸巾项",
+      words: ["纸巾", "没有", "忘放", "餐巾纸", "缺", "漏"],
+      quotes: ["连张纸巾都没有，喝完嘴都擦不了。", "纸巾也没给，就一杯光秃秃的奶茶。", "外卖基本都不放纸巾了。"]
+    },
+    "漏送商品/少送": {
+      value: 375, negativeRate: 99.5, strongRate: 24.0, stores: 287, platform: "美团 / 饿了么", region: "广东 / 河南 / 四川", subject: "门店订单执行", nature: "高频强负向，直接影响消费体验", action: "设置出餐复核与打包清单",
+      words: ["少送", "漏了", "没收到", "缺", "两杯变一杯", "订单不全", "不完整", "差一杯"],
+      quotes: ["点了三杯只到了两杯，少了的那杯呢？", "外卖少送了一杯，联系商家也没回复。", "订单都不核对就送出来了吗？"]
+    },
+    "错送商品/做错口味": {
+      value: 228, negativeRate: 99.1, strongRate: 23.6, stores: 176, platform: "饿了么 / 美团", region: "广西 / 广东 / 江苏", subject: "门店制作", nature: "高频强负向，需出餐复核", action: "出餐标签+订单对照复核",
+      words: ["做错", "不是这个", "送错了", "口味不对", "搞混了", "完全不一样", "另一杯", "搞错"],
+      quotes: ["点的草莓啵啵送来芒果的，完全不一样。", "又做错了，每次备注都不看。", "送的跟我点的完全不是一个东西。"]
+    },
+    "配送慢/等太久": {
+      value: 146, negativeRate: 99.3, strongRate: 21.7, stores: 98, platform: "美团 / 饿了么", region: "广东 / 北京", subject: "配送 / 平台", nature: "配送时效问题，需区分门店与骑手", action: "监测门店出餐时长与骑手接单时长",
+      words: ["慢", "等好久", "超时", "等了", "太慢", "凉了", "一个多小时", "延迟"],
+      quotes: ["等了一个多小时才送到，都凉了。", "配送太慢了，奶茶送到都化了。", "超时半小时，还没有任何通知。"]
+    },
+    "送达异常/未收到": {
+      value: 132, negativeRate: 98.1, strongRate: 19.0, stores: 87, platform: "美团 / 饿了么", region: "山东 / 河南", subject: "配送 / 平台", nature: "配送异常，需核实签收与定位", action: "核实骑手签收记录与配送轨迹",
+      words: ["没收到", "送达异常", "找不到", "丢了", "没拿到", "虚假送达", "送错地方"],
+      quotes: ["显示已送达但根本没收到。", "骑手送错地方了，等了半天也没人来。", "虚假送达，根本没有送。"]
+    },
+    "配送服务问题": {
+      value: 114, negativeRate: 97.8, strongRate: 17.5, stores: 76, platform: "美团 / 饿了么", region: "江苏 / 广东", subject: "配送 / 平台", nature: "配送服务态度影响品牌体验", action: "反馈至平台并追踪配送评分",
+      words: ["态度", "配送员", "摔", "扔", "粗暴", "差", "不讲理"],
+      quotes: ["配送员态度很差，直接扔在门口。", "骑手送餐的时候摔了一跤，奶茶全洒了还怪我。", "配送员说话很难听。"]
+    },
+    "怪味/变质": {
+      value: 83, negativeRate: 98.8, strongRate: 34.2, stores: 78, platform: "美团 / 饿了么", region: "华南 / 华东", subject: "门店 / 食安链路", nature: "低频高伤害，需独立核查", action: "进入食安红线核查",
+      words: ["变质", "怪味", "馊了", "异味", "酸", "不新鲜", "过期", "发酵"],
+      quotes: ["喝了一口就吐了，味道明显不对。", "这杯奶茶有股酸味，是不是过期了？", "打开就闻到怪味，不敢喝。"]
+    },
+    "饮后不适/肠胃不适": {
+      value: 55, negativeRate: 98.2, strongRate: 29.7, stores: 52, platform: "美团 / 饿了么", region: "华中 / 华南", subject: "门店 / 食安链路", nature: "低频高伤害，需独立核查", action: "进入食安红线核查",
+      words: ["拉肚子", "肚子疼", "不适", "肠胃", "恶心", "吐", "腹泻", "食物中毒"],
+      quotes: ["喝完肚子一直不舒服，拉了一天肚子。", "喝了之后肠胃很难受，怀疑卫生有问题。", "当天就拉肚子了，肯定有问题。"]
+    },
+    "推诿/不解决": {
+      value: 137, negativeRate: 98.2, strongRate: 24.1, stores: 118, platform: "美团 / 饿了么", region: "广东 / 广西", subject: "门店售后", nature: "服务闭环弱，二次伤害", action: "工单追踪与门店响应考核",
+      words: ["推诿", "不解决", "不管", "踢皮球", "不承认", "找借口", "投诉", "没人管"],
+      quotes: ["商家推来推去就是不解决问题。", "出了问题只会踢皮球，根本没有人负责。", "投诉了也没人处理，体验极差。"]
+    },
+    "洒漏": {
+      value: 218, negativeRate: 94.8, strongRate: 19.7, stores: 186, platform: "饿了么 / 美团", region: "四川 / 广东 / 浙江", subject: "门店打包", nature: "高伤害可控，和封口、杯盖、配送交接相关", action: "复核封口机与杯盖压合",
+      words: ["撒了", "漏了", "封口", "杯盖", "一半", "袋子", "湿了"],
+      quotes: ["送过来都撒了，味道还很奇怪。", "收到的奶茶都没密封，一半是开的。", "外卖袋里面全漏了。"]
+    },
+    "包装破损/杯盖变形": {
+      value: 126, negativeRate: 92.3, strongRate: 15.2, stores: 98, platform: "美团 / 饿了么", region: "广东 / 浙江", subject: "门店打包", nature: "包装品质影响品牌形象", action: "抽检杯盖与封口品质",
+      words: ["破损", "杯盖", "变形", "裂开", "压扁", "包装", "烂了"],
+      quotes: ["杯盖都变形了，一打开就漏。", "包装被压扁了，杯身都裂开了。", "送来的时候杯子都烂了，这怎么喝。"]
+    },
+    "冷热分装问题": {
+      value: 39, negativeRate: 91.5, strongRate: 14.1, stores: 35, platform: "饿了么", region: "广东 / 江苏", subject: "门店打包", nature: "打包规范问题，强可控", action: "冷热分装标准复核",
+      words: ["分装", "冷热", "混装", "化了", "冰化了", "放一起", "热饮"],
+      quotes: ["冷的热的放一个袋子，冰的都化了。", "没有分装，冰淇淋直接化掉了。", "冷热混装，全废了。"]
+    },
+    "打包遗漏/未复核": {
+      value: 35, negativeRate: 91.5, strongRate: 14.1, stores: 30, platform: "美团", region: "河南 / 广东", subject: "门店打包", nature: "打包流程无复核导致遗漏", action: "引入打包清单与出餐扫码复核",
+      words: ["遗漏", "没复核", "没检查", "少了", "漏装", "不完整", "缺东西"],
+      quotes: ["又少东西了，打包前都不检查的吗？", "明显没复核，好几样都漏了。", "每次都漏，打包流程有问题。"]
+    },
+    "封口不规范": {
+      value: 43, negativeRate: 89.8, strongRate: 12.6, stores: 38, platform: "饿了么 / 美团", region: "四川 / 湖北", subject: "门店打包", nature: "封口质量问题，强可控", action: "封口机维护与操作培训",
+      words: ["封口", "没封好", "开口", "没封", "漏", "密封", "胶带"],
+      quotes: ["封口都没封好，一打开就洒了。", "杯子根本没封口，直接开口的。", "封口歪歪扭扭的，一碰就开。"]
+    },
+    "小料少/漏小料": {
+      value: 200, negativeRate: 99.0, strongRate: 22.5, stores: 156, platform: "美团 / 饿了么", region: "广东 / 河南 / 山东", subject: "门店制作", nature: "高频出品偏差，需核对加料标准", action: "抽检小料添加量与标准配方",
+      words: ["小料", "少", "珍珠", "没加", "料少", "少了", "不够", "没放"],
+      quotes: ["珍珠就几颗，这也叫加料？", "小料少得可怜，跟没加一样。", "加的料基本看不到，太少了。"]
+    },
+    "产品货不对板": {
+      value: 118, negativeRate: 99.2, strongRate: 23.1, stores: 104, platform: "美团 / 饿了么", region: "广东 / 广西", subject: "产品 / 门店制作", nature: "高落差体验，需核实产品一致性", action: "抽检出餐品与宣传图差异",
+      words: ["货不对板", "跟图片不一样", "差别大", "不是这个", "完全不同", "图片仅供参考", "虚假"],
+      quotes: ["图片看着超好喝，实际完全不是那么回事。", "跟图片差距也太大了吧，货不对板。", "实物和宣传照完全是两个东西。"]
+    },
+    "到手不冰/温度异常": {
+      value: 173, negativeRate: 99.5, strongRate: 26.3, stores: 152, platform: "饿了么 / 美团", region: "四川 / 广东 / 浙江", subject: "产品 / 配送交接", nature: "温度异常影响即饮体验", action: "监测冰品出餐与配送时长",
+      words: ["不冰", "化了", "温度", "温的", "冰没了", "不凉", "热饮", "常温"],
+      quotes: ["送到手已经常温了，根本不冰。", "冰全化了，跟喝糖水一样。", "要求冰的结果是温的，体验很差。"]
+    },
+    "退款困难/补偿不满": {
+      value: 84, negativeRate: 100, strongRate: 31.8, stores: 67, platform: "美团 / 饿了么", region: "广东 / 河南", subject: "门店售后", nature: "退款不畅放大不满", action: "优化退款响应流程",
+      words: ["退款", "不退", "拖", "难退", "客服", "投诉", "不处理", "推诿"],
+      quotes: ["申请退款三天了还没处理。", "退款流程太复杂，客服也不帮忙。", "出了问题退款还这么难，不会再买了。"]
+    },
   };
 
   // ═══════════════════════════════════════════════════════════
@@ -342,6 +453,40 @@
 
   function getRiskWeight(name) {
     return riskWeight[name] || 1.0;
+  }
+
+  // ═════════════════════════════════════════════════════════
+  // Priority Score 计算（复用报告逻辑）
+  // 问题体量 35% + 情绪强度 30% + 可控性 20% + 区域集中度 15%
+  // ═════════════════════════════════════════════════════════
+  function calcPriorityScore(node, maxVolume, maxStores) {
+    const volume = Number(node.value) || 0;
+    const negativeRate = Number(node.negativeRate) || 0;
+    const stores = Number(node.stores) || 0;
+    const profile = labelProfiles[node.name] || {};
+    const subject = profile.subject || "";
+
+    // 问题体量 35%
+    const volumeScore = maxVolume > 0 ? (volume / maxVolume * 35) : 0;
+
+    // 情绪强度 30%
+    const emotionScore = negativeRate / 100 * 30;
+
+    // 可控性 20%
+    // 门店/打包/订单 = 高可控 = 20
+    // 产品/食安 = 中可控 = 12
+    // 服务/配送/其他 = 低可控 = 5
+    let controllabilityScore = 5;
+    if (subject.includes("门店") || subject.includes("打包") || subject.includes("订单")) {
+      controllabilityScore = 20;
+    } else if (subject.includes("产品") || subject.includes("食安")) {
+      controllabilityScore = 12;
+    }
+
+    // 区域集中度 15%
+    const concentrationScore = maxStores > 0 ? (stores / maxStores * 15) : 0;
+
+    return Math.round((volumeScore + emotionScore + controllabilityScore + concentrationScore) * 10) / 10;
   }
 
   function findIssueNode(path) {
@@ -503,15 +648,52 @@
       Object.values(evidence.byTag || {}).forEach(addEvidence);
     }
     candidateNodes.forEach(item => {
+      let matched = false;
       for (const [group] of sources) {
         const groupData = evidence[group] || {};
-        const matchedKey = Object.keys(groupData).find(key => key === item.name || key.includes(item.name) || item.name.includes(key));
+        // 精确匹配
+        let matchedKey = Object.keys(groupData).find(key => key === item.name);
+        // 模糊匹配：双向 includes
+        if (!matchedKey) matchedKey = Object.keys(groupData).find(key => key.includes(item.name) || item.name.includes(key));
+        // 更宽松匹配：拆词后任一部分匹配
+        if (!matchedKey) {
+          const parts = item.name.split(/[\/／、]/);
+          matchedKey = Object.keys(groupData).find(key => parts.some(part => part.length > 1 && (key.includes(part) || part.includes(key))));
+        }
         const found = matchedKey ? groupData[matchedKey] : null;
         if (!found) continue;
         addEvidence(found);
-        break;
+        matched = true;
+        // 不 break，收集所有层级匹配的证据
       }
     });
+    // 如果词云为空，使用 labelProfiles 的 words 作为 fallback
+    if (buckets.positive.size === 0 && buckets.negative.size === 0 && candidateNodes.length) {
+      candidateNodes.forEach(item => {
+        const profile = labelProfiles[item.name] || {};
+        const fallbackWords = profile.words || [];
+        const fallbackQuotes = profile.quotes || [];
+        fallbackWords.forEach((word, idx) => {
+          buckets.negative.set(word, (buckets.negative.get(word) || 0) + Math.max(1, Math.round(30 - idx * 3)));
+        });
+        // 补充正面词（从负面词反推正面表达）
+        const positiveMap = {
+          "吸管": "有吸管", "没有": "齐全", "没给": "给了", "漏放": "齐全",
+          "半杯": "满杯", "太少": "分量足", "缩水": "品质好",
+          "融化": "冰凉", "不冰": "冰凉", "状态": "新鲜",
+          "撒了": "密封好", "漏了": "密封好", "封口": "封口好",
+          "异物": "干净", "头发": "干净", "虫子": "卫生",
+          "态度": "热情", "推卸": "负责", "不解决": "快速解决",
+          "不接": "回复快", "联系不上": "联系通畅", "不回复": "回复及时",
+          "难喝": "好喝", "偏淡": "浓郁", "太甜": "甜度适中",
+          "备注": "备注到位", "做错": "做对了", "少冰": "冰量合适",
+        };
+        fallbackWords.forEach((word, idx) => {
+          const pos = positiveMap[word];
+          if (pos) buckets.positive.set(pos, (buckets.positive.get(pos) || 0) + Math.max(1, Math.round(25 - idx * 3)));
+        });
+      });
+    }
     const sortMap = map => [...map].map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
     return { positive: sortMap(buckets.positive), negative: sortMap(buckets.negative) };
   }
@@ -588,9 +770,10 @@
       quote,
     }));
     const matched = (d.examples || []).filter(item => item.tag === node.name).slice(0, 3);
+    const mockMatched = (mockByTag[node.name] || []).slice(0, 3);
     const quotes = node.label
-      ? (profileQuotes.concat(matched).length ? profileQuotes.concat(matched) : (d.examples || [])).slice(0, 5)
-      : (d.examples || []).slice(0, 5);
+      ? (profileQuotes.concat(matched).concat(mockMatched).length ? profileQuotes.concat(matched).concat(mockMatched) : (d.examples || [])).slice(0, 5)
+      : ((d.examples || []).concat(mockMatched)).slice(0, 5);
     const evidenceWords = evidenceKeywordSets(node, d);
     const cloud = `<div class="wordcloud-section">
       <div class="wordcloud-card">
@@ -701,22 +884,132 @@
     const d = currentDeliveryData;
     const { level1Items, level2Items, level3Items, node } = normalizeIssueSelection();
     const selectionText = [1, 2, 3].map(level => issueSelections[level].size ? [...issueSelections[level]].join("、") : "全部").join(" / ");
+
+    // ── 计算当前选择范围的风险KPI ──
+    function collectLabels(n) {
+      let labels = [];
+      if (n.label) labels.push(n);
+      (n.children || []).forEach(child => { labels = labels.concat(collectLabels(child)); });
+      return labels;
+    }
+    const activeLabels = collectLabels(node);
+    const totalRiskIndex = activeLabels.reduce((sum, n) => sum + calcRiskIndex(n), 0);
+    const maxLabelRisk = activeLabels.length
+      ? activeLabels.reduce((best, n) => calcRiskIndex(n) > calcRiskIndex(best) ? n : best, activeLabels[0])
+      : null;
+    const highRiskCount = activeLabels.filter(n => getRiskWeight(n.name) >= 1.8).length;
+    const controllableCount = activeLabels.filter(n => {
+      const p = labelProfiles[n.name] || {};
+      return p.subject && (p.subject.includes("门店") || p.subject.includes("打包") || p.subject.includes("订单"));
+    }).length;
+
+    // ── 风险维度选择：带风险指标 ──
+    function riskDimensionChart(items, selectedSet, level) {
+      const rows = (items || []).slice().sort((a, b) => {
+        // 按风险指数降序排列
+        const riskA = a.children ? a.children.reduce((s, c) => s + calcRiskIndex(c), 0) : calcRiskIndex(a);
+        const riskB = b.children ? b.children.reduce((s, c) => s + calcRiskIndex(c), 0) : calcRiskIndex(b);
+        return riskB - riskA;
+      });
+      const maxVal = Math.max(...rows.map(item => Number(item.value || 0)), 1);
+      return `<div class="linked-bars risk-dimension-bars">${rows.map((item, index) => {
+        const childRisk = item.children ? item.children.reduce((s, c) => s + calcRiskIndex(c), 0) : calcRiskIndex(item);
+        const riskLevel = childRisk > 500 ? "high" : childRisk > 200 ? "medium" : "low";
+        const isSelected = selectedSet.has(item.name);
+        return `
+        <button class="linked-bar risk-bar ${isSelected ? "selected" : ""} risk-${riskLevel}" data-linked-level="${level}" data-linked-name="${escapeHtml(item.name)}" aria-pressed="${isSelected}">
+          <span class="linked-check">${isSelected ? "✓" : ""}</span>
+          <span class="linked-name">${escapeHtml(item.name)}</span>
+          <span class="risk-badge risk-badge-${riskLevel}">${riskLevel === "high" ? "高风险" : riskLevel === "medium" ? "中风险" : "低风险"}</span>
+          <span class="linked-track"><i style="width:${Math.max(5, Number(item.value || 0) / maxVal * 100)}%"></i></span>
+          <strong>${fmt(item.value)}</strong>
+          <small class="risk-index-label">风险指数 ${Math.round(childRisk * 10) / 10}</small>
+        </button>`;
+      }).join("")}</div>`;
+    }
+
+    // ── 风险摘要卡片 ──
+    function riskSummaryCard(n) {
+      const isLabel = n.label;
+      const p = labelProfiles[n.name] || {};
+      const riskIdx = calcRiskIndex(n);
+      const riskW = getRiskWeight(n.name);
+      const riskLevel = riskW >= 2.0 ? "极高" : riskW >= 1.8 ? "高" : riskW >= 1.2 ? "中" : "低";
+      const riskColor = riskW >= 2.0 ? "#d63a5a" : riskW >= 1.8 ? "#ef4b6c" : riskW >= 1.2 ? "#f5a623" : "#20b7b3";
+      const childNames = (n.children || []).slice(0, 4).map(child => child.name);
+      // 计算子问题风险排序
+      const childRisks = (n.children || []).map(child => ({
+        name: child.name,
+        risk: calcRiskIndex(child),
+        weight: getRiskWeight(child.name),
+      })).sort((a, b) => b.risk - a.risk);
+
+      return `<div class="issue-explain risk-explain">
+        <div class="explain-eyebrow">${isLabel ? "当前标签 · 风险归因" : "当前问题 · 风险归因"}</div>
+        <h3>${escapeHtml(n.name)}</h3>
+        <div class="risk-level-banner" style="border-left:4px solid ${riskColor}">
+          <div class="risk-level-main">
+            <span style="color:${riskColor};font-size:28px;font-weight:900">${riskIdx.toFixed(1)}</span>
+            <span>风险指数</span>
+          </div>
+          <div class="risk-level-detail">
+            <div><span>风险系数</span><strong style="color:${riskColor}">${riskW.toFixed(1)}</strong></div>
+            <div><span>风险等级</span><strong style="color:${riskColor}">${riskLevel}</strong></div>
+            <div><span>问题量</span><strong>${fmt(issueMetric(n, "value", 0))}</strong></div>
+            <div><span>负向占比</span><strong>${percent(issueMetric(n, "negativeRate", 94.1))}</strong></div>
+            <div><span>强负向占比</span><strong>${percent(issueMetric(n, "strongRate", 20.7))}</strong></div>
+          </div>
+        </div>
+        ${childRisks.length ? `
+        <div class="risk-children">
+          <div class="risk-children-title">子问题风险排序</div>
+          ${childRisks.slice(0, 5).map((child, i) => `
+            <div class="risk-child-row">
+              <span class="risk-child-rank">${i + 1}</span>
+              <span class="risk-child-name">${escapeHtml(child.name)}</span>
+              <span class="risk-child-index">${child.risk.toFixed(1)}</span>
+              <span class="risk-child-weight" style="color:${child.weight >= 2.0 ? "#d63a5a" : child.weight >= 1.8 ? "#ef4b6c" : child.weight >= 1.2 ? "#f5a623" : "#20b7b3"}">×${child.weight.toFixed(1)}</span>
+            </div>
+          `).join("")}
+        </div>` : ""}
+        ${isLabel ? `
+        <dl class="explain-list">
+          <dt>高发平台</dt><dd>${escapeHtml(p.platform || "饿了么 / 美团")}</dd>
+          <dt>高发区域</dt><dd>${escapeHtml(p.region || "华南 / 华东")}</dd>
+          <dt>责任主体</dt><dd>${escapeHtml(p.subject || "门店")}</dd>
+          <dt>问题性质</dt><dd>${escapeHtml(p.nature || "高频可控")}</dd>
+          <dt>建议动作</dt><dd>${escapeHtml(p.action || "进入专项复核")}</dd>
+        </dl>` : `
+        <dl class="explain-list">
+          <dt>主要下级问题</dt><dd>${escapeHtml(childNames.join(" / ") || "已到最细标签")}</dd>
+          <dt>责任主体</dt><dd>${escapeHtml(n.subject || "门店 / 平台 / 产品")}</dd>
+          <dt>问题判断</dt><dd>${escapeHtml(n.nature || "通过主图继续点击可下钻到标签与证据")}</dd>
+        </dl>`}
+      </div>`;
+    }
+
     $("#issues").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>体验问题归因</div>
-          <p>一级、二级、三级维度均支持多选与取消；未选择时展示当前范围内的全部下级维度。</p>
+          <div class="page-title"><span class="title-mark"></span>问题风险归因</div>
+          <p>按风险等级排列问题维度，支持多选下钻；聚焦高风险与强可控问题，驱动精准治理。</p>
         </div>
         <div class="sample-note">当前选择：${escapeHtml(selectionText)}</div>
       </div>
+      ${kpis([
+        { label: "当前风险指数", value: fmt(Math.round(totalRiskIndex)), note: "所选范围 Σ(问题量×风险系数)" },
+        { label: "高风险问题数", value: String(highRiskCount), note: "风险系数 ≥ 1.8 的问题标签" },
+        { label: "强可控问题数", value: String(controllableCount), note: "门店/打包/订单相关标签" },
+        { label: "最高风险问题", value: maxLabelRisk ? escapeHtml(maxLabelRisk.name) : "-", note: maxLabelRisk ? `风险指数 ${calcRiskIndex(maxLabelRisk).toFixed(1)}` : "" },
+      ])}
       <div class="linked-dimensions">
-        ${card("一级维度", linkedDimensionChart(level1Items, issueSelections[1], 1), `<div class="card-tools"><span>${issueSelections[1].size ? `已选 ${issueSelections[1].size}` : "全部"}</span></div>`)}
-        ${card("二级维度", linkedDimensionChart(level2Items, issueSelections[2], 2), `<div class="card-tools"><span>${issueSelections[2].size ? `已选 ${issueSelections[2].size}` : "全部"}</span></div>`)}
-        ${card("三级维度", linkedDimensionChart(level3Items, issueSelections[3], 3), `<div class="card-tools"><span>${issueSelections[3].size ? `已选 ${issueSelections[3].size}` : "全部"}</span></div>`)}
+        ${card("一级维度（按风险排序）", riskDimensionChart(level1Items, issueSelections[1], 1), `<div class="card-tools"><span>${issueSelections[1].size ? `已选 ${issueSelections[1].size}` : "全部"}</span></div>`)}
+        ${card("二级维度（按风险排序）", riskDimensionChart(level2Items, issueSelections[2], 2), `<div class="card-tools"><span>${issueSelections[2].size ? `已选 ${issueSelections[2].size}` : "全部"}</span></div>`)}
+        ${card("三级标签（按风险排序）", riskDimensionChart(level3Items, issueSelections[3], 3), `<div class="card-tools"><span>${issueSelections[3].size ? `已选 ${issueSelections[3].size}` : "全部"}</span></div>`)}
       </div>
       <div class="issue-summary-row">
-        ${card("当前问题摘要", explanationCard(node))}
-        ${card("当前维度指标", labelOverview(node))}
+        ${card("风险归因摘要", riskSummaryCard(node))}
+        ${card("维度指标概览", labelOverview(node))}
       </div>
       <div class="evidence-wrap">${evidenceArea(node, d)}</div>
     `;
@@ -891,6 +1184,30 @@
       return platformOk && regionOk && emotionOk && scoreOk;
     });
     if (!examplesRows.length) examplesRows = (d.examples || []).slice(0, 6);
+    // 补充 mock 原声原贴确保每个标签都有数据
+    const mockExamples = [
+      { time: "2026-05-21 14:23", city: "广东省 广州市", channel: "美团", score: 1, emotion: "愤怒", tag: "缺吸管", quote: "点了三杯奶茶，一根吸管都没有，根本喝不了。这是最基本的打包要求吧？" },
+      { time: "2026-05-21 16:07", city: "河南省 郑州市", channel: "饿了么", score: 1, emotion: "不满", tag: "份量少", quote: "没见过蜜雪冰城圣代外送给半杯的，这体积就一半，搞笑呢。" },
+      { time: "2026-05-21 18:35", city: "江苏省 南京市", channel: "美团", score: 1, emotion: "愤怒", tag: "备注未执行/定制做错", quote: "备注永远不看，两三次了，说了不要珍珠还放。" },
+      { time: "2026-05-21 19:12", city: "四川省 成都市", channel: "饿了么", score: 1, emotion: "失望", tag: "产品状态异常", quote: "买的是冰淇淋，可是里面哪里有冰淇淋，都化成水了。" },
+      { time: "2026-05-21 20:48", city: "广西壮族自治区 南宁市", channel: "美团", score: 1, emotion: "愤怒", tag: "漏送商品/少送", quote: "点了三杯只到了两杯，少了的那杯呢？联系商家也没人回。" },
+      { time: "2026-05-22 09:15", city: "湖北省 武汉市", channel: "饿了么", score: 1, emotion: "不满", tag: "洒漏", quote: "送过来都撒了，味道还很奇怪，密封也没做好。" },
+      { time: "2026-05-22 11:33", city: "山东省 济南市", channel: "美团", score: 1, emotion: "愤怒", tag: "异物/杂质", quote: "喝到一半发现里面有异物，不敢再喝了，太恶心了。" },
+      { time: "2026-05-22 13:21", city: "广东省 深圳市", channel: "饿了么", score: 1, emotion: "不满", tag: "服务态度差", quote: "垃圾服务态度，我懒得喷了。做错了也不承认。" },
+      { time: "2026-05-22 15:07", city: "浙江省 杭州市", channel: "美团", score: 2, emotion: "理性", tag: "口味不合预期/难喝", quote: "今天这杯跟之前完全不一样，味道很怪，是不是换配方了？" },
+      { time: "2026-05-22 16:45", city: "湖南省 长沙市", channel: "饿了么", score: 1, emotion: "不满", tag: "配送慢/等太久", quote: "等了一个多小时才送到，都凉了，配送速度太慢了。" },
+      { time: "2026-05-22 17:58", city: "江苏省 苏州市", channel: "美团", score: 1, emotion: "失望", tag: "口味偏淡/水感重", quote: "怎么跟喝水一样，一点味道都没有，感觉兑了很多水。" },
+      { time: "2026-05-22 19:30", city: "福建省 福州市", channel: "饿了么", score: 1, emotion: "不满", tag: "小料少/漏小料", quote: "珍珠就几颗，这也叫加料？跟图片差太多了。" },
+      { time: "2026-05-23 10:15", city: "广东省 东莞市", channel: "美团", score: 1, emotion: "愤怒", tag: "错送商品/做错口味", quote: "点的草莓啵啵送来芒果的，完全不一样，浪费我时间。" },
+      { time: "2026-05-23 12:40", city: "河南省 洛阳市", channel: "饿了么", score: 1, emotion: "不满", tag: "缺餐具", quote: "没有勺子怎么吃，配送连餐具都不给，每次都这样。" },
+      { time: "2026-05-23 14:22", city: "四川省 绵阳市", channel: "美团", score: 1, emotion: "不满", tag: "包装破损/杯盖变形", quote: "杯盖都变形了，一打开就漏，包装质量太差了。" },
+    ];
+    // 将 mock 数据按标签索引，确保点击任何标签都能找到原声
+    mockByTag = {};
+    mockExamples.forEach(ex => {
+      if (!mockByTag[ex.tag]) mockByTag[ex.tag] = [];
+      mockByTag[ex.tag].push(ex);
+    });
 
     return {
       ...d,
@@ -1011,8 +1328,8 @@
     $("#regions").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>区域与门店归因</div>
-          <p>定位哪些区域、城市、小组、门店的问题更突出，并识别问题是否集中在某类体验环节。</p>
+          <div class="page-title"><span class="title-mark"></span>区域风险试点地图</div>
+          <p>以风险指数为核心，定位高风险区域与门店，识别问题集中环节，驱动精准治理。</p>
         </div>
         <div class="sample-note">当前筛选同步自顶部控件：${escapeHtml([d.filterState.region, d.filterState.platform, d.filterState.issue].join(" / "))}</div>
       </div>
@@ -1182,27 +1499,52 @@
     bindDeliveryEvents();
     const labelCoverage = 96.39;
     const issueRate = state.issue === "全部" ? 89.7 : Math.min(99.2, 72 + (getTopIssueByName(state.issue)?.value || 0) / 72);
-    // TOP 风险问题：按 风险指数=问题量×风险系数 降序
-    const topTagRowsRaw = [
-      { name: "异物/杂质",           dim: "食安卫生", volume: 94,  negativeRate: 100, strongRate: 36.8, stores: 87 },
-      { name: "怪味/变质",           dim: "食安卫生", volume: 83,  negativeRate: 98.8, strongRate: 34.2, stores: 62 },
-      { name: "饮后不适/肠胃不适",   dim: "食安卫生", volume: 55,  negativeRate: 98.2, strongRate: 29.7, stores: 41 },
-      { name: "产品状态异常",         dim: "产品体验",   volume: 230, negativeRate: 99.3, strongRate: 24.6, stores: 211 },
-      { name: "到手不冰/温度异常",   dim: "产品体验",   volume: 173, negativeRate: 99.1, strongRate: 23.8, stores: 158 },
-      { name: "备注未执行/定制做错", dim: "订单履约",   volume: 704, negativeRate: 100,  strongRate: 25.6, stores: 489 },
-      { name: "漏送商品/少送",       dim: "订单履约",   volume: 375, negativeRate: 99.4, strongRate: 24.0, stores: 268 },
-      { name: "错送商品/做错口味",   dim: "订单履约",   volume: 228, negativeRate: 99.2, strongRate: 23.1, stores: 184 },
-      { name: "缺吸管",               dim: "包装打包",   volume: 512, negativeRate: 98.9, strongRate: 23.6, stores: 219 },
-      { name: "缺餐具",               dim: "包装打包",   volume: 241, negativeRate: 98.6, strongRate: 21.4, stores: 176 },
-      { name: "洒漏",                 dim: "包装打包",   volume: 218, negativeRate: 98.5, strongRate: 26.3, stores: 186 },
-      { name: "服务态度差",           dim: "服务售后",   volume: 285, negativeRate: 99.6, strongRate: 31.0, stores: 241 },
-      { name: "份量少",               dim: "产品体验",   volume: 478, negativeRate: 98.5, strongRate: 21.2, stores: 354 },
-    ];
-    const topTagRows = topTagRowsRaw.map(row => {
-      const riskIndex = Math.round(row.volume * getRiskWeight(row.name) * 10) / 10;
-      return { ...row, riskIndex };
-    }).sort((a, b) => b.riskIndex - a.riskIndex)
+    // 动态获取所有标签节点，计算 Priority Score
+    function collectLabels(node) {
+      let labels = [];
+      if (node.label) labels.push(node);
+      (node.children || []).forEach(child => { labels = labels.concat(collectLabels(child)); });
+      return labels;
+    }
+    const allLabels = collectLabels(issueTree);
+    const maxVolume = Math.max(...allLabels.map(item => Number(item.value) || 0), 1);
+    const maxStores = Math.max(...allLabels.map(item => Number((labelProfiles[item.name] || {}).stores) || 0), 1);
+    function findParentDim(name, node = issueTree, depth = 0) {
+      if (node.name === name) return depth === 1 ? node.name : (node.children || []).find(c => c.label) ? node.name : findParentDim(name, issueTree) || "未知";
+      for (const child of (node.children || [])) {
+        const result = findParentDim(name, child, depth + 1);
+        if (result && depth === 0) return result;
+        if (result && depth === 1) return node.name;
+      }
+      return null;
+    }
+    // 备用：直接从 issueTree 结构判断维度
+    function getDim(name) {
+      for (const l1 of (issueTree.children || [])) {
+        for (const l2 of (l1.children || [])) {
+          for (const l3 of (l2.children || [])) {
+            if (l3.name === name) return l1.name;
+          }
+        }
+      }
+      return "未知";
+    }
+    const topTagRowsRaw = allLabels.map(node => {
+      const profile = labelProfiles[node.name] || {};
+      const priorityScore = calcPriorityScore(node, maxVolume, maxStores);
+      return {
+        name: node.name,
+        dim: getDim(node.name),
+        volume: node.value,
+        negativeRate: node.negativeRate,
+        strongRate: node.strongRate,
+        stores: profile.stores || 0,
+        priorityScore: priorityScore
+      };
+    }).sort((a, b) => b.priorityScore - a.priorityScore);
+    const topTagRows = topTagRowsRaw
       .filter(row => state.issue === "全部" || row.dim === state.issue)
+      .slice(0, 10)
       .map(row => [
         row.name,
         row.dim,
@@ -1210,8 +1552,8 @@
         row.negativeRate,
         row.strongRate,
         Math.max(1, Math.round(row.stores * Math.max(0.18, d.filterFactor * 2.1))),
-        `+${Math.round(row.riskIndex / row.volume * 100)}%`,
-        Math.round(row.riskIndex * d.filterFactor * 10) / 10,
+        `<strong style="color:#ef4b6c">${row.priorityScore.toFixed(1)}</strong>`,
+        Math.round(row.priorityScore * d.filterFactor * 10) / 10,
       ]);
     const issueChildren = filteredIssueChildren(state);
     const maxIssueValue = Math.max(...issueChildren.map(item => item.value), 1);
@@ -1288,7 +1630,7 @@
         `).join("")}</div>`)}
       </div>
       <div class="full-section">
-        ${card("TOP 风险问题", table(["排名", "问题标签", "所属维度", "问题量", "风险指数", "负向率", "强负向", "涉及门店", "环比"], (topTagRows.length ? topTagRows : [["当前筛选暂无风险问题", state.issue, 0, 0, 0, 0, 0, "-"]]).map((row, index) => [
+        ${card("优先治理问题 TOP10", table(["优先级", "问题标签", "所属维度", "问题量", "Priority Score", "负向率", "强负向", "涉及门店", "环比"], (topTagRows.length ? topTagRows : [["当前筛选暂无优先治理问题", state.issue, 0, 0, 0, 0, 0, "-"]]).map((row, index) => [
           index + 1,
           `<button class="link-btn" data-overview-label="${escapeHtml(row[0])}">${escapeHtml(row[0])}</button>`,
           escapeHtml(row[1]),
@@ -1777,6 +2119,15 @@
         document.body.classList.toggle("ai-tab-active", target === "aiInsights");
         if (target === "serviceRegions") {
           setTimeout(() => initChinaRiskMap(serviceRegionMap().rows), 80);
+        }
+        // 外卖看板：切换到问题风险归因或区域风险试点地图时，触发渲染
+        if (target === "issues") {
+          if (!currentDeliveryData && data.delivery) currentDeliveryData = filteredDelivery(data.delivery);
+          if (currentDeliveryData) renderIssueDrill();
+        }
+        if (target === "regions") {
+          if (!currentDeliveryData && data.delivery) currentDeliveryData = filteredDelivery(data.delivery);
+          if (currentDeliveryData) renderRegionPage(currentDeliveryData);
         }
       });
     });

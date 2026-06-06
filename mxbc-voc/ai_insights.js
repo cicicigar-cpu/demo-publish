@@ -28,6 +28,58 @@
       question: "请融合热线、在线客服、外卖评价和社媒数据，识别当前高风险客诉问题。",
       answer: "报告已完成内外部业务量、负向趋势、重点问题和外溢风险归因。可以继续追问某个平台、区域、产品或问题维度。",
     },
+
+
+  // ═══════════════════════════════════════════════════════════
+  // 报告分层内容（摘要 / 详情 / 全文）
+  // 对齐领导意见：报告更成熟，看板应与报告逻辑统一
+  // ═══════════════════════════════════════════════════════════
+  const reportLayers = {
+    delivery: {
+      summary: [
+        { icon: "\u{1F534}", text: "品牌风险指数 82.3，处于中高风险区间，需关注食安与物料缺失两大红线" },
+        { icon: "\u{1F4E6}", text: "缺物料（吸管/餐具/纸巾）占比最高达 12.8%，Priority Score 34.2，强可控" },
+        { icon: "\u26A0\uFE0F", text: "食安红线问题（异物/变质）虽体量低但风险系数 2.0，需独立核查" },
+        { icon: "\u{1F4CD}", text: "华南区域风险集中度最高，广东/河南/江苏为高发区域" },
+        { icon: "\u{1F504}", text: "备注未执行 100% 负向率，建议纳入班次复核 SOP" },
+      ],
+      detail: [
+        { section: "问题结构", content: "外卖评价 Top5 问题依次为：缺吸管(512)、备注未执行(704)、份量少(478)、漏送商品(375)、服务态度差(285)。产品体验占38.8%、包装打包占19.1%、订单履约占19.1%、服务售后占9.3%、配送履约占5.4%、食安卫生占3.2%。" },
+        { section: "风险热点", content: "高风险(系数\u22651.8)：异物/杂质(2.0)、怪味/变质(2.0)、产品状态异常(1.8)；中风险(1.2-1.3)：备注未执行(1.2)、漏送/错送(1.3)；低风险(1.1)：缺吸管/缺餐具/份量少。" },
+        { section: "区域风险", content: "华南区域：包装与食安风险偏高，广东为最高风险省份；华东区域：份量少与产品状态异常集中；华中区域：备注未执行高发。高风险门店86家，食安风险门店23家。" },
+        { section: "治理建议", content: "1. 缺物料\u2192纳入打包复核SOP，预计影响512+条/月；2. 备注未执行\u2192设置备注复核与异常工单，预计影响704条/月；3. 食安红线\u2192进入独立核查流程，涉及87家门店。" },
+      ],
+    },
+    mint: {
+      summary: [
+        { icon: "\u{1F7E2}", text: "薄荷新品整体情感正面率 62.3%，口碑表现优于同期新品均值" },
+        { icon: "\u{1F4CA}", text: "声量峰值出现在首发日与第二周周末，小红书为主要传播平台" },
+        { icon: "\u{1F4AC}", text: "核心正面关键词：清凉、爽口、性价比；核心负面关键词：太甜、化得快" },
+        { icon: "\u26A0\uFE0F", text: "约 18% 反馈提到甜度偏高，建议提供减糖选项" },
+      ],
+      detail: [
+        { section: "声量与情感", content: "首发7天声量2.4万，正面率62.3%，中性24.1%，负面13.6%。小红书占声量52%，抖音28%，微博12%，B站5%。" },
+        { section: "口味反馈", content: "正面：清凉感(38%)、性价比(25%)、颜值(18%)；负面：甜度偏高(42%)、化得快(28%)、份量少(16%)。" },
+        { section: "渠道差异", content: "小红书以图文种草为主，正面率68%；抖音短视频测评为主，正面率55%，评论区争议较多。" },
+        { section: "建议", content: "1. 推出减糖版本扩大受众；2. 优化外卖包装减少融化投诉；3. 加大小红书KOC投放巩固口碑优势。" },
+      ],
+    },
+    complaint: {
+      summary: [
+        { icon: "\u{1F534}", text: "客诉总量环比上升 12.7%，热线与在线客服为最大来源渠道" },
+        { icon: "\u{1F6A8}", text: "食安类客诉外溢风险指数 78.6，微博/小红书出现3起扩散案例" },
+        { icon: "\u{1F4DE}", text: "商家未回复率 34.2%，低于行业均值，需重点提升1-2星评论回复率" },
+        { icon: "\u{1F4CB}", text: "退款困难/补偿不满投诉集中度上升，与外卖评价中'推诿/不解决'标签高度关联" },
+      ],
+      detail: [
+        { section: "客诉结构", content: "热线占38%，在线客服32%，外卖评价22%，社媒8%。产品体验类占34%，服务售后类28%，食安类18%，配送履约类12%，其他8%。" },
+        { section: "外溢风险", content: "食安类外溢风险最高(78.6)，3起案例在微博获得500+转发；服务态度类外溢风险中等(45.2)，主要在美团评论区。" },
+        { section: "闭环分析", content: "商家回复率65.8%，1-2星评论回复率仅41.3%。退款类平均处理时长3.2天，推诿/不解决标签关联投诉285条。" },
+        { section: "建议", content: "1. 提升低分评论回复率至80%+；2. 建立食安客诉2小时响应机制；3. 退款流程标准化，减少推诿环节。" },
+      ],
+    },
+  };
+
   };
 
   const templates = {
@@ -82,8 +134,24 @@
     $$("[data-report]").forEach(item => item.addEventListener("click", () => openConversation(item.dataset.report)));
   }
 
-  function renderThread(key) {
+  function renderThread(key, layer = "summary") {
     const report = reports[key];
+    const layers = reportLayers[key] || {};
+    const summaryItems = (layers.summary || []).map(item =>
+      `<div class="layer-summary-item"><span class="layer-icon">${item.icon}</span><span>${item.text}</span></div>`
+    ).join("");
+    const detailItems = (layers.detail || []).map(item =>
+      `<div class="layer-detail-section"><strong>${item.section}</strong><p>${item.content}</p></div>`
+    ).join("");
+
+    const layerContent = {
+      summary: `<div class="layer-summary">${summaryItems}</div>`,
+      detail: `<div class="layer-detail">${detailItems}</div>`,
+      full: `<p class="layer-full-hint">完整报告已加载至右侧预览面板，可下载或全屏查看。</p>`,
+    };
+
+    const activeLayer = layer || "summary";
+
     $("#threadMessages").innerHTML = `
       <article class="thread-message user">
         <div class="thread-avatar">我</div>
@@ -94,10 +162,27 @@
         <div class="thread-bubble">
           <div class="answer-tags"><span>深度研究结果</span><span>${report.type}</span></div>
           <h3>${report.title}</h3>
-          <p>${report.answer}</p>
-          <p>右侧为对应历史报告预览。报告与追问保持在同一工作区，无需离开当前会话。</p>
+          <div class="layer-tabs" data-report-key="${key}">
+            <button class="layer-tab ${activeLayer === "summary" ? "active" : ""}" data-layer="summary">摘要洞察</button>
+            <button class="layer-tab ${activeLayer === "detail" ? "active" : ""}" data-layer="detail">详细分析</button>
+            <button class="layer-tab ${activeLayer === "full" ? "active" : ""}" data-layer="full">完整报告</button>
+          </div>
+          <div class="layer-content">${layerContent[activeLayer] || layerContent.summary}</div>
         </div>
       </article>`;
+
+    // Bind layer tab clicks
+    $$("[data-layer]").forEach(btn => btn.addEventListener("click", () => {
+      const newLayer = btn.dataset.layer;
+      renderThread(key, newLayer);
+      // If switching to full report, ensure preview is loaded
+      if (newLayer === "full") {
+        const reportObj = reports[key];
+        if (reportObj) {
+          $("#reportPreview").src = reportObj.url;
+        }
+      }
+    }));
   }
 
   function openConversation(key) {
@@ -159,7 +244,22 @@
         openConfig(key);
         const filters = event.data.filters || {};
         if (Object.keys(filters).length > 0) {
-          setTimeout(() => preFillConfig(key, filters), 0);
+          setTimeout(() => {
+            preFillConfig(key, filters);
+            // 预填完成后自动生成报告
+            setTimeout(() => {
+              const genBtn = $("#generateReport");
+              if (genBtn) {
+                genBtn.click();
+              }
+            }, 300);
+          }, 0);
+        } else {
+          // 无筛选参数时也自动生成
+          setTimeout(() => {
+            const genBtn = $("#generateReport");
+            if (genBtn) genBtn.click();
+          }, 300);
         }
       }
     }
@@ -240,7 +340,7 @@
     if (!value) return;
     $("#threadMessages").insertAdjacentHTML("beforeend", `
       <article class="thread-message user"><div class="thread-avatar">我</div><div class="thread-bubble">${value.replace(/[<>&]/g, "")}</div></article>
-      <article class="thread-message"><div class="thread-avatar">AI</div><div class="thread-bubble"><div class="answer-tags"><span>继续追问</span></div><p>已基于当前报告继续限定分析范围。右侧报告预览保持不变，后续生成时会把本轮追问纳入报告上下文。</p></div></article>`);
+      <article class="thread-message"><div class="thread-avatar">AI</div><div class="thread-bubble"><div class="answer-tags"><span>继续追问</span></div><p>已基于当前报告继续限定分析范围。可点击上方「摘要洞察 / 详细分析 / 完整报告」切换查看层级，右侧预览面板同步展示完整报告。</p></div></article>`);
     $("#followupInput").value = "";
     $("#threadMessages").scrollTop = $("#threadMessages").scrollHeight;
   });
