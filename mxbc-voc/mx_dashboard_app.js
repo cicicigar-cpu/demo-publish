@@ -1290,8 +1290,10 @@
   function internalBusinessTrend(s, factor) {
     const hourly = s.hourly || [];
     return svgLine("internalBusinessTrend", [
-      { name: "热线", values: hourly.map(item => Math.round(item.complaints * .93 * factor)), color: colors[0] },
-      { name: "在线客服", values: hourly.map(item => Math.round(item.complaints * .07 * factor)), color: colors[2] },
+      { name: "热线业务量", values: hourly.map(item => Math.round(item.complaints * .93 * factor)), color: colors[0] },
+      { name: "热线负向量", values: hourly.map(item => Math.round(item.complaints * .93 * .743 * factor)), color: colors[1] },
+      { name: "在线客服业务量", values: hourly.map(item => Math.round(item.complaints * .07 * factor)), color: colors[2] },
+      { name: "在线客服负向量", values: hourly.map(item => Math.round(item.complaints * .07 * .743 * factor)), color: colors[3] },
     ], hourly.map(item => item.hour), 230);
   }
 
@@ -1322,20 +1324,30 @@
   }
 
   function serviceEvidence(problem) {
-    const keywords = problem.keywords.concat(["离谱", "失望", "欺骗", "无语", "投诉", "避雷"]);
-    return `<div class="evidence-split">
-      <div class="word-cloud compact">${keywords.map((word, index) => `<span style="font-size:${13 + (index % 4) * 3}px">${escapeHtml(word)}</span>`).join("")}</div>
-      <div class="social-evidence-list">
-        ${[
-          ["抖音", "河南", problem.product, problem.evidence, "8,462", "愤怒"],
-          ["小红书", "广东", problem.product, "同一个产品两次买到的状态差异很大，感觉出品完全不稳定。", "1,284", "失望"],
-          ["热线", "山东", problem.product, "用户反馈门店处理慢，希望客服尽快介入。", "-", "不满"],
-        ].map(item => `<div class="social-evidence">
-          <div class="quote-meta"><span>${item[0]}</span><span>${item[1]}</span><span>${item[2]}</span><span>互动 ${item[4]}</span><span class="badge red">${item[5]}</span></div>
-          <div class="quote-text">${escapeHtml(item[3])}</div>
-          <div class="evidence-foot">标签：${escapeHtml(problem.issue)}　已脱敏</div>
-        </div>`).join("")}
-      </div>
+    const negative = problem.keywords.concat(["离谱", "失望", "欺骗", "无语", "投诉", "避雷", "不一致", "难喝", "发白", "少加料", "恶心", "曝光", "退钱"]);
+    const positive = ["好喝", "清爽", "解腻", "性价比", "包装干净", "口感不错", "服务及时", "回复快", "新品惊喜", "推荐", "会回购", "味道浓"];
+    const cloud = (words, tone) => `<div class="radar-word-cloud ${tone}">${words.concat(words.slice(0, 7)).map((word, index) => `<span style="--size:${16 + ((index * 7) % 28)}px;--x:${8 + ((index * 17) % 76)}%;--y:${10 + ((index * 29) % 74)}%;--rotate:${index % 5 === 0 ? -4 : index % 7 === 0 ? 4 : 0}deg">${escapeHtml(word)}</span>`).join("")}</div>`;
+    const posts = [
+      ["抖音", "雪王观察员", "河南", problem.product, problem.evidence, "8,462", "2026-05-21 15:07", "愤怒"],
+      ["小红书", "甜味研究所", "广东", problem.product, "同一个产品两次买到的状态差异很大，颜色和加料完全不一致，门店出品需要好好检查。", "1,284", "2026-05-21 18:42", "失望"],
+      ["热线", "匿名用户", "山东", problem.product, "用户反馈饮品存在异常气味，希望客服尽快介入并核查门店出品流程。", "-", "2026-05-21 20:16", "不满"],
+    ];
+    return `<div class="radar-evidence-layout">
+      <section class="radar-cloud-panel">
+        <header><div><span class="mini-mark"></span><strong>关键词词云</strong></div><div class="cloud-tabs"><button class="active" data-cloud-tone="negative">负面</button><button data-cloud-tone="positive">正面</button></div></header>
+        <div class="cloud-stage"><div data-cloud-panel="negative">${cloud(negative, "negative")}</div><div data-cloud-panel="positive" hidden>${cloud(positive, "positive")}</div></div>
+      </section>
+      <section class="original-post-panel">
+        <header><div><span class="mini-mark"></span><strong>客诉与社媒原声</strong></div><button>按风险排序 ⇅</button></header>
+        <div class="original-post-list">
+          ${posts.map((item, index) => `<article class="original-post">
+            <div class="post-author"><span class="post-avatar">${item[0].slice(0, 1)}</span><div><strong>${item[1]}</strong><small>${item[0]} · ${item[6]} · ${item[2]}</small></div><span class="badge red">${item[7]}</span></div>
+            <p>${escapeHtml(item[4])}</p>
+            ${index < 2 ? `<div class="post-media"><span></span><em>内容图片 / 视频封面</em></div>` : ""}
+            <div class="post-foot"><span>热度 ${item[5]}</span><span>标签：${escapeHtml(problem.issue)}</span><a href="javascript:void(0)">查看详情</a></div>
+          </article>`).join("")}
+        </div>
+      </section>
     </div>`;
   }
 
@@ -1393,26 +1405,75 @@
       ["湖北", 54.6, 156, 44, "出餐慢", "+4%"],
       ["湖南", 52.1, 142, 39, "备注未执行", "+3%"],
     ];
-    const points = {
-      河南: [330, 205], 广东: [330, 315], 山东: [395, 178], 江苏: [420, 225],
-      浙江: [430, 260], 四川: [245, 255], 湖北: [330, 245], 湖南: [325, 280],
-    };
-    return { rows, map: `<div class="china-risk-map">
-      <svg viewBox="0 0 620 390" role="img" aria-label="中国区域风险地图">
-        <path class="china-outline" d="M86 85 L145 58 L204 73 L252 48 L313 70 L365 65 L406 88 L468 94 L500 126 L546 145 L520 178 L548 210 L505 232 L480 278 L443 300 L420 340 L370 330 L338 355 L290 333 L250 345 L220 313 L174 305 L160 270 L126 245 L140 208 L102 180 L118 145 Z"/>
-        <path class="island" d="M472 322 Q490 344 475 365 Q455 345 472 322 Z"/>
-        ${rows.map(item => {
-          const [cx, cy] = points[item[0]];
-          const radius = 13 + item[1] / 12;
-          return `<g class="map-point">
-            <circle cx="${cx}" cy="${cy}" r="${radius}" fill="rgba(216,60,77,${.3 + item[1] / 150})"/>
-            <circle cx="${cx}" cy="${cy}" r="4" fill="#d83c4d"/>
-            <text x="${cx}" y="${cy - radius - 6}" text-anchor="middle">${item[0]} ${item[1]}</text>
-          </g>`;
-        }).join("")}
-      </svg>
-      <div class="map-scale"><span>低</span><i></i><span>高风险</span></div>
-    </div>` };
+    return { rows, map: `<div id="chinaRiskMap" class="china-risk-map" role="img" aria-label="中国省级行政区风险地图"><div class="map-loading">正在加载中国行政区地图…</div></div>` };
+  }
+
+  async function initChinaRiskMap(rows) {
+    const target = $("#chinaRiskMap");
+    if (!target) return;
+    try {
+      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260606h3");
+      if (!window.__chinaProvinceGeoJson) {
+        const response = await fetch("./assets/china-provinces.json");
+        window.__chinaProvinceGeoJson = await response.json();
+        echartsApi.registerMap("china-provinces", window.__chinaProvinceGeoJson);
+      }
+      if (window.__chinaRiskChart) window.__chinaRiskChart.dispose();
+      const riskByName = new Map(rows.map(row => [row[0], row]));
+      const aliases = { "内蒙古自治区": "内蒙古", "广西壮族自治区": "广西", "西藏自治区": "西藏", "宁夏回族自治区": "宁夏", "新疆维吾尔自治区": "新疆", "香港特别行政区": "香港", "澳门特别行政区": "澳门" };
+      const values = (window.__chinaProvinceGeoJson.features || []).map(feature => {
+        const fullName = feature.properties.name;
+        const shortName = aliases[fullName] || fullName.replace(/[省市]$/, "");
+        const row = riskByName.get(shortName);
+        return { name: fullName, shortName, value: row ? row[1] : 24 + (shortName.charCodeAt(0) % 27), row };
+      });
+      window.__chinaRiskChart = echartsApi.init(target);
+      window.__chinaRiskChart.setOption({
+        animationDuration: 700,
+        tooltip: {
+          trigger: "item",
+          backgroundColor: "rgba(20,29,48,.94)",
+          borderWidth: 0,
+          textStyle: { color: "#fff" },
+          formatter(params) {
+            const item = params.data || {};
+            const row = item.row;
+            return row
+              ? `<b>${item.shortName}</b><br/>风险指数：${row[1]}<br/>内部客诉：${row[2]}<br/>社媒负向：${row[3]}<br/>TOP 问题：${row[4]}<br/>环比：${row[5]}`
+              : `<b>${item.shortName}</b><br/>风险指数：${Math.round(item.value || 0)}<br/>当前为观察区域`;
+          },
+        },
+        visualMap: {
+          min: 20, max: 90, left: 24, bottom: 16, orient: "horizontal",
+          text: ["高风险", "低"], calculable: false,
+          inRange: { color: ["#e8f4ff", "#93c9f3", "#f6b178", "#e75161"] },
+          textStyle: { color: "#718097", fontSize: 11 },
+        },
+        series: [{
+          type: "map", map: "china-provinces", roam: false, selectedMode: "single",
+          layoutCenter: ["50%", "47%"], layoutSize: "104%",
+          label: { show: true, color: "#40506a", fontSize: 10 },
+          emphasis: { label: { color: "#17243c", fontWeight: "bold" }, itemStyle: { areaColor: "#ffd56a", borderColor: "#fff" } },
+          select: { itemStyle: { areaColor: "#ffbd4a", borderColor: "#fff" }, label: { color: "#1e2b42" } },
+          itemStyle: { borderColor: "#fff", borderWidth: 1.1 },
+          data: values,
+        }],
+      });
+      window.__chinaRiskChart.on("click", params => {
+        const shortName = params.data && params.data.shortName;
+        const select = $("#serviceRegion");
+        if (!select || !shortName) return;
+        const option = Array.from(select.options).find(item => item.value === shortName || item.textContent === shortName);
+        if (option) {
+          select.value = option.value;
+          selectedServiceIssue = 0;
+          renderService();
+        }
+      });
+    } catch (error) {
+      target.innerHTML = `<div class="map-loading error">中国行政区地图加载失败，请刷新页面重试。</div>`;
+      console.error(error);
+    }
   }
 
   function renderService() {
@@ -1426,6 +1487,13 @@
 
     if (!serviceEventsBound) {
       document.addEventListener("click", event => {
+        const cloudButton = event.target.closest("[data-cloud-tone]");
+        if (cloudButton) {
+          const container = cloudButton.closest(".radar-cloud-panel");
+          container.querySelectorAll("[data-cloud-tone]").forEach(item => item.classList.toggle("active", item === cloudButton));
+          container.querySelectorAll("[data-cloud-panel]").forEach(item => { item.hidden = item.dataset.cloudPanel !== cloudButton.dataset.cloudTone; });
+          return;
+        }
         const issueButton = event.target.closest("[data-service-issue]");
         if (!issueButton) return;
         selectedServiceIssue = Number(issueButton.dataset.serviceIssue) || 0;
@@ -1458,8 +1526,8 @@
         { label: "全渠道业务量", value: fmt(totalFeedback), note: "社媒 + 热线 + 在线客服" },
         { label: "社媒内容量", value: fmt(Math.round(s.socialSame.summary.total * factor)), note: "微博 / 小红书 / 抖音 / 快手" },
         { label: "社媒负向声量", value: fmt(socialNegative), note: `负向率 ${percent(s.socialSame.summary.negativeRate)}` },
-        { label: "热线量", value: fmt(Math.round(s.complaint.summary.hotline * factor)), note: "内部客诉主要来源" },
-        { label: "在线客服量", value: fmt(Math.round(s.complaint.summary.online * factor)), note: "在线会话客诉" },
+        { label: "热线业务量 / 负向量", value: `${fmt(Math.round(s.complaint.summary.hotline * factor))} / ${fmt(Math.round(s.complaint.summary.hotline * .743 * factor))}`, note: "总接入量与负向客诉量" },
+        { label: "在线客服业务量 / 负向量", value: `${fmt(Math.round(s.complaint.summary.online * factor))} / ${fmt(Math.round(s.complaint.summary.online * .743 * factor))}`, note: "总会话量与负向会话量" },
         { label: "高风险问题数", value: fmt(Math.round(52 * factor)), note: "P1 / P2 问题组" },
       ])}
       <div class="section-label">全渠道规模与趋势</div>
@@ -1468,7 +1536,7 @@
       </div>
       <div class="service-overview-grid">
         ${card("各平台规模与情感分布", channelSentimentChart(s))}
-        ${card("热线与在线客服业务量走势", internalBusinessTrend(s, factor), `<div class="card-tools"><span class="active">业务量</span><span>情感</span></div>`)}
+        ${card("热线与在线客服业务量及负向趋势", internalBusinessTrend(s, factor), `<div class="card-tools"><span class="active">业务量</span><span>负向量</span></div>`)}
       </div>
       <div class="section-label">重点问题发现与归因</div>
       <div class="service-workbench">
@@ -1571,8 +1639,8 @@
           ["广东", "广州", "XX广场店", "异味 / 清洁剂味", "热线 / 小红书", "12", "7", "P1", "柠檬水有怪味..."],
           ["山东", "济南", "XX大学店", "出餐慢", "在线客服", "25", "3", "P2", "等了半小时..."],
         ]))}
-        ${card("区域原声证据", serviceEvidence(serviceProblems[0]))}
       </div>
+      <div class="full-section">${card("区域关键词与原声证据", serviceEvidence(serviceProblems[0]))}</div>
     `;
   }
 
@@ -1583,6 +1651,9 @@
         $$(".tab").forEach(item => item.classList.toggle("active", item === tab));
         $$(".page").forEach(page => page.classList.toggle("active", page.id === target));
         document.body.classList.toggle("ai-tab-active", target === "aiInsights");
+        if (target === "serviceRegions") {
+          setTimeout(() => initChinaRiskMap(serviceRegionMap().rows), 80);
+        }
       });
     });
   }

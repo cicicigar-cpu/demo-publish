@@ -4,141 +4,128 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 洞察 - 蜜雪冰城 VOC</title>
-  <link rel="stylesheet" href="./ai_insights.css?v=20260606g">
+  <link rel="stylesheet" href="./ai_insights.css?v=20260606h">
 </head>
 <body>
-  <div class="ai-shell">
-    <aside class="ai-sidebar">
-      <a class="ai-brand" href="./index.html"><span>M</span><strong>数说雷达</strong></a>
-      <div class="ai-workspace">蜜雪冰城 VOC</div>
-      <nav class="ai-nav">
-        <button class="ai-nav-item active" data-view="chat"><i>◔</i><span>即时问答</span></button>
-        <button class="ai-nav-item" data-view="research"><i>▣</i><span>深度研究</span></button>
-      </nav>
-      <div class="history-head"><span>报告历史</span><b>3</b></div>
-      <div class="history-list">
-        <button class="history-item" data-report="mint">
-          <span class="history-icon">新</span>
-          <span><strong>薄荷系列新品口碑报告</strong><small>2026-06-06 · 新品口碑</small></span>
-        </button>
-        <button class="history-item" data-report="delivery">
-          <span class="history-icon">外</span>
-          <span><strong>外卖评论体验诊断报告</strong><small>2026-06-06 · 外卖评价</small></span>
-        </button>
-        <button class="history-item" data-report="complaint">
-          <span class="history-icon">诉</span>
-          <span><strong>全渠道客诉风险洞察报告</strong><small>2026-06-06 · 客诉分析</small></span>
-        </button>
+  <div class="agent-shell">
+    <aside class="conversation-sidebar">
+      <div class="sidebar-actions">
+        <button id="newConversation" class="new-conversation"><span>＋</span>新建对话</button>
+        <button id="collapseConversation" class="collapse-conversation" aria-label="收起历史会话">‹</button>
       </div>
-      <a class="back-link" href="./delivery_app.html">← 返回业务看板</a>
+      <div class="history-title">历史会话</div>
+      <div id="historyList" class="conversation-history"></div>
     </aside>
 
-    <main class="ai-main">
-      <header class="ai-topbar">
-        <div><strong>AI 洞察</strong><span>基于全渠道 VOC 数据进行问答、研究与报告生成</span></div>
-        <div class="ai-top-actions"><span>中文⌄</span><span>帮助</span><span class="ai-avatar">账号</span></div>
-      </header>
-
-      <section id="workspaceView" class="workspace-view">
-        <div class="workspace-head">
-          <div>
-            <h1 id="workspaceTitle">即时问答</h1>
-            <p id="workspaceSubtitle">围绕外卖评价、客诉与新品口碑数据快速提问。</p>
-          </div>
-          <div class="data-scope">数据范围：外卖评价 / 热线 / 在线客服 / 社媒</div>
+    <main class="agent-main">
+      <section id="agentHome" class="agent-home">
+        <div class="mode-tabs" role="tablist">
+          <button class="mode-tab active" data-mode="chat">即时问答</button>
+          <button class="mode-tab" data-mode="research">深度研究</button>
         </div>
 
-        <section id="chatPanel" class="agent-panel">
-          <div class="agent-welcome">
-            <span class="agent-mark">AI</span>
-            <div><h2>今天想了解什么？</h2><p>可以直接询问问题趋势、区域差异、消费者原声或风险信号。</p></div>
+        <section class="prompt-box">
+          <textarea id="questionInput" placeholder="输入问题，或选择下方指令开始对话..."></textarea>
+          <div class="prompt-toolbar">
+            <div class="prompt-tools">
+              <button type="button">提示词优化</button>
+              <button type="button">附件</button>
+              <button type="button">☷ 数据源</button>
+              <span class="smart-match">智能匹配</span>
+            </div>
+            <button id="sendQuestion" class="send-button" aria-label="发送">➤</button>
           </div>
-          <div class="prompt-suggestions">
-            <button>近 7 天最值得关注的外卖问题是什么？</button>
-            <button>哪些客诉问题正在向社媒外溢？</button>
-            <button>薄荷新品的正负面口碑差异是什么？</button>
-          </div>
-          <div id="chatMessages" class="chat-messages"></div>
-          <form id="chatForm" class="chat-composer">
-            <textarea id="chatInput" rows="3" placeholder="输入问题，支持继续追问……"></textarea>
-            <div><span>已连接蜜雪冰城 VOC 数据</span><button type="submit">发送</button></div>
-          </form>
         </section>
 
-        <section id="researchPanel" class="research-panel" hidden>
-          <div class="research-intro">
-            <span class="agent-mark">研</span>
-            <div><h2>框架式分析</h2><p>选择一个固定分析框架，系统将按步骤完成数据拆解、证据核验与结论组织。</p></div>
+        <section id="chatModeContent" class="template-library">
+          <div class="library-toolbar">
+            <div class="library-tabs">
+              <button class="active">全部</button><button>我的</button><button>官方</button><button>推荐</button>
+            </div>
+            <div class="library-actions">
+              <button class="new-command">新建指令</button>
+              <label class="command-search"><input placeholder="搜索问题指令..."><span>⌕</span></label>
+            </div>
           </div>
-          <div class="framework-flow">
-            <div><b>01</b><strong>定义问题</strong><span>确定对象、周期和数据范围</span></div>
-            <div><b>02</b><strong>拆解框架</strong><span>按趋势、情感、问题和归因分析</span></div>
-            <div><b>03</b><strong>核验证据</strong><span>关联关键词、原声与区域数据</span></div>
-            <div><b>04</b><strong>生成报告</strong><span>输出可阅读的 HTML 分析报告</span></div>
+          <div class="command-grid">
+            <button class="command-card" data-question="近 7 天外卖评价中最需要关注的问题是什么？">
+              <div><span class="official">官方</span><span>外卖体验</span></div>
+              <h3>近 7 天外卖评价中最需要关注的问题是什么？</h3>
+              <p>从问题量、强负向、门店覆盖及风险标签识别当前优先事项。</p>
+              <small>使用 420</small>
+            </button>
+            <button class="command-card" data-question="哪些客诉问题正在从内部渠道向社媒外溢？">
+              <div><span class="official">官方</span><span>风险监测</span></div>
+              <h3>哪些客诉问题正在从内部渠道向社媒外溢？</h3>
+              <p>对比热线、在线客服、外卖评价与社媒负向趋势。</p>
+              <small>使用 457</small>
+            </button>
+            <button class="command-card" data-question="薄荷新品的正负面口碑差异是什么？">
+              <div><span class="official">官方</span><span>新品口碑</span></div>
+              <h3>薄荷新品的正负面口碑差异是什么？</h3>
+              <p>拆解平台声量、情感结构、证据词与消费者原声。</p>
+              <small>使用 494</small>
+            </button>
+            <button class="command-card" data-question="哪些区域的食安风险需要优先排查？">
+              <div><span class="recommended">推荐</span><span>区域归因</span></div>
+              <h3>哪些区域的食安风险需要优先排查？</h3>
+              <p>按省份、城市和门店识别高风险问题集中区域。</p>
+              <small>使用 531</small>
+            </button>
           </div>
-          <button class="framework-start" data-template="complaint">使用框架创建分析</button>
+
+          <div class="report-template-heading">
+            <div><h2>报告模板</h2><p>选择模板后配置参数，生成对应的业务分析报告。</p></div>
+            <span>固定模板 · 3</span>
+          </div>
+          <div class="report-template-grid">
+            <button data-template="mint"><span class="mint-tag">新品口碑</span><h3>新品口碑报告</h3><p>时间、平台、关键词</p></button>
+            <button data-template="delivery"><span class="delivery-tag">外卖体验</span><h3>外卖评价分析</h3><p>平台、区域、问题、情感、时间、主体</p></button>
+            <button data-template="complaint"><span class="complaint-tag">客诉风险</span><h3>客诉分析报告</h3><p>周期、情感、平台、区域、问题维度</p></button>
+          </div>
         </section>
 
-        <section class="template-section">
-          <div class="section-title"><div><h2>报告模板</h2><p>配置参数后生成对应的业务分析报告。</p></div><span>固定模板 · 3</span></div>
-          <div class="template-grid">
-            <button class="template-card mint" data-template="mint">
-              <span class="template-type">新品口碑</span><h3>新品口碑报告</h3>
-              <p>分析新品声量、情感结构、平台表现、核心口碑与消费反馈。</p>
-              <small>时间 · 平台 · 关键词</small><b>进入参数配置 →</b>
-            </button>
-            <button class="template-card delivery" data-template="delivery">
-              <span class="template-type">外卖体验</span><h3>外卖评价分析</h3>
-              <p>分析外卖评价趋势、问题结构、区域门店表现与消费者原声。</p>
-              <small>平台 · 区域 · 问题 · 情感 · 时间 · 主体</small><b>进入参数配置 →</b>
-            </button>
-            <button class="template-card complaint" data-template="complaint">
-              <span class="template-type">客诉风险</span><h3>客诉分析报告</h3>
-              <p>融合热线、在线客服和社媒数据，识别重点问题与外溢风险。</p>
-              <small>周期 · 情感 · 平台 · 区域 · 问题维度</small><b>进入参数配置 →</b>
-            </button>
+        <section id="researchModeContent" class="research-mode" hidden>
+          <div class="research-heading">
+            <span>框架式分析</span>
+            <h2>选择报告框架，系统按固定步骤完成研究</h2>
+            <p>定义研究范围 → 拆解趋势与问题 → 关联关键词和原声 → 生成报告。</p>
+          </div>
+          <div class="research-templates">
+            <button data-template="mint"><b>01</b><strong>新品口碑分析框架</strong><span>声量、情感、渠道、口碑证据</span></button>
+            <button data-template="delivery"><b>02</b><strong>外卖体验分析框架</strong><span>问题结构、区域门店、消费者原声</span></button>
+            <button data-template="complaint"><b>03</b><strong>全渠道客诉框架</strong><span>内外趋势、外溢风险、归因证据</span></button>
           </div>
         </section>
       </section>
 
-      <section id="reportView" class="report-view" hidden>
-        <div class="report-toolbar">
-          <button id="closeReport">← 返回 AI 洞察</button>
-          <div><strong id="reportTitle">报告预览</strong><span id="reportMeta">历史报告</span></div>
-          <a id="openReport" href="#" target="_blank">新窗口打开</a>
+      <section id="conversationWorkspace" class="conversation-workspace" hidden>
+        <div class="thread-panel">
+          <div id="threadMessages" class="thread-messages"></div>
+          <form id="followupForm" class="followup-box">
+            <textarea id="followupInput" placeholder="围绕当前报告继续追问，例如：只看华南区域的差异..."></textarea>
+            <button type="submit" aria-label="发送追问">➤</button>
+          </form>
         </div>
-        <div class="report-layout">
-          <div class="report-rail">
-            <strong>报告历史</strong>
-            <button data-report="mint">新品口碑报告</button>
-            <button data-report="delivery">外卖评价分析</button>
-            <button data-report="complaint">客诉分析报告</button>
-          </div>
-          <div class="report-frame-wrap"><iframe id="reportFrame" title="报告内容"></iframe></div>
-          <aside class="report-inspector">
-            <span>报告信息</span>
-            <h2 id="reportInspectorTitle">新品口碑报告</h2>
-            <dl>
-              <dt>报告类型</dt><dd id="reportType">新品口碑</dd>
-              <dt>生成时间</dt><dd>2026-06-06</dd>
-              <dt>输出形式</dt><dd>HTML 完整报告</dd>
-              <dt>数据范围</dt><dd id="reportScope">社媒口碑数据</dd>
-            </dl>
-            <button id="regenerateReport">基于模板重新生成</button>
-          </aside>
-        </div>
+        <section class="preview-panel">
+          <header>
+            <div><strong id="previewTitle">报告预览</strong><span id="previewMeta">历史报告</span></div>
+            <div><a id="downloadReport" href="#" target="_blank">下载报告</a><a id="fullscreenReport" href="#" target="_blank">全屏预览</a></div>
+          </header>
+          <iframe id="reportPreview" title="报告预览"></iframe>
+        </section>
       </section>
     </main>
   </div>
 
-  <aside id="configDrawer" class="config-drawer" aria-hidden="true">
-    <div class="drawer-head"><div><span>报告模板</span><h2 id="configTitle">参数配置</h2></div><button id="closeDrawer">×</button></div>
-    <div id="configDescription" class="config-description"></div>
-    <form id="configForm" class="config-form"></form>
-    <div class="drawer-actions"><button id="cancelConfig" type="button">取消</button><button id="generateReport" type="button">生成报告</button></div>
-    <div id="generationStatus" class="generation-status" hidden></div>
+  <div id="configMask" class="config-mask" hidden></div>
+  <aside id="configPanel" class="config-panel" aria-hidden="true">
+    <header><div><span>报告模板</span><h2 id="configTitle">参数配置</h2></div><button id="closeConfig">×</button></header>
+    <p id="configDescription"></p>
+    <form id="configForm"></form>
+    <footer><button id="cancelConfig" type="button">取消</button><button id="generateReport" type="button">生成报告</button></footer>
+    <div id="generateStatus" class="generate-status" hidden></div>
   </aside>
-  <div id="drawerMask" class="drawer-mask" hidden></div>
-  <script src="./ai_insights.js?v=20260606g"></script>
+  <script src="./ai_insights.js?v=20260606h"></script>
 </body>
 </html>
