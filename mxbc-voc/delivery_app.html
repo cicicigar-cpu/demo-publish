@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>蜜雪冰城外卖体验监测看板</title>
+  <link rel="stylesheet" href="./mx_dashboard.css?v=20260606g">
+</head>
+<body data-app="delivery">
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="side-brand" href="./index.html">
+        <span class="brand-mark">M</span>
+        <span>数说雷达</span>
+      </a>
+      <div class="side-section">蜜雪冰城 VOC</div>
+      <button class="side-item tab active" data-target="overview"><span class="side-dot"></span><span>外卖体验总览</span></button>
+      <button class="side-item tab" data-target="issues"><span class="side-dot"></span><span>体验问题归因</span></button>
+      <button class="side-item tab" data-target="regions"><span class="side-dot"></span><span>区域与门店归因</span></button>
+      <div class="side-section">工具箱</div>
+      <button class="side-item tab" data-target="aiInsights"><span class="side-dot"></span><span>AI 洞察</span></button>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="top-title"><span class="hamburger">☰</span><span>蜜雪冰城外卖体验监测看板</span></div>
+        <div class="top-actions"><span>中文⌄</span><span>帮助</span><span>通知</span><span class="avatar">账号</span><span>欢迎！蜜雪品牌部</span></div>
+      </header>
+      <section class="filterbar">
+        <label class="filter-control"><span>品牌</span><select id="filterBrand"><option>蜜雪冰城</option></select></label>
+        <label class="filter-control wide"><span>平台</span><select id="filterPlatform"><option value="全部">全部平台</option></select></label>
+        <label class="filter-control"><span>区域</span><select id="filterRegion"><option value="全国">全国</option></select></label>
+        <label class="filter-control"><span>问题维度</span><select id="filterIssue"><option value="全部">全部问题</option></select></label>
+        <label class="filter-control"><span>情感</span><select id="filterEmotion"><option value="全部">全部情感</option></select></label>
+        <label class="filter-control"><span>评分</span><select id="filterScore"><option value="全部">全部评分</option><option value="1">1星</option><option value="2">2星</option><option value="3">3星</option><option value="4">4星</option><option value="5">5星</option></select></label>
+        <label class="filter-control"><span>问题主体</span><select id="filterSubject"><option value="全部">全部主体</option></select></label>
+        <label class="filter-control"><span>时间</span><select id="filterTime"><option value="2026-05-01">2026-05-01</option><option value="近7天">近7天</option><option value="近30天">近30天</option></select></label>
+      </section>
+      <section class="content">
+        <div id="overview" class="page active"></div>
+        <div id="issues" class="page"></div>
+        <div id="regions" class="page"></div>
+        <div id="aiInsights" class="page ai-insights-page">
+          <iframe class="ai-embed-frame" src="./ai_insights.html?embed=delivery&v=20260606g" title="外卖评价看板 AI 洞察"></iframe>
+        </div>
+        <div class="footer-note">数据来源：D:\mx_tagging_outputs\蜜雪POC_外卖评论数据case_打标结果.xlsx；页面指标由真实打标结果聚合生成。</div>
+      </section>
+    </main>
+  </div>
+  <script src="./mx_dashboard_data.js?v=20260606g"></script>
+  <script src="./mx_dashboard_app.js?v=20260606g"></script>
+</body>
+</html>

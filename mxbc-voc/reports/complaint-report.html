@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>蜜雪冰城全渠道客诉聚合与风险洞察报告</title>
+  <style>
+    :root {
+      --red: #d90b1c;
+      --red-dark: #9f0b17;
+      --red-soft: #fff1f2;
+      --ink: #202124;
+      --muted: #667085;
+      --line: #e7e9ee;
+      --paper: #ffffff;
+      --canvas: #f5f6f8;
+      --amber: #a85c00;
+      --amber-soft: #fff7e8;
+      --green: #18794e;
+      --green-soft: #eaf8f1;
+      --blue: #2457a6;
+      --blue-soft: #edf4ff;
+      --shadow: 0 12px 32px rgba(31, 35, 48, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.72;
+    }
+    a { color: inherit; }
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 24px auto 64px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 64px 64px 48px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 88% 15%, rgba(255,255,255,.2), transparent 25%),
+        linear-gradient(135deg, #b50918 0%, #e20b20 60%, #f04858 100%);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -150px;
+      bottom: -230px;
+      border: 44px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+    }
+    .eyebrow {
+      display: inline-block;
+      padding: 5px 10px;
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .12em;
+    }
+    h1 {
+      max-width: 820px;
+      margin: 18px 0 10px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.16;
+      letter-spacing: -.03em;
+    }
+    .subtitle {
+      max-width: 800px;
+      margin: 0;
+      font-size: 18px;
+      color: rgba(255,255,255,.88);
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      margin-top: 34px;
+      font-size: 13px;
+      color: rgba(255,255,255,.8);
+    }
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(12px);
+    }
+    .toc a {
+      flex: 0 0 auto;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: #535866;
+      font-size: 12px;
+      text-decoration: none;
+    }
+    .toc a:hover,
+    .toc a:focus {
+      color: var(--red);
+      background: var(--red-soft);
+      outline: none;
+    }
+    main { padding: 20px 64px 64px; }
+    section {
+      padding: 38px 0 28px;
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: 64px;
+    }
+    section:last-child { border-bottom: 0; }
+    .section-kicker {
+      margin-bottom: 6px;
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h2 {
+      margin: 0 0 20px;
+      font-size: clamp(25px, 3vw, 34px);
+      line-height: 1.25;
+      letter-spacing: -.02em;
+    }
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 19px;
+      line-height: 1.35;
+    }
+    h4 { margin: 0 0 8px; }
+    p { margin: 10px 0; }
+    .lead {
+      max-width: 920px;
+      color: #3f4450;
+      font-size: 17px;
+    }
+    .callout {
+      margin: 20px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--amber);
+      border-radius: 0 10px 10px 0;
+      color: #664212;
+      background: var(--amber-soft);
+    }
+    .callout strong { color: #4d2f08; }
+    .callout.red {
+      border-left-color: var(--red);
+      color: #6f1720;
+      background: var(--red-soft);
+    }
+    .callout.green {
+      border-left-color: var(--green);
+      color: #18573c;
+      background: var(--green-soft);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 22px 0;
+    }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+    .card .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .card .value {
+      margin: 6px 0 2px;
+      color: var(--red);
+      font-size: 30px;
+      font-weight: 760;
+      line-height: 1.1;
+    }
+    .card .note {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .status.ok { color: var(--green); background: var(--green-soft); }
+    .status.partial { color: var(--amber); background: var(--amber-soft); }
+    .status.no { color: var(--red-dark); background: var(--red-soft); }
+    .status.info { color: var(--blue); background: var(--blue-soft); }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 8px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: #4f5563;
+      background: #f8f9fb;
+      font-size: 12px;
+      font-weight: 750;
+    }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #fffafa; }
+    .small { color: var(--muted); font-size: 12px; }
+    .metric-list {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 10px 20px;
+      margin: 18px 0;
+    }
+    .metric-list dt { font-weight: 720; }
+    .metric-list dd { margin: 0; color: #4e5360; }
+    .bars {
+      display: grid;
+      gap: 11px;
+      margin: 18px 0;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 58px;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .track {
+      height: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #eef0f3;
+    }
+    .fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ef5260, var(--red));
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 20px 0;
+    }
+    .quote {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: #343842;
+      background: #fafbfc;
+    }
+    .quote p { margin: 0; font-style: italic; }
+    .quote footer { margin-top: 10px; color: var(--muted); font-size: 12px; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .step {
+      position: relative;
+      padding: 16px;
+      border-radius: 10px;
+      color: #fff;
+      background: #333946;
+    }
+    .step b { display: block; margin-bottom: 5px; }
+    .step span { color: rgba(255,255,255,.75); font-size: 12px; }
+    .step:first-child { background: var(--red); }
+    .priority {
+      display: inline-block;
+      min-width: 30px;
+      padding: 2px 7px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .p1 { color: #fff; background: var(--red); }
+    .p2 { color: #714309; background: #ffe1ad; }
+    .p3 { color: var(--blue); background: var(--blue-soft); }
+    .checklist {
+      margin: 14px 0;
+      padding-left: 20px;
+    }
+    .checklist li { margin: 7px 0; }
+    .footer {
+      padding: 28px 64px;
+      color: #7a808d;
+      background: #f7f8fa;
+      font-size: 12px;
+    }
+    .footer strong { color: #4d5360; }
+    code {
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #8f1b26;
+      background: #f7eef0;
+    }
+    @media (max-width: 840px) {
+      .page { width: 100%; margin: 0; }
+      .hero, main, .footer { padding-left: 22px; padding-right: 22px; }
+      .hero { padding-top: 44px; }
+      .grid, .grid.four, .two-col, .steps { grid-template-columns: 1fr; }
+      .metric-list { grid-template-columns: 1fr; gap: 2px; }
+      .bar-row { grid-template-columns: 82px 1fr 50px; }
+    }
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; margin: 0; box-shadow: none; }
+      .toc { display: none; }
+      section { break-inside: avoid; }
+      .table-wrap { overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header class="hero">
+      <span class="eyebrow">CUSTOMER COMPLAINT INSIGHT</span>
+      <h1>蜜雪冰城全渠道客诉聚合与专题洞察报告</h1>
+      <p class="subtitle">覆盖数据全景、问题识别、专题诊断、根因假设与业务处置的独立分析报告</p>
+      <div class="meta">
+        <span>内部客诉样本：2026-05-01</span>
+        <span>社媒观察日：2026-05-21</span>
+        <span>报告更新：2026-06-06</span>
+        <span>适用对象：客诉、运营、产品、供应链与食安团队</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="报告目录">
+      <a href="#summary">核心结论</a>
+      <a href="#overview">数据全景</a>
+      <a href="#signal-product">产品集中</a>
+      <a href="#signal-ab">AB货专题</a>
+      <a href="#signal-food">食安专题</a>
+      <a href="#signal-fulfillment">履约专题</a>
+      <a href="#synthesis">综合研判</a>
+      <a href="#actions">决策建议</a>
+      <a href="#appendix">口径附录</a>
+    </nav>
+
+    <main>
+      <section id="summary">
+        <div class="section-kicker">Executive Summary</div>
+        <h2>本期核心结论与管理层判断</h2>
+        <p class="lead">
+          本报告整合 5,535 条内部客诉样本、5,036 条可逐条解析社媒样本及全网趋势数据，
+          从发生量、情绪强度、业务后果、传播能力和问题关联性五个维度识别重点问题。
+          分析显示，产品体验、品质一致性、食安高敏问题和交付链路是本期最值得优先处理的四个方向。
+        </p>
+
+        <div class="grid four">
+          <div class="card">
+            <div class="label">发现 1：产品体验集中</div>
+            <div class="value">2,826</div>
+            <div class="note">一级标签命中最高，约为包装或履约问题的 2 倍</div>
+          </div>
+          <div class="card">
+            <div class="label">发现 2：品质议题外溢</div>
+            <div class="value">80,646</div>
+            <div class="note">AB 货议题最高单条互动，少量内容产生高放大</div>
+          </div>
+          <div class="card">
+            <div class="label">发现 3：食安低频高危</div>
+            <div class="value">52</div>
+            <div class="note">高风险社媒样本，主要触发食安、异物与品质质疑</div>
+          </div>
+          <div class="card">
+            <div class="label">发现 4：交付问题并发</div>
+            <div class="value">1,394 / 1,392</div>
+            <div class="note">包装与订单履约几乎同量，可能来自同一交付链路</div>
+          </div>
+        </div>
+
+        <div class="callout green">
+          <strong>报告研判：</strong>
+          四项发现并非彼此独立。产品一致性异常可能源于原料、设备和门店执行；
+          冷饮状态异常可能横跨制作、等待、打包和配送；服务补救不足又会放大原始问题。
+          因此，本期需要从单一标签排名进一步下钻到产品和交付链路。
+        </div>
+      </section>
+
+      <section id="overview">
+        <div class="section-kicker">Chapter 01</div>
+        <h2>数据全景与分析框架</h2>
+        <p class="lead">
+          本章提供独立阅读报告所需的完整数据背景，并说明后续专题为何被选中。
+          内部数据用于识别日常客诉结构，社媒明细用于识别情绪与风险议题，全网趋势用于判断传播背景。
+        </p>
+
+        <div class="grid four">
+          <div class="card">
+            <div class="label">内部客诉样本</div>
+            <div class="value">5,535</div>
+            <div class="note">日期集中于 2026-05-01</div>
+          </div>
+          <div class="card">
+            <div class="label">社媒有效明细</div>
+            <div class="value">5,036</div>
+            <div class="note">可用于逐条标签、情绪和内容分析</div>
+          </div>
+          <div class="card">
+            <div class="label">全网聚合声量</div>
+            <div class="value">16,716</div>
+            <div class="note">趋势接口口径，不与明细样本共用分母</div>
+          </div>
+          <div class="card">
+            <div class="label">全网总互动量</div>
+            <div class="value">2,287,390</div>
+            <div class="note">用于观察内容扩散背景</div>
+          </div>
+        </div>
+
+        <h3>社媒平台与情绪分布</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>维度</th>
+                <th>数据结果</th>
+                <th>分析解读</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>平台</td>
+                <td>抖音 3,400 条、小红书 1,379 条、微博 257 条</td>
+                <td>风险内容主要在短视频平台获得放大；小红书更偏生活记录和消费分享</td>
+              </tr>
+              <tr>
+                <td>全网情绪</td>
+                <td>中性 77.82%、正面 18.31%、负面 3.87%</td>
+                <td>总体口碑并未失控，风险集中在少数高敏议题，而非普遍性负面</td>
+              </tr>
+              <tr>
+                <td>有效明细情绪</td>
+                <td>强负向 43 条、负向 58 条</td>
+                <td>强负向规模较小，但与食安、异物和品质质疑高度相关</td>
+              </tr>
+              <tr>
+                <td>高风险样本</td>
+                <td>52 条</td>
+                <td>用于识别需要越过普通客诉流程、直接进入业务核查的信号</td>
+              </tr>
+              <tr>
+                <td>地域线索</td>
+                <td>抖音用户属地 Top 3：河南、广东、山东</td>
+                <td>仅代表内容发布者分布，未按门店数和订单量校正，不能直接等同风险排名</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>内部问题结构</h3>
+        <div class="bars" aria-label="内部客诉一级标签全景">
+          <div class="bar-row"><span>产品体验</span><div class="track"><div class="fill" style="width:100%"></div></div><b>2,826</b></div>
+          <div class="bar-row"><span>包装打包</span><div class="track"><div class="fill" style="width:49.3%"></div></div><b>1,394</b></div>
+          <div class="bar-row"><span>订单履约</span><div class="track"><div class="fill" style="width:49.3%"></div></div><b>1,392</b></div>
+          <div class="bar-row"><span>服务售后</span><div class="track"><div class="fill" style="width:23.9%"></div></div><b>675</b></div>
+          <div class="bar-row"><span>配送履约</span><div class="track"><div class="fill" style="width:13.9%"></div></div><b>392</b></div>
+          <div class="bar-row"><span>食安卫生</span><div class="track"><div class="fill" style="width:8.2%"></div></div><b>232</b></div>
+        </div>
+        <p class="small">注：内部问题为多标签命中次数，同一条客诉可能同时命中产品、包装和履约标签。</p>
+
+        <h3>专题筛选与分析路径</h3>
+        <div class="steps">
+          <div class="step"><b>1. 识别异常</b><span>比较问题体量、情绪强度、互动放大和高敏标签</span></div>
+          <div class="step"><b>2. 组合证据</b><span>结合标签分布、用户原声、产品、平台和业务链路</span></div>
+          <div class="step"><b>3. 提出假设</b><span>区分原料、设备、操作、门店和配送等可能原因</span></div>
+          <div class="step"><b>4. 形成判断</b><span>明确可确认结论、证据不足项和核查动作</span></div>
+        </div>
+
+        <div class="callout">
+          <strong>四个专题的选择依据：</strong>
+          产品体验因体量最高入选；AB 货因高互动和品牌信任风险入选；
+          食安问题因后果严重性入选；包装与履约因体量接近且可能属于同一交付链路入选。
+        </div>
+      </section>
+
+      <section id="signal-product">
+        <div class="section-kicker">Chapter 02</div>
+        <h2>专题一：产品体验为何成为客诉最集中的问题</h2>
+        <p class="lead">
+          数据显示产品体验标签命中 2,826 次，显著高于其他一级问题。
+          深挖后发现，它并不是单一的“口味不好”，而是由感官一致性、成品状态和交付后状态共同构成。
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>问题层级</th>
+                <th>代表问题</th>
+                <th>用户感受</th>
+                <th>业务含义</th>
+                <th>优先改善方向</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>感官一致性</td>
+                <td>颜色、味道、加料感和用户预期不一致</td>
+                <td>质疑“同款不同质”</td>
+                <td>容易从单品差评升级为品牌标准化问题</td>
+                <td>原料标准、设备参数、门店执行</td>
+              </tr>
+              <tr>
+                <td>制作后状态</td>
+                <td>冰淇淋干巴、融化、温度或形态异常</td>
+                <td>认为产品“不像正常成品”</td>
+                <td>可能由设备、制作、等待或配送共同造成</td>
+                <td>设备日志与订单时间节点联合核查</td>
+              </tr>
+              <tr>
+                <td>口味 / 气味异常</td>
+                <td>发苦、香精味、怪味或疑似洗洁精味</td>
+                <td>从不好喝转向食安联想</td>
+                <td>同一描述可能跨越体验与食安两类问题</td>
+                <td>原料、清洗与容器交叉排查</td>
+              </tr>
+              <tr>
+                <td>到手状态</td>
+                <td>洒漏、融化、杯盖或包装导致体验受损</td>
+                <td>最终仍被归因为“产品不好”</td>
+                <td>产品体验标签中可能混入交付链路问题</td>
+                <td>拆分制作完成与送达状态</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>深入判断：产品体验高发不等于产品配方单点失效</h3>
+        <div class="two-col">
+          <div class="quote">
+            <p>“买的是冰淇淋，里面干巴巴的，既不是冰块也不是冰淇淋。”</p>
+            <footer>成品状态异常，但仅凭原声无法区分设备、制作、等待还是配送原因。</footer>
+          </div>
+          <div class="quote">
+            <p>“今天的柠檬水有股怪味，有些像洗洁精。”</p>
+            <footer>一个产品体验信号同时触发食安联想，说明标签之间需要保留关联，而非互斥分类。</footer>
+          </div>
+          <div class="quote">
+            <p>“一杯很黄，一杯接近白色，芒果味和加料感受也不同。”</p>
+            <footer>感官差异同时涉及原料、设备和制作标准，是产品一致性专题的核心线索。</footer>
+          </div>
+          <div class="quote">
+            <p>“到手已经化了 / 状态不对。”</p>
+            <footer>用户看到的是产品问题，企业内部需要继续拆解制作、等待、打包和配送环节。</footer>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>专题结论：</strong>
+          产品体验 2,826 次的改善责任不能全部归给产品团队。至少需要把问题拆为
+          “制作完成时已异常”和“交付过程中变差”两类，才能避免根因误判和部门间反复转单。
+        </div>
+      </section>
+
+      <section id="signal-ab">
+        <div class="section-kicker">Chapter 03</div>
+        <h2>专题二：16 条“AB 货”记录为何形成最高优先级</h2>
+        <p class="lead">
+          AB 货议题绝对量不高，但最高单条互动达到 80,646，说明问题已经突破普通产品差评，
+          被传播为“连锁品牌是否能保证同款同质”的公共质疑。
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>分析层</th>
+                <th>已观察证据</th>
+                <th>可以判断</th>
+                <th>暂不能判断</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>用户感知</td>
+                <td>同款杨枝甘露颜色、芒果味和加料感明显不同</td>
+                <td>差异已超出部分用户的可接受范围</td>
+                <td>颜色差异是否必然代表配方或克重异常</td>
+              </tr>
+              <tr>
+                <td>门店回应</td>
+                <td>相关门店称芒果酱批次泛白，自动出液机按克重出液</td>
+                <td>原料批次和设备是需要核查的关键变量</td>
+                <td>回应是否能代表全部涉事门店，设备是否实际校准</td>
+              </tr>
+              <tr>
+                <td>传播表现</td>
+                <td>抖音、微博出现重复传播，高互动内容放大质疑</td>
+                <td>议题具有跨平台外溢能力</td>
+                <td>是否已经造成大范围购买转化或销量影响</td>
+              </tr>
+              <tr>
+                <td>品牌含义</td>
+                <td>用户使用“AB 货”而非普通“色差”描述</td>
+                <td>问题已被解释为品质分层或货不对板</td>
+                <td>用户对品牌整体信任是否持续下降</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>根因树：需要同时验证三条路径</h3>
+        <div class="steps">
+          <div class="step"><b>原料路径</b><span>芒果酱批次颜色、风味或稠度是否超出标准</span></div>
+          <div class="step"><b>设备路径</b><span>出液机参数、校准状态与维护记录是否一致</span></div>
+          <div class="step"><b>操作路径</b><span>制作顺序、搅拌、辅料和门店执行是否存在差异</span></div>
+          <div class="step"><b>感知路径</b><span>现有视觉和感官标准是否足以管理用户预期</span></div>
+        </div>
+
+        <div class="callout green">
+          <strong>专题结论：</strong>
+          当前证据支持“产品一致性存在需要核查的异常信号”，但不支持直接认定人为少加料。
+          最优策略不是立刻发布声明，而是先用同批次跨门店抽检区分原料、设备与操作原因，
+          再根据传播增速决定是否需要品牌侧公开回应。
+        </div>
+      </section>
+
+      <section id="signal-food">
+        <div class="section-kicker">Chapter 04</div>
+        <h2>专题三：食安问题量级不高，为何仍需独立升级</h2>
+        <p class="lead">
+          食安卫生标签命中 232 次，社媒高风险样本 52 条，其中包括异物、疑似变质和品质质疑。
+          这类问题不适合与普通体验问题按数量竞争优先级，因为其潜在后果和传播敏感度更高。
+        </p>
+
+        <div class="callout">
+          <strong>监测背景：</strong>
+          5,036 条有效社媒样本中，强负向 43 条、负向 58 条，整体负向并未形成大面积失控。
+          但 52 条高风险样本集中在少数食安与品质议题上，呈现“总体平稳、局部高敏”的结构。
+          专题报告的价值正是识别这种容易被总体均值掩盖的风险。
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>高敏信号</th>
+                <th>用户表达</th>
+                <th>风险含义</th>
+                <th>优先核查链路</th>
+                <th>报告判断</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>异物</b></td>
+                <td>社媒细分线索 11 条</td>
+                <td>容易引发图片传播、举报和门店卫生质疑</td>
+                <td>原料、容器、制作环境、人员操作</td>
+                <td>应全量复核，不能只看占比</td>
+              </tr>
+              <tr>
+                <td><b>清洁剂味</b></td>
+                <td>“柠檬水像洗洁精”</td>
+                <td>从口味异常直接升级为化学残留联想</td>
+                <td>清洗剂配比、冲洗、容器、当班操作</td>
+                <td>需先排除安全风险，再判断是否为感官误判</td>
+              </tr>
+              <tr>
+                <td><b>变质 / 怪味</b></td>
+                <td>变质过期线索及强负向描述</td>
+                <td>可能关联原料储存、开封时限和温控</td>
+                <td>批次、开封记录、储存温度、同店同日订单</td>
+                <td>单条也需建立可追溯证据链</td>
+              </tr>
+              <tr>
+                <td><b>身体不适</b></td>
+                <td>吃坏肚子、就医等潜在描述</td>
+                <td>可能形成健康损害与监管风险</td>
+                <td>订单、时间、产品、共食者、门店留样</td>
+                <td>需由食安团队而非普通客服单独判断</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout red">
+          <strong>专题结论：</strong>
+          食安监测的价值不是证明“整体食安问题很多”，而是在普通客诉中尽早识别少量红线信号，
+          并在其形成高互动内容前完成订单、门店和批次溯源。
+        </div>
+      </section>
+
+      <section id="signal-fulfillment">
+        <div class="section-kicker">Chapter 05</div>
+        <h2>专题四：包装与订单履约几乎同量，是否指向同一条交付链路</h2>
+        <p class="lead">
+          包装打包标签命中 1,394 次，订单履约 1,392 次，两类问题规模几乎完全一致。
+          这提示问题可能并非两个独立板块，而是共同发生在制作完成到用户拿到产品之间。
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>链路节点</th>
+                <th>可能问题</th>
+                <th>用户看到的结果</th>
+                <th>需要补充的证据</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>制作完成</td>
+                <td>产品已完成但订单状态未同步或未及时交付</td>
+                <td>“做好了却不给我拿”</td>
+                <td>制作完成时间、取餐通知和实际交付时间</td>
+              </tr>
+              <tr>
+                <td>等待 / 暂存</td>
+                <td>高峰积压、冷饮等待过久、取餐区管理混乱</td>
+                <td>融化、温度和成品状态下降</td>
+                <td>等待时长、环境温度、订单峰值</td>
+              </tr>
+              <tr>
+                <td>打包</td>
+                <td>杯盖、包装物或打包动作不稳定</td>
+                <td>洒漏、破损、外观差</td>
+                <td>包装规格、门店操作、异常图片</td>
+              </tr>
+              <tr>
+                <td>配送</td>
+                <td>配送时长、路线、保温或取送顺序</td>
+                <td>到手融化、洒漏、状态异常</td>
+                <td>骑手接单、取餐、送达时间和距离</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout green">
+          <strong>专题结论：</strong>
+          “出餐慢”和“到手状态差”可能是同一链路在不同节点的表现。
+          如果仅按问题类型分部门统计，会掩盖跨节点原因；需要用订单时间轴把制作、等待、打包和配送串起来。
+        </div>
+      </section>
+
+      <section id="synthesis">
+        <div class="section-kicker">Chapter 06</div>
+        <h2>综合研判：四个专题共同指向三类系统性问题</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>系统性问题</th>
+                <th>关联数据发现</th>
+                <th>深入洞察</th>
+                <th>需要验证的关键假设</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>标准化控制不足</b></td>
+                <td>产品体验集中、AB 货外溢</td>
+                <td>用户不仅在评价好不好喝，而是在比较不同门店是否交付同一产品</td>
+                <td>原料批次、设备参数和门店执行是否存在可感知差异</td>
+              </tr>
+              <tr>
+                <td><b>交付链路割裂</b></td>
+                <td>包装与订单履约同量、冷饮状态异常</td>
+                <td>内部标签将问题分开，但用户体验由制作到配送的完整时间轴决定</td>
+                <td>等待和配送时长是否是融化、洒漏与状态异常的共同变量</td>
+              </tr>
+              <tr>
+                <td><b>高敏问题升级不够前置</b></td>
+                <td>异物、怪味、变质、高风险社媒样本</td>
+                <td>少量食安信号可能在普通客诉流程停留过久，错过早期溯源窗口</td>
+                <td>红线关键词能否自动触发食安团队和门店留样核查</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>从数据事实到业务判断的推导链路</h3>
+        <div class="two-col">
+          <div class="card">
+            <h4>从“量高”到“问题由什么构成”</h4>
+            <p>将产品体验拆为一致性、制作状态、气味口味和到手状态，避免把所有责任归给产品配方。</p>
+          </div>
+          <div class="card">
+            <h4>从“有热点”到“为什么会外溢”</h4>
+            <p>AB 货传播的核心不是色差本身，而是用户将差异解释为同款不同质。</p>
+          </div>
+          <div class="card">
+            <h4>从“两个标签”到“一条业务链路”</h4>
+            <p>包装与履约几乎同量，结合冷饮状态原声后，指向制作完成后的交付链路。</p>
+          </div>
+          <div class="card">
+            <h4>从“低占比”到“红线优先级”</h4>
+            <p>食安问题不以数量决定优先级，而以健康后果、证据保全和传播敏感度决定。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="actions">
+        <div class="section-kicker">Chapter 07</div>
+        <h2>决策建议：针对本期异常信号开展核查与改善</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>优先级</th>
+                <th>业务议题</th>
+                <th>本期核查动作</th>
+                <th>判断完成后的改善动作</th>
+                <th>责任团队</th>
+                <th>效果指标</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="priority p1">P1</span></td>
+                <td>杨枝甘露品质一致性</td>
+                <td>对涉事内容对应批次、设备和门店执行做交叉核查</td>
+                <td>根据根因建立色差标准、设备校验或操作巡检机制</td>
+                <td>产品、供应链、设备、运营</td>
+                <td>同类客诉下降、批次异常率、设备校验完成率</td>
+              </tr>
+              <tr>
+                <td><span class="priority p1">P1</span></td>
+                <td>食安高敏问题</td>
+                <td>复核 52 条高风险样本，优先锁定异物、怪味和变质相关订单</td>
+                <td>统一红线触发条件、证据保全要求和跨团队响应时限</td>
+                <td>食安、区域运营、供应链</td>
+                <td>首次响应时长、溯源完成率、整改关闭率、复发率</td>
+              </tr>
+              <tr>
+                <td><span class="priority p2">P2</span></td>
+                <td>出餐慢与压单</td>
+                <td>抽取出餐慢与状态异常样本，重建完整订单时间轴</td>
+                <td>针对实际瓶颈优化排班、取餐动线或订单状态</td>
+                <td>门店运营、产品技术</td>
+                <td>P90 出餐时长、超时率、履约投诉率</td>
+              </tr>
+              <tr>
+                <td><span class="priority p2">P2</span></td>
+                <td>包装与冷饮交付</td>
+                <td>验证包装问题和履约问题是否集中于同门店、时段或配送距离</td>
+                <td>建立制作、打包、等待和配送的联合质量责任</td>
+                <td>运营、包装、配送</td>
+                <td>洒漏率、融化投诉率、到手状态差评率</td>
+              </tr>
+              <tr>
+                <td><span class="priority p3">P3</span></td>
+                <td>客服补救体验</td>
+                <td>检查高敏客诉是否在普通退款流程中结束而未触发业务核查</td>
+                <td>建立客诉触发业务调查、结果回填和复发监测机制</td>
+                <td>客诉、客服</td>
+                <td>一次解决率、重复投诉率、闭环时长</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout green">
+          <strong>闭环关系：</strong>
+          本报告已完成问题识别、专题诊断与核查方案设计，业务团队可据此核查和整改。
+          核查结论和整改结果可进一步回填到持续监测体系，
+          用于判断同类信号是否下降、是否复发，以及原有根因假设是否成立。
+        </div>
+      </section>
+
+      <section id="appendix">
+        <div class="section-kicker">Appendix</div>
+        <h2>数据口径与分析边界</h2>
+        <p class="lead">
+          本节解释数据结果和专题判断的证据边界。
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>数据</th>
+                <th>规模</th>
+                <th>时间</th>
+                <th>主要用途</th>
+                <th>限制</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>内部外卖评论 / 客诉样本</td>
+                <td>5,535 条</td>
+                <td>2026-05-01</td>
+                <td>客诉结构、典型问题与业务链路分析</td>
+                <td>与社媒不同日；现有过程文件未充分呈现标准门店字段</td>
+              </tr>
+              <tr>
+                <td>社媒有效明细</td>
+                <td>5,036 条</td>
+                <td>2026-05-21</td>
+                <td>情绪、议题、平台、地域和外溢风险分析</td>
+                <td>抖音 3,400、小红书 1,379、微博 257；哔哩哔哩无记录</td>
+              </tr>
+              <tr>
+                <td>全网趋势接口</td>
+                <td>16,716 条声量</td>
+                <td>2026-05-21</td>
+                <td>判断全网规模和趋势背景</td>
+                <td>与逐条可解析样本口径不同，不作为同一分母</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout red">
+          <strong>重要限制：</strong>
+          内部与社媒样本时间窗口不一致，因此本报告不声称 AB 货等社媒议题由本期内部客诉直接演化而来，
+          而是将其作为同类问题的跨渠道风险案例进行专题分析。
+        </div>
+
+        <h3>提升下一期专题分析深度所需数据</h3>
+        <ul class="checklist">
+          <li>同一时间窗口的内部客诉、在线客服、400 热线、工单和社媒数据。</li>
+          <li>门店 ID、产品 SKU、原料批次、设备编号与订单全节点时间。</li>
+          <li>食安核查、门店整改、退款补偿和用户回访等处置结果。</li>
+          <li>按门店数和订单量校正后的区域、门店异常基线。</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <strong>报告说明：</strong>
+      本报告可独立阅读与决策使用，也可作为持续监测体系中的专题分析交付物。
+    </footer>
+  </article>
+</body>
+</html>

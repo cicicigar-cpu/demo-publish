@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>全渠道客诉与舆情外溢监测 - 蜜雪冰城 POC</title>
+  <link rel="stylesheet" href="./mx_dashboard.css?v=20260606g">
+</head>
+<body data-app="service">
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="side-brand" href="./index.html">
+        <span class="brand-mark">D</span>
+        <span>数说雷达</span>
+      </a>
+      <div class="side-section">客诉部工作台</div>
+      <button class="side-item tab active" data-target="complaint"><span class="side-dot"></span><span>全渠道监测总览</span></button>
+      <button class="side-item tab" data-target="warning"><span class="side-dot"></span><span>预警中心与外溢风险</span></button>
+      <button class="side-item tab" data-target="serviceRegions"><span class="side-dot"></span><span>区域与门店风险定位</span></button>
+      <div class="side-section">工具箱</div>
+      <button class="side-item tab" data-target="aiInsights"><span class="side-dot"></span><span>AI 洞察</span></button>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="top-title"><span class="hamburger">☰</span><span>全渠道客诉与舆情外溢监测</span></div>
+        <div class="top-actions"><span>中文⌄</span><span>帮助</span><span>通知</span><span class="avatar">账号</span><span>欢迎！蜜雪客诉部</span></div>
+      </header>
+      <section class="filterbar">
+        <label class="filter-control"><span>时间</span><select id="serviceTime"><option value="近7天">近7天</option><option value="昨日">昨日</option><option value="近30天">近30天</option><option value="本月">本月</option></select></label>
+        <label class="filter-control"><span>数据来源</span><select id="serviceSource"><option value="全部">全部</option><option value="热线">热线</option><option value="在线客服">在线客服</option><option value="外卖评价">外卖评价</option><option value="抖音">抖音</option><option value="小红书">小红书</option><option value="微博">微博</option><option value="B站">B站</option><option value="快手">快手</option></select></label>
+        <label class="filter-control"><span>问题维度</span><select id="serviceIssueDim"><option value="全部">全部维度</option><option>产品体验</option><option>食安卫生</option><option>服务售后</option><option>配送履约</option><option>包装打包</option><option>订单履约</option><option>品牌声誉</option><option>咨询与规则</option><option>其他</option></select></label>
+        <label class="filter-control"><span>区域</span><select id="serviceRegion"><option value="全国">全国</option><option>河南</option><option>广东</option><option>山东</option><option>江苏</option><option>浙江</option><option>四川</option><option>湖北</option><option>湖南</option></select></label>
+        <label class="filter-control"><span>产品</span><select id="serviceProduct"><option value="全部产品">全部产品</option><option>冰鲜柠檬水</option><option>杨枝甘露</option><option>雪王大圣代</option><option>金桔香柠</option><option>奶茶类</option><option>果茶类</option><option>冰淇淋类</option><option>其他产品</option></select></label>
+        <label class="filter-control"><span>风险等级</span><select id="serviceRisk"><option value="全部">全部</option><option>P1 高风险</option><option>P2 中高风险</option><option>P3 一般风险</option><option>观察信号</option></select></label>
+      </section>
+      <section class="content">
+        <div id="complaint" class="page active"></div>
+        <div id="warning" class="page"></div>
+        <div id="serviceRegions" class="page"></div>
+        <div id="aiInsights" class="page ai-insights-page">
+          <iframe class="ai-embed-frame" src="./ai_insights.html?embed=service&v=20260606g" title="客诉看板 AI 洞察"></iframe>
+        </div>
+        <div class="footer-note">数据来源：D:\mx_tagging_outputs\蜜雪POC_客诉_数据case_打标结果.xlsx、蜜雪POC客诉同天社媒抖红微B快_24509814_打标结果.xlsx、蜜雪POC薄荷新品数据_24509941_打标结果.xlsx。</div>
+      </section>
+    </main>
+  </div>
+  <script src="./mx_dashboard_data.js?v=20260606g"></script>
+  <script src="./mx_dashboard_app.js?v=20260606g"></script>
+</body>
+</html>
