@@ -24,10 +24,24 @@
       .replaceAll('"', "&quot;");
   }
 
+  function normalizeEmotion(emotion) {
+    const positive = ["满意", "愉悦", "期待", "好奇", "惊喜", "信任", "兴奋"];
+    const neutral  = ["理性", "观望", "困惑", "怀旧", "被动接受"];
+    const negative = ["不满", "厌恶", "失望", "怀疑", "无助", "烦躁", "后悔"];
+    const angry    = ["愤怒"];
+    if (angry.includes(emotion)) return "愤怒";
+    if (positive.includes(emotion)) return "正面";
+    if (neutral.includes(emotion)) return "中性";
+    if (negative.includes(emotion)) return "负面";
+    return "负面";
+  }
+
   function badgeClass(emotion) {
-    if (["愤怒", "厌恶", "失望", "不满", "烦躁", "困惑", "无助", "怀疑"].includes(emotion)) return "red";
-    if (["满意", "愉悦", "期待", "好奇", "惊喜", "信任"].includes(emotion)) return "green";
-    return "amber";
+    const category = normalizeEmotion(emotion);
+    if (category === "愤怒") return "red";
+    if (category === "正面") return "green";
+    if (category === "中性") return "amber";
+    return "red";
   }
 
   function kpis(items) {
@@ -404,14 +418,22 @@
     const source = (items || []).length ? items : [{ name: "暂无对应证据词", value: 1 }];
     const max = Math.max(...source.map(item => Number(item.value || 0)), 1);
     const palette = tone === "positive"
-      ? ["#1687ff", "#20b7b3", "#7569df", "#84a82a", "#ecb400", "#0961d6", "#0ea5a0", "#5b4ec9"]
-      : ["#ef4b6c", "#e58b21", "#7569df", "#1687ff", "#54647f", "#d63a5a", "#c47618", "#4a5a6f"];
-    const rotations = [0, 0, 0, -90, 0, 0, -90, 0, 0, 0, 0, -90, 0, 0, 0, -90, 0, 0];
+      ? ["#1687ff", "#20b7b3", "#09a674", "#ecb400", "#0961d6", "#0ea5a0", "#5b4ec9", "#84a82a", "#f5a623", "#2787f5"]
+      : ["#ef4b6c", "#e58b21", "#d63a5a", "#f5a623", "#ef4b6c", "#c47618", "#e05a3e", "#ff7a8a", "#b85c5c", "#d9534f"];
+    const positions = [
+      {x:35,y:45},{x:58,y:28},{x:18,y:62},{x:72,y:55},{x:45,y:75},
+      {x:12,y:35},{x:82,y:40},{x:28,y:18},{x:65,y:70},{x:48,y:50},
+      {x:85,y:65},{x:15,y:80},{x:55,y:15},{x:38,y:88},{x:75,y:22},
+      {x:22,y:48},{x:62,y:82},{x:42,y:32},{x:78,y:78},{x:8,y:55}
+    ];
+    const rotations = [0,0,0,-90,0,0,0,-90,0,0,0,0,-90,0,0,0,0,0,-90,0];
     return `<div class="wordcloud-canvas ${tone}">${source.slice(0, 20).map((item, index) => {
-      const size = 14 + Math.round(Number(item.value || 0) / max * 32);
+      const size = 13 + Math.round(Number(item.value || 0) / max * 38);
       const rotate = rotations[index % rotations.length];
-      const opacity = Math.max(0.55, Number(item.value || 0) / max);
-      return `<span title="出现 ${fmt(item.value)} 次" class="word-item" style="font-size:${size}px;color:${palette[index % palette.length]};opacity:${opacity.toFixed(2)};${rotate ? `transform:rotate(${rotate}deg)` : ""}">${escapeHtml(item.name)}</span>`;
+      const opacity = Math.max(0.65, 0.95 - index * 0.025);
+      const pos = positions[index % positions.length];
+      const weight = Math.round(Number(item.value || 0) / max * 700 + 400);
+      return `<span title="出现 ${fmt(item.value)} 次" class="word-item" style="left:${pos.x}%;top:${pos.y}%;font-size:${size}px;color:${palette[index % palette.length]};opacity:${opacity.toFixed(2)};font-weight:${weight};${rotate ? `transform:translate(-50%,-50%) rotate(${rotate}deg)` : `transform:translate(-50%,-50%)`}">${escapeHtml(item.name)}</span>`;
     }).join("")}</div>`;
   }
 
@@ -454,21 +476,45 @@
   }
 
   function deliveryPosts(items, titleTag) {
-    return `<div class="social-post-list">${items.map((item, index) => `
-      <article class="social-post">
+    const names = ["kio", "甜心苦瓜", "奶茶测评君", "今日喝茶", "雪王粉丝", "柠檬茶爱好者", "甜品观察员", "外卖体验官"];
+    const avatarColors = ["#ff6b6b","#4ecdc4","#45b7d1","#96ceb4","#feca57","#ff9ff3","#54a0ff","#5f27cd"];
+    return `<div class="social-post-list">${items.map((item, index) => {
+      const name = names[index % names.length];
+      const avatarColor = avatarColors[index % avatarColors.length];
+      const like = (2.3 + index * 0.8).toFixed(1);
+      const comment = (4 + index * 2);
+      const share = (12 + index * 5);
+      const view = (120 + index * 85);
+      return `<article class="social-post">
         <div class="social-post-head">
-          <span class="social-avatar">${["雪", "茶", "冰", "柠"][index % 4]}</span>
-          <div><strong>${["匿名用户", "甜品观察员", "外卖体验官", "今日喝茶"][index % 4]}</strong><small>${escapeHtml(item.channel || "外卖平台")}　${escapeHtml((item.time || "").slice(0, 10))}</small></div>
+          <span class="social-avatar" style="background:${avatarColor}">${name.slice(0,1)}</span>
+          <div class="social-post-meta">
+            <strong>${escapeHtml(name)}</strong>
+            <small>${escapeHtml(item.channel || "外卖平台")} · ${escapeHtml((item.time || "").slice(0, 10))} ${escapeHtml((item.time || "").slice(10, 16))}</small>
+          </div>
         </div>
-        <p>${escapeHtml(item.quote)}</p>
-        <div class="social-media-placeholder"><span></span><i></i></div>
+        <p class="social-post-body">${escapeHtml(item.quote)}</p>
+        ${index % 3 === 0 ? `<div class="social-media-card"><span class="media-tag">视频封面内容识别</span><div class="media-lines"><span></span><span></span></div></div>` : ""}
         <div class="social-post-foot">
-          <span>♡ ${18 + index * 7}</span><span>↗ ${4 + index}</span><span>◌ ${7 + index * 3}</span><span>◎ ${126 + index * 83}</span>
-          <button>查看详情</button>
+          <span class="stat-like">${like}万</span>
+          <span class="stat-comment">${comment},${comment * 2 + 47}</span>
+          <span class="stat-share">${share}.${share + 5}万</span>
+          <span class="stat-view">${view}.${view + 21}万</span>
+          <a class="post-detail-link" href="javascript:void(0)">查看详情</a>
         </div>
-        <div class="social-post-tags"><span>${escapeHtml(titleTag)}</span><span>${escapeHtml(item.city || "全国")}</span></div>
-      </article>
-    `).join("")}</div>`;
+      </article>`;
+    }).join("")}
+    <div class="post-pagination">
+      <button class="page-btn">‹</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <span class="page-ellipsis">…</span>
+      <button class="page-btn">1000</button>
+      <button class="page-btn">›</button>
+      <span class="page-jump">跳至 <input type="text" value="1"> 页</span>
+    </div>
+    </div>`;
   }
 
   function evidenceArea(node, d) {
@@ -712,7 +758,7 @@
     if (platform) platform.innerHTML = `<option value="全部">全部平台</option>${optionList(d.channels || [])}<option value="京东到家">京东到家</option>`;
     if (region) region.innerHTML = `<option value="全国">全国</option>${optionList(d.provinceCounts || [])}`;
     if (issue) issue.innerHTML = `<option value="全部">全部问题</option>${optionList(issueTree.children || [])}`;
-    if (emotion) emotion.innerHTML = `<option value="全部">全部情感</option><option value="负向">负向</option><option value="强负向">强负向</option>${optionList((d.emotionCounts || []).slice(0, 8))}`;
+    if (emotion) emotion.innerHTML = `<option value="全部">全部情感</option><option value="正面">正面</option><option value="中性">中性</option><option value="负面">负面</option><option value="愤怒">愤怒</option>${optionList((d.emotionCounts || []).slice(0, 8))}`;
     if (subject) subject.innerHTML = `<option value="全部">全部主体</option>${optionList(d.subjects || [])}`;
 
     $$("#filterPlatform, #filterRegion, #filterIssue, #filterEmotion, #filterScore, #filterSubject, #filterTime").forEach(control => {
@@ -756,14 +802,14 @@
     const emotion = (d.emotionCounts || []).find(item => item.name === state.emotion);
     if (emotion) {
       factor *= Math.max(0.035, Number(emotion.value || 0) / Math.max(1, Number(d.summary.total || 1)));
-      negativeRate = badgeClass(emotion.name) === "green" ? 18.5 : 98.8;
+      negativeRate = normalizeEmotion(emotion.name) === "正面" ? 18.5 : 98.8;
     }
-    if (state.emotion === "负向") {
+    if (state.emotion === "负面") {
       factor *= Number(d.summary.negativeCount || 0) / Math.max(1, Number(d.summary.total || 1));
       negativeRate = 100;
     }
-    if (state.emotion === "强负向") {
-      factor *= 0.207;
+    if (state.emotion === "愤怒") {
+      factor *= 0.12;
       negativeRate = 100;
     }
     if (state.score !== "全部") {
@@ -799,7 +845,7 @@
     let examplesRows = (d.examples || []).filter(item => {
       const platformOk = state.platform === "全部" || item.channel === state.platform || (state.platform === "京东到家" && item.channel === "未知");
       const regionOk = state.region === "全国" || String(item.city || "").includes(state.region.replace(/省|市|自治区|壮族|维吾尔|回族/g, ""));
-      const emotionOk = state.emotion === "全部" || state.emotion === "负向" || state.emotion === "强负向" || item.emotion === state.emotion;
+      const emotionOk = state.emotion === "全部" || normalizeEmotion(item.emotion || "理性") === state.emotion;
       const scoreOk = state.score === "全部" || String(Math.round(Number(item.score || 0))) === state.score;
       return platformOk && regionOk && emotionOk && scoreOk;
     });

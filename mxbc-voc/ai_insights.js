@@ -47,7 +47,7 @@
         ["外卖平台", "multi", ["全部平台", "美团", "饿了么", "京东到家"]],
         ["区域", "select", ["全国", "华南", "华东", "华中", "华北", "西南"]],
         ["问题维度", "multi", ["全部问题", "产品体验", "包装打包", "订单履约", "配送履约", "服务售后", "食安卫生"]],
-        ["情感", "multi", ["全部情感", "强负", "中负", "中性", "正向"]],
+        ["情感", "multi", ["全部情感", "正面", "中性", "负面", "愤怒"]],
         ["时间", "select", ["昨日", "近 7 天", "近 30 天", "本月", "自定义"]],
         ["问题主体", "select", ["全部主体", "门店", "产品", "配送", "平台", "用户", "不明确"]],
       ],
@@ -57,7 +57,7 @@
       description: "融合内部客诉与公开社媒数据，生成问题发现、风险归因和外溢监测报告。",
       fields: [
         ["时间周期", "select", ["昨日", "近 7 天", "近 30 天", "本月", "自定义"]],
-        ["情感", "multi", ["全部情感", "强负", "中负", "中性", "正向"]],
+        ["情感", "multi", ["全部情感", "正面", "中性", "负面", "愤怒"]],
         ["平台", "multi", ["全部来源", "热线", "在线客服", "外卖评价", "微博", "小红书", "抖音", "B站", "快手"]],
         ["区域", "select", ["全国", "河南", "广东", "山东", "江苏", "浙江", "四川", "湖北"]],
         ["问题维度", "multi", ["全部问题", "产品体验", "食安卫生", "服务售后", "配送履约", "包装打包", "订单履约", "品牌声誉"]],
@@ -220,10 +220,6 @@
   renderHistory();
   $$(".mode-tab").forEach(tab => tab.addEventListener("click", () => setMode(tab.dataset.mode)));
   $$("[data-template]").forEach(button => button.addEventListener("click", () => openConfig(button.dataset.template)));
-  $$(".command-card").forEach(card => card.addEventListener("click", () => {
-    $("#questionInput").value = card.dataset.question;
-    $("#questionInput").focus();
-  }));
   $("#sendQuestion").addEventListener("click", () => {
     const question = $("#questionInput").value.trim();
     if (!question) return;
