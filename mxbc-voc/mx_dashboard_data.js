@@ -36482,90 +36482,126 @@ window.MX_DASHBOARD_DATA = {
     "reputationDimensions": {
       "primary": [
         {
-          "name": "品牌声誉与社媒传播",
-          "volume": 2355,
-          "volumeChange": 5,
-          "nsr": 48.2
-        },
-        {
-          "name": "咨询建议与其他",
-          "volume": 1172,
-          "volumeChange": 16,
-          "nsr": 62.5
-        },
-        {
-          "name": "门店运营与合规",
-          "volume": 565,
-          "volumeChange": 16,
-          "nsr": 42.8
-        },
-        {
           "name": "产品体验",
-          "volume": 407,
-          "volumeChange": -5,
-          "nsr": 51.6
+          "volume": 34,
+          "volumeChange": 5,
+          "nsr": 52.0
+        },
+        {
+          "name": "品牌声誉与社媒传播",
+          "volume": 27,
+          "volumeChange": 3,
+          "nsr": 48.0
+        },
+        {
+          "name": "订单履约与配送",
+          "volume": 22,
+          "volumeChange": -2,
+          "nsr": 45.0
+        },
+        {
+          "name": "服务质量",
+          "volume": 22,
+          "volumeChange": 4,
+          "nsr": 55.0
+        },
+        {
+          "name": "包装与周边",
+          "volume": 19,
+          "volumeChange": 1,
+          "nsr": 38.0
         },
         {
           "name": "价格活动与会员权益",
-          "volume": 381,
-          "volumeChange": 5,
-          "nsr": 72.3
+          "volume": 18,
+          "volumeChange": 2,
+          "nsr": 42.0
+        },
+        {
+          "name": "食安卫生",
+          "volume": 17,
+          "volumeChange": 6,
+          "nsr": 68.0
+        },
+        {
+          "name": "门店运营与合规",
+          "volume": 17,
+          "volumeChange": 3,
+          "nsr": 62.0
+        },
+        {
+          "name": "咨询建议与其他",
+          "volume": 16,
+          "volumeChange": 1,
+          "nsr": 28.0
         },
         {
           "name": "新品与产品生命周期",
-          "volume": 160,
-          "volumeChange": 5,
-          "nsr": 68.1
+          "volume": 15,
+          "volumeChange": -1,
+          "nsr": 35.0
         }
       ],
       "secondary": [
         {
-          "name": "中性提及/无明显评价",
-          "volume": 973,
-          "volumeChange": 5,
-          "nsr": 50.0
-        },
-        {
-          "name": "团购达人/广告推广",
-          "volume": 655,
+          "name": "口味偏好/规格体验",
+          "volume": 9,
           "volumeChange": 2,
-          "nsr": 78.5
+          "nsr": 48.0
         },
         {
-          "name": "用户晒单/日常记录",
-          "volume": 426,
+          "name": "服务态度",
+          "volume": 7,
+          "volumeChange": 1,
+          "nsr": 62.0
+        },
+        {
+          "name": "薄荷系列",
+          "volume": 7,
+          "volumeChange": 4,
+          "nsr": 32.0
+        },
+        {
+          "name": "异物问题",
+          "volume": 6,
           "volumeChange": 2,
-          "nsr": 72.3
+          "nsr": 85.0
         },
         {
-          "name": "广告/水贴/低价值内容",
-          "volume": 231,
-          "volumeChange": 8,
-          "nsr": 55.0
+          "name": "社媒内容形态",
+          "volume": 5,
+          "volumeChange": 1,
+          "nsr": 45.0
         },
         {
-          "name": "打卡探店/门店分享",
-          "volume": 217,
-          "volumeChange": 2,
-          "nsr": 76.8
+          "name": "舆情风险",
+          "volume": 5,
+          "volumeChange": 3,
+          "nsr": 72.0
         },
         {
-          "name": "整体好喝/满意",
-          "volume": 200,
-          "volumeChange": -4,
-          "nsr": 92.5
+          "name": "小料/配料",
+          "volume": 5,
+          "volumeChange": 0,
+          "nsr": 38.0
         },
         {
-          "name": "搞笑玩梗/二创",
-          "volume": 193,
-          "volumeChange": -4,
-          "nsr": 85.2
+          "name": "口味/品质异常",
+          "volume": 4,
+          "volumeChange": 1,
+          "nsr": 65.0
         },
         {
-          "name": "开店/选址/加盟咨询",
-          "volume": 184,
-          "volumeChange": 5,
-          "nsr": 58.4
+          "name": "制作稳定性",
+          "volume": 4,
+          "volumeChange": 1,
+          "nsr": 58.0
+        },
+        {
+          "name": "优惠活动",
+          "volume": 4,
+          "volumeChange": 0,
+          "nsr": 35.0
         }
       ],
       "nsrBrands": [
