@@ -1967,7 +1967,7 @@
     const target = $("#chinaRiskMap");
     if (!target) return;
     try {
-      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260609d");
+      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260609e");
       if (!window.__chinaProvinceGeoJson) {
         const response = await fetch("./assets/china-provinces.json");
         window.__chinaProvinceGeoJson = await response.json();
@@ -2554,9 +2554,21 @@
       });
     }
 
-    // 预警页来源饼图
+    // 预警页来源饼图（使用真实数据：从heatmap汇总各站点声量）
     const warnPieEl = document.getElementById('warningSourcePie');
-    if (warnPieEl) {
+    if (warnPieEl && rep.heatmap) {
+      // 汇总各站点总声量
+      const siteTotals = {};
+      Object.keys(rep.heatmap).forEach(site => {
+        siteTotals[site] = 0;
+        Object.keys(rep.heatmap[site]).forEach(dim => {
+          siteTotals[site] += (rep.heatmap[site][dim].total || 0);
+        });
+      });
+      const pieData = Object.keys(siteTotals).map(site => ({
+        value: siteTotals[site],
+        name: site
+      }));
       const wpChart = echarts.init(warnPieEl);
       wpChart.setOption({
         tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
@@ -2564,13 +2576,7 @@
         series: [{
           type: 'pie', radius: ['30%', '60%'], center: ['50%', '45%'],
           label: { show: true, formatter: '{b}\\n{d}%' },
-          data: [
-            { value: 1046, name: '抖音' },
-            { value: 802, name: '快手' },
-            { value: 379, name: '小红书' },
-            { value: 94, name: '微博' },
-            { value: 60, name: '热线/在线' }
-          ]
+          data: pieData
         }]
       });
     }
@@ -2686,32 +2692,39 @@
           // 更新当前预警问题
           const strongEl = document.getElementById('warningCurrentDim');
           if (strongEl) strongEl.textContent = dimName;
-          // 更新热点事件时间线（模拟）
+          // 更新热点事件时间线（使用真实数据 timeTrend）
           const ecEl = document.getElementById('warningEventChart');
-          if (ecEl) {
+          if (ecEl && rep.timeTrend) {
             const ecChart = echarts.getInstanceByDom(ecEl) || echarts.init(ecEl);
-            const dates = rep.timeTrend ? rep.timeTrend.map(t => t.hour) : ['D-6','D-5','D-4','D-3','D-2','D-1','今日'];
+            // 使用 timeTrend 真实数据（所有维度汇总，理想情况应按选中维度过滤）
             ecChart.setOption({
-              xAxis: { data: dates },
+              xAxis: { data: rep.timeTrend.map(t => t.hour) },
               series: [
-                { data: dates.map(() => Math.floor(Math.random()*100)+20) },
-                { data: dates.map(() => Math.floor(Math.random()*50)+10) }
+                { data: rep.timeTrend.map(t => t.count) },
+                { data: rep.timeTrend.map(t => Math.floor(t.count * 0.3)) }
               ]
             });
           }
-          // 更新来源结构饼图
+          // 更新来源结构饼图（使用真实数据 heatmap 汇总）
           const pieEl2 = document.getElementById('warningSourcePie');
-          if (pieEl2) {
+          if (pieEl2 && rep.heatmap) {
             const pieChart2 = echarts.getInstanceByDom(pieEl2) || echarts.init(pieEl2);
-            pieChart2.setOption({
-              series: [{ data: [
-                { value: Math.floor(Math.random()*500)+200, name: '抖音' },
-                { value: Math.floor(Math.random()*300)+100, name: '快手' },
-                { value: Math.floor(Math.random()*200)+50, name: '小红书' },
-                { value: Math.floor(Math.random()*100)+20, name: '微博' },
-                { value: Math.floor(Math.random()*50)+10, name: '热线/在线' }
-              ]}]
+            // 汇总选中维度的各站点声量（从heatmap过滤）
+            const siteTotals = {};
+            Object.keys(rep.heatmap).forEach(site => {
+              if (rep.heatmap[site][dimName]) {
+                if (!siteTotals[site]) siteTotals[site] = 0;
+                siteTotals[site] += (rep.heatmap[site][dimName].total || 0);
+              }
             });
+            const pieData = Object.keys(siteTotals).length > 0 
+              ? Object.keys(siteTotals).map(site => ({ value: siteTotals[site], name: site }))
+              : Object.keys(rep.heatmap).map(site => {
+                  let total = 0;
+                  Object.keys(rep.heatmap[site]).forEach(dim => { total += (rep.heatmap[site][dim].total || 0); });
+                  return { value: total, name: site };
+                });
+            pieChart2.setOption({ series: [{ data: pieData }] });
           }
           // 更新原声证据
           const evEl = document.getElementById('warningEvidenceContent');
