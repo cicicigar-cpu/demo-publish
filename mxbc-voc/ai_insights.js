@@ -28,7 +28,7 @@
       question: "请融合热线、在线客服、外卖评价和社媒数据，识别当前高风险客诉问题。",
       answer: "报告已完成内外部业务量、负向趋势、重点问题和外溢风险归因。可以继续追问某个平台、区域、产品或问题维度。",
     },
-
+  };
 
   // ═══════════════════════════════════════════════════════════
   // 报告分层内容（摘要 / 详情 / 全文）
@@ -80,8 +80,6 @@
     },
   };
 
-  };
-
   const templates = {
     mint: {
       title: "新品口碑报告",
@@ -120,12 +118,12 @@
   let activeReport = embedContext === "service" ? "complaint" : "delivery";
   let activeTemplate = activeReport;
   let lastFilters = {};           // ═ 记住看板传来的筛选条件
-  const STORAGE_KEY = "ai_insights_history";
+  const LS_KEY = "ai_insights_history";
 
   function saveConversation(key) {
     const report = reports[key];
     if (!report) return;
-    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const history = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
     // 如果已存在同 key 的记录，更新时间；否则插入到头部
     const idx = history.findIndex(h => h.key === key);
     const entry = {
@@ -141,12 +139,12 @@
     }
     // 只保留最近 50 条
     if (history.length > 50) history.length = 50;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    localStorage.setItem(LS_KEY, JSON.stringify(history));
   }
 
   function loadHistory() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
     } catch {
       return [];
     }
