@@ -1542,8 +1542,8 @@
         name: node.name,
         dim: getDim(node.name),
         volume: node.value,
-        negativeRate: node.negativeRate,
-        strongRate: node.strongRate,
+        negativeRate: profile.negativeRate || node.negativeRate || 0,
+        strongRate: profile.strongRate || node.strongRate || 0,
         stores: profile.stores || 0,
         priorityScore: priorityScore
       };
@@ -1619,21 +1619,6 @@
           ["份量少", "<span class=\"badge amber\">重点关注</span>", "<strong>521</strong>", "21.2%", "254", "产品制作", "产品体验落差明显", "出品标准抽检"],
           ["包装撒漏", "<span class=\"badge amber\">标准化优化</span>", "<strong>218</strong>", "26.3%", "116", "门店打包", "可控履约问题", "封口与杯盖复核"],
         ]))}
-      </div>
-      <div class="section-label">体验监测与问题结构</div>
-      <div class="overview-grid">
-        ${card("评论量与负面情绪趋势", svgLine("deliveryTrend", [
-          { name: "评价量", values: d.hourly.map(x => x.count), color: colors[0] },
-          { name: "负向反馈", values: d.hourly.map(x => x.negativeCount), color: colors[1] },
-          { name: "问题评论", values: d.hourly.map(x => Math.round(x.count * 0.897)), color: colors[2] },
-        ], d.hourly.map(x => x.hour)), `<div class="card-tools"><span class="active">按小时</span><span>按天</span></div>`)}
-        ${card("一级问题维度分布", `<div class="click-bars">${issueChildren.map((item, index) => `
-          <button data-overview-dim="${escapeHtml(item.name)}" class="click-bar">
-            <span>${escapeHtml(item.name)}</span>
-            <b>${fmt(Math.max(1, Math.round(item.value * d.filterFactor * (state.issue === "全部" ? 1 : 2.7))))}</b>
-            <i style="width:${Math.max(8, item.value / maxIssueValue * 100)}%;background:${colors[index % colors.length]}"></i>
-          </button>
-        `).join("")}</div>`)}
       </div>
       <div class="full-section">
         ${card("优先治理问题 TOP10", table(["优先级", "问题标签", "所属维度", "问题量", "Priority Score", "负向率", "强负向", "涉及门店", "环比"], (topTagRows.length ? topTagRows : [["当前筛选暂无优先治理问题", state.issue, 0, 0, 0, 0, 0, "-"]]).map((row, index) => [

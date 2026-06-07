@@ -26,7 +26,7 @@
     --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing: border-box; }
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -655,61 +655,15 @@
     <div class="cover-caveat">
       <div class="cover-caveat-title">数据口径说明</div>
       <p>本报告同时使用两套数据口径，分析结论均标注来源，不可混用：</p>
-      <p><strong>Excel 打标口径</strong> -- 用户上传社媒样本 7,796 条，经32字段人工/AI打标，情感分布为正面32.39% / 中性58.21% / 负面9.40%。该口径适用于标签维度分析、产品口碑矩阵和评论证据。</p>
-      <p><strong>社媒聚合口径</strong> -- Hermes ODP 聚合三大平台声量 14,061 条、互动量 2,150,925 次；雷达食品饮料行业库提供品牌级验证数据。该口径适用于声量趋势、平台对比和行业验证。正面情感率83.70%来自行业库算法口径，与Excel打标口径不可直接比较。</p>
+      <p><strong>Excel 打标口径</strong> —— 用户上传社媒样本 7,796 条，经32字段人工/AI打标，情感分布为正面32.39% / 中性58.21% / 负面9.40%。该口径适用于标签维度分析、产品口碑矩阵和评论证据。</p>
+      <p><strong>社媒聚合口径</strong> —— Hermes ODP 聚合三大平台声量 14,061 条、互动量 2,150,925 次；雷达食品饮料行业库提供品牌级验证数据。该口径适用于声量趋势、平台对比和行业验证。正面情感率83.70%来自行业库算法口径，与Excel打标口径不可直接比较。</p>
     </div>
   </div>
 
-  <!-- ==================== POC Acceptance Overview ==================== -->
+  <!-- ==================== P2 核心结论（最前） ==================== -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">POC</span>
-      <h2 class="section-title">POC 验收标准对照</h2>
-    </div>
-    <div class="poc-summary">
-      <strong>验收结论：</strong>当前报告已完成数据抓取、基础汇总、平台与口碑分析、代表性评论提取及策略建议等核心能力展示；数据准确性与情感分类一致性尚未完成客户业务侧人工抽样，因此相关指标应标记为<strong>“待共同验收”</strong>，不能仅凭系统输出判定已达到 90%。
-    </div>
-    <div class="table-scroll">
-      <table class="validation-table">
-        <thead>
-          <tr><th>客户 POC 要求</th><th>当前结果</th><th>状态</th><th>验收边界 / 待补动作</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>指定新品关键词抓取</td><td>覆盖薄荷奶绿、薄荷冰淇淋、薄荷圣代、薄荷咖啡；覆盖微博、抖音、小红书</td><td><span class="status-badge status-covered">初步覆盖</span></td><td>正式验收前确认关键词、别名词和排除词清单</td></tr>
-          <tr><td>基础数据汇总</td><td>聚合声量 14,061 条、互动量 215.1 万；Excel 打标样本 7,796 条</td><td><span class="status-badge status-covered">初步覆盖</span></td><td>补充有效样本、去重及广告/水贴处理规则</td></tr>
-          <tr><td>各平台占比与关键词</td><td>已提供平台占比、互动效率、平台角色及集中关键词</td><td><span class="status-badge status-covered">已覆盖</span></td><td>关键词为过程数据归纳，正式验收可抽样复核</td></tr>
-          <tr><td>正 / 中 / 负评价</td><td>Excel 口径：正面 32.39%、中性 58.21%、负面 9.40%</td><td><span class="status-badge status-partial">结果已出</span></td><td>需人工抽样复核，确认三分类一致性是否 ≥90%</td></tr>
-          <tr><td>高频词可视化</td><td>已展示正负高频词，并给出分平台关键词表</td><td><span class="status-badge status-covered">已覆盖</span></td><td>当前采用高频词条形图，避免词云面积造成数量误读</td></tr>
-          <tr><td>TOP 10 代表性评论链接</td><td>已补充内容 ID、URL、SKU、情感、互动量、入选理由与业务含义</td><td><span class="status-badge status-partial">待逐条审核</span></td><td>链接来自原始抓取字段，客户业务人员需逐条打开核验真实性与代表性</td></tr>
-          <tr><td>消费者反馈驱动策略</td><td>已按产品、内容、风险、供给和平台运营输出动作及指标</td><td><span class="status-badge status-covered">初步覆盖</span></td><td>策略合理性最终由客户业务专家评分</td></tr>
-          <tr><td>数据抓取准确性 ≥90%</td><td>已区分来源与口径，尚无双方人工抽检结果</td><td><span class="status-badge status-pending">待验收</span></td><td>建议抽样相关性、来源、去重、SKU 归类和噪声剔除</td></tr>
-          <tr><td>情感一致性 ≥90%</td><td>已形成自动三分类，尚无客户人工复核记录</td><td><span class="status-badge status-pending">待验收</span></td><td>建议随机抽样 ≥300 条，并专项复核高互动及风险关键词内容</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3 style="font-size:16px;font-weight:700;color:var(--mint-900);margin:24px 0 12px;">关键词抓取与噪声处理规则</h3>
-    <div class="table-scroll">
-      <table class="keyword-table">
-        <thead><tr><th>类型</th><th>关键词 / 规则</th><th>用途</th></tr></thead>
-        <tbody>
-          <tr><td>品牌词</td><td>蜜雪冰城、蜜雪、雪王</td><td>限定品牌主体，降低无关薄荷内容混入</td></tr>
-          <tr><td>系列词</td><td>薄荷系列、薄荷新品、全国薄荷、蜜雪薄荷</td><td>覆盖系列级上新讨论</td></tr>
-          <tr><td>SKU 词与别名</td><td>薄荷奶绿、雪王薄荷奶绿、薄荷冰淇淋、薄荷甜筒、薄荷圣代、薄荷脆皮小圣代、薄荷咖啡、雪顶咖啡</td><td>支持分产品识别；咖啡别名仍需扩充验证</td></tr>
-          <tr><td>体验 / 风险词</td><td>夏日、清爽、冰凉、好吃、牙膏味、避雷、难喝、苦、买不到、断货</td><td>用于口碑主题和风险标签分析，不单独作为品牌抓取条件</td></tr>
-          <tr><td>排除与降权</td><td>非蜜雪品牌、无关薄荷内容、转卖、抽奖、重复转发、广告、水军、水贴、纯官方发布</td><td>口碑统计中剔除或单列；宏观传播声量可保留并标记</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="acceptance-callout">
-      当前 14,061 条来自“品牌/薄荷相关关键词”的聚合口径；7,796 条为可进行情感与标签分析的 Excel 样本。两者服务于不同分析目标，不应直接相减、合并或用同一情感比例解释。
-    </div>
-  </div>
-
-  <!-- ==================== P2 KPI & Conclusions ==================== -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">P2</span>
+      <span class="section-num">P1</span>
       <h2 class="section-title">核心结论与策略摘要</h2>
     </div>
     <div class="kpi-grid">
@@ -737,35 +691,35 @@
     <div class="conclusion-list">
       <div class="conclusion-item">
         <span class="conclusion-num">1</span>
-        <span class="conclusion-text">薄荷系列不是缓慢发酵型新品，而是<strong>上新触发型爆发</strong>：5月27日进入爆发期，微博声量从25条跃升至76条，6月1日达峰值899条，说明用户对“全国薄荷”“夏日清凉”的即时反应强。</span>
+        <span class="conclusion-text">薄荷系列不是缓慢发酵型新品，而是<strong>上新触发型爆发</strong>：5月27日进入爆发期，微博声量从25条跃升至76条，6月1日达峰值899条，说明用户对"全国薄荷""夏日清凉"的即时反应强。</span>
       </div>
       <div class="conclusion-item">
         <span class="conclusion-num">2</span>
-        <span class="conclusion-text"><strong>抖音是情绪引爆阵地</strong>：聚合口径互动效率430.00次/条，远高于小红书11.53和微博9.76。高互动内容更像“幸福感/夏日感”的情绪表达，而不只是产品测评。</span>
+        <span class="conclusion-text"><strong>抖音是情绪引爆阵地</strong>：聚合口径互动效率430.00次/条，远高于小红书11.53和微博9.76。高互动内容更像"幸福感/夏日感"的情绪表达，而不只是产品测评。</span>
       </div>
       <div class="conclusion-item">
         <span class="conclusion-num">3</span>
-        <span class="conclusion-text"><strong>口味心智呈现双刃剑</strong>：正面高频词“好吃”(73次)、“清爽”(19次)证明夏日场景成立；负面高频词“避雷”(26次)、“牙膏味”(24次)说明薄荷浓度一旦越界，就会从清凉变成劝退。</span>
+        <span class="conclusion-text"><strong>口味心智呈现双刃剑</strong>：正面高频词"好吃"(73次)、"清爽"(19次)证明夏日场景成立；负面高频词"避雷"(26次)、"牙膏味"(24次)说明薄荷浓度一旦越界，就会从清凉变成劝退。</span>
       </div>
       <div class="conclusion-item">
         <span class="conclusion-num">4</span>
-        <span class="conclusion-text"><strong>冰淇淋承担口碑资产，奶绿承担流量资产</strong>：薄荷冰淇淋提及1,491次，更容易被评价为“好吃/凉爽”；薄荷奶绿提及976次，互动势能强，但“水感重/牙膏味”让口碑最不稳定。</span>
+        <span class="conclusion-text"><strong>冰淇淋承担口碑资产，奶绿承担流量资产</strong>：薄荷冰淇淋提及1,491次，更容易被评价为"好吃/凉爽"；薄荷奶绿提及976次，互动势能强，但"水感重/牙膏味"让口碑最不稳定。</span>
       </div>
       <div class="conclusion-item">
         <span class="conclusion-num">5</span>
-        <span class="conclusion-text"><strong>供给短板正在把兴趣转成抱怨</strong>：供给维度提及179次，正面占比仅12.85%。当用户已经被上新内容种草，“买不到/断货”会直接消耗新品热度。</span>
+        <span class="conclusion-text"><strong>供给短板正在把兴趣转成抱怨</strong>：供给维度提及179次，正面占比仅12.85%。当用户已经被上新内容种草，"买不到/断货"会直接消耗新品热度。</span>
       </div>
     </div>
     <div class="executive-grid">
       <div class="insight-card">
         <span class="card-kicker">增长机会</span>
-        <div class="insight-card-title">把“清凉”讲成夏季情绪价值</div>
-        <p>爆款原声里的关键词不是参数，而是“幸福”“凉凉的薄荷”“夏天的印记”。后续传播应把薄荷从风味卖点升维为低价、即时、可分享的夏季快乐。</p>
+        <div class="insight-card-title">把"清凉"讲成夏季情绪价值</div>
+        <p>爆款原声里的关键词不是参数，而是"幸福""凉凉的薄荷""夏天的印记"。后续传播应把薄荷从风味卖点升维为低价、即时、可分享的夏季快乐。</p>
       </div>
       <div class="insight-card">
         <span class="card-kicker">核心风险</span>
-        <div class="insight-card-title">“牙膏味”成为跨 SKU 共性风险</div>
-        <p>牙膏味同时出现在奶绿、冰淇淋、圣代和咖啡反馈中，若不及时管理，可能削弱“清爽/夏日感”的正向心智。需要在产品侧控制浓度，在内容侧提前管理预期。</p>
+        <div class="insight-card-title">"牙膏味"成为跨SKU共性风险</div>
+        <p>牙膏味同时出现在奶绿、冰淇淋、圣代和咖啡反馈中，若不及时管理，可能削弱"清爽/夏日感"的正向心智。需要在产品侧控制浓度，在内容侧提前管理预期。</p>
       </div>
       <div class="insight-card">
         <span class="card-kicker">运营抓手</span>
@@ -775,10 +729,10 @@
     </div>
   </div>
 
-  <!-- ==================== P3 Volume Trend ==================== -->
+  <!-- ==================== P3 声量趋势（分析部分） ==================== -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">P3</span>
+      <span class="section-num">P2</span>
       <h2 class="section-title">声量趋势</h2>
     </div>
     <div class="chart-container tall" id="chartVolumeTrend"></div>
@@ -786,11 +740,11 @@
     <div class="phase-grid">
       <div class="phase-card">
         <div class="phase-card-title">预热观察期：5/26</div>
-        <p>上新前一天仍处低位，说明此前“薄荷”并未自然形成大规模讨论，后续爆发主要由新品信息和达人内容触发。</p>
+        <p>上新前一天仍处低位，说明此前"薄荷"并未自然形成大规模讨论，后续爆发主要由新品信息和达人内容触发。</p>
       </div>
       <div class="phase-card">
         <div class="phase-card-title">集中引爆期：5/27-6/1</div>
-        <p>5月27日抖音、微博、小红书同步拉升，6月1日叠加儿童节与夏季消费场景达峰，属于可被复用的“节点+新品+短视频”引爆节奏。</p>
+        <p>5月27日抖音、微博、小红书同步拉升，6月1日叠加儿童节与夏季消费场景达峰，属于可被复用的"节点+新品+短视频"引爆节奏。</p>
       </div>
       <div class="phase-card">
         <div class="phase-card-title">回落转化期：6/2-6/5</div>
@@ -799,10 +753,10 @@
     </div>
   </div>
 
-  <!-- ==================== P4 Platform Compare ==================== -->
+  <!-- ==================== P4 平台分布对比（分析部分） ==================== -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">P4</span>
+      <span class="section-num">P3</span>
       <h2 class="section-title">平台分布对比</h2>
     </div>
     <div class="platform-grid">
@@ -813,7 +767,7 @@
     <div class="platform-role-grid">
       <div class="role-card">
         <div class="role-card-title">抖音：引爆与情绪扩散</div>
-        <p>高互动内容集中在抖音，说明短视频更适合把“幸福感”“清凉感”“新品终于全国上了”做成可模仿表达。建议主攻挑战、二创和门店实拍。</p>
+        <p>高互动内容集中在抖音，说明短视频更适合把"幸福感""清凉感""新品终于全国上了"做成可模仿表达。建议主攻挑战、二创和门店实拍。</p>
       </div>
       <div class="role-card">
         <div class="role-card-title">小红书：种草与风险解释</div>
@@ -821,7 +775,7 @@
       </div>
       <div class="role-card">
         <div class="role-card-title">微博：扩散与即时回应</div>
-        <p>微博适合承接话题扩散、补货通知和负面回应。它的互动效率较低，但“买不到”“好不好喝”这类即时讨论需要在微博被快速看见。</p>
+        <p>微博适合承接话题扩散、补货通知和负面回应。它的互动效率较低，但"买不到""好不好喝"这类即时讨论需要在微博被快速看见。</p>
       </div>
     </div>
     <h3 style="font-size:16px;font-weight:700;color:var(--mint-900);margin:24px 0 12px;">分平台口碑集中关键词</h3>
@@ -837,10 +791,10 @@
     </div>
   </div>
 
-  <!-- ==================== P5 Sentiment Structure ==================== -->
+  <!-- ==================== P5 基础口碑结构（分析部分） ==================== -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">P5</span>
+      <span class="section-num">P4</span>
       <h2 class="section-title">基础口碑结构</h2>
     </div>
     <div class="sentiment-grid">
@@ -859,17 +813,17 @@
     <div class="insight-box">
       <h3>口碑结构洞察</h3>
       <ul>
-        <li><strong>中性占比高不是坏事：</strong>58.21%的中性内容主要来自上新信息、求测评和观望讨论，说明新品仍处在“知道了，但还没转化为体验评价”的阶段。</li>
-        <li><strong>正负反馈都围绕同一个风味边界：</strong>正面说“清爽/凉爽”，负面说“牙膏味/刺激”，本质上是薄荷浓度与奶茶/冰淇淋底味的平衡问题。</li>
-        <li><strong>最需要管理的是预期：</strong>薄荷爱好者会被强薄荷吸引，泛饮品用户更容易被牙膏味劝退。传播中应明确“清凉薄荷感”而非泛化成“人人都好喝”。</li>
+        <li><strong>中性占比高不是坏事：</strong>58.21%的中性内容主要来自上新信息、求测评和观望讨论，说明新品仍处在"知道了，但还没转化为体验评价"的阶段。</li>
+        <li><strong>正负反馈都围绕同一个风味边界：</strong>正面说"清爽/凉爽"，负面说"牙膏味/刺激"，本质上是薄荷浓度与奶茶/冰淇淋底味的平衡问题。</li>
+        <li><strong>最需要管理的是预期：</strong>薄荷爱好者会被强薄荷吸引，泛饮品用户更容易被牙膏味劝退。传播中应明确"清凉薄荷感"而非泛化成"人人都好喝"。</li>
       </ul>
     </div>
   </div>
 
-  <!-- ==================== P6 Product Matrix ==================== -->
+  <!-- ==================== P6 分产品口碑矩阵（分析部分） ==================== -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">P6</span>
+      <span class="section-num">P5</span>
       <h2 class="section-title">分产品口碑矩阵</h2>
     </div>
     <table class="product-matrix-table">
@@ -903,7 +857,7 @@
           <td>75.6%</td>
           <td>12.1%</td>
           <td>最高</td>
-          <td>“幸福感/清爽”带来流量，但水感重、牙膏味和避雷集中，属于流量引擎与风险中心</td>
+          <td>"幸福感/清爽"带来流量，但水感重、牙膏味和避雷集中，属于流量引擎与风险中心</td>
           <td><span class="status-badge status-covered">较高</span></td>
         </tr>
         <tr>
@@ -928,15 +882,15 @@
         </tr>
       </tbody>
     </table>
-    <div class="table-caption">数据来源：Excel SKU 有效样本归类。此处“有效样本量”不等同于标签 L3 提及次数；同一内容可能命中多个标签，因此两种口径不可混用。</div>
+    <div class="table-caption">数据来源：Excel SKU 有效样本归类。此处"有效样本量"不等同于标签 L3 提及次数；同一内容可能命中多个标签，因此两种口径不可混用。</div>
     <div class="sku-insight-grid">
       <div class="sku-card">
         <div class="sku-card-title">薄荷冰淇淋：口碑基石</div>
-        <p>适合做“夏日清爽担当”的主推 SKU。优势是门槛低、理解快、好吃反馈更集中；风险是牙膏味与融化形态会放大负面体验。</p>
+        <p>适合做"夏日清爽担当"的主推SKU。优势是门槛低、理解快、好吃反馈更集中；风险是牙膏味与融化形态会放大负面体验。</p>
       </div>
       <div class="sku-card">
         <div class="sku-card-title">薄荷奶绿：流量引擎</div>
-        <p>互动声量强，但风味融合难度最高。建议强化茶感和奶感，避免用户把“清爽”理解成“像薄荷水”。</p>
+        <p>互动声量强，但风味融合难度最高。建议强化茶感和奶感，避免用户把"清爽"理解成"像薄荷水"。</p>
       </div>
       <div class="sku-card">
         <div class="sku-card-title">薄荷圣代：视觉种草</div>
@@ -955,7 +909,7 @@
         <blockquote>"凉凉的薄荷是夏天的印记" <span class="source-tag">-- 抖音，互动8,071</span></blockquote>
         <blockquote>"蜜雪冰城的新品薄荷冰淇淋好凉爽好好吃！" <span class="source-tag">-- 抖音</span></blockquote>
         <blockquote>"都去吃，脆皮薄荷圣代真的巨好吃" <span class="source-tag">-- 抖音</span></blockquote>
-        <blockquote>"关于海的约定太多，我只想和你看海" <span class="source-tag">-- 抖音（薄荷咖啡）</span></blockquote>
+        <blockquote>"关于海的约定太多，我只想和你去看海" <span class="source-tag">-- 抖音（薄荷咖啡）</span></blockquote>
       </div>
       <div class="voice-card negative">
         <div class="voice-card-label">负面原声</div>
@@ -968,14 +922,14 @@
     </div>
   </div>
 
-  <!-- ==================== P7 Review Evidence ==================== -->
+  <!-- ==================== P7 TOP 10 代表性评论（分析部分） ==================== -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">P7</span>
+      <span class="section-num">P6</span>
       <h2 class="section-title">TOP 10 代表性评论与链接核验</h2>
     </div>
     <div class="poc-summary">
-      <strong>代表性判定规则：</strong>评论并非只按互动量排序，而是综合考虑互动量、正/中/负情感覆盖、微博/抖音/小红书平台覆盖、主要 SKU 覆盖，以及是否能够代表“幸福感、夏日清爽、牙膏味、药苦味、颜值种草、买不到”等关键主题。
+      <strong>代表性判定规则：</strong>评论并非只按互动量排序，而是综合考虑互动量、正/中/负情感覆盖、微博/抖音/小红书平台覆盖、主要 SKU 覆盖，以及是否能够代表"幸福感、夏日清爽、牙膏味、药苦味、颜值种草、买不到"等关键主题。
     </div>
     <div class="table-scroll">
       <table class="top10-table" style="min-width:1180px;">
@@ -983,11 +937,11 @@
           <tr><th>#</th><th>平台</th><th>SKU</th><th>情感 / 风险</th><th>内容 ID</th><th>原文摘要</th><th>互动量</th><th>原始链接</th><th>入选理由</th><th>业务含义</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td>抖音</td><td>薄荷奶绿</td><td>正面</td><td>7644964781858673643</td><td>如果幸福是一杯薄荷奶绿那我一定要大杯</td><td>95,328</td><td><a href="https://www.iesdouyin.com/share/video/7644964781858673643" target="_blank">查看原帖</a></td><td>全样本互动最高，正面情绪典型</td><td>“幸福感”是可复用的传播资产</td></tr>
+          <tr><td>1</td><td>抖音</td><td>薄荷奶绿</td><td>正面</td><td>7644964781858673643</td><td>如果幸福是一杯薄荷奶绿那我一定要大杯</td><td>95,328</td><td><a href="https://www.iesdouyin.com/share/video/7644964781858673643" target="_blank">查看原帖</a></td><td>全样本互动最高，正面情绪典型</td><td>"幸福感"是可复用的传播资产</td></tr>
           <tr><td>2</td><td>抖音</td><td>系列上新</td><td>中性 / 期待</td><td>7645285954320357233</td><td>这次终于不是限定了，是全国薄荷</td><td>28,562</td><td><a href="https://www.iesdouyin.com/share/video/7645285954320357233" target="_blank">查看原帖</a></td><td>上新信息高传播，体现全国上市期待</td><td>地域覆盖信息能够直接驱动尝鲜</td></tr>
           <tr><td>3</td><td>抖音</td><td>薄荷奶绿</td><td>中性</td><td>7644424783702894833</td><td>薄荷系列新品上新，包含薄荷奶绿</td><td>13,153</td><td><a href="https://www.douyin.com/video/7644424783702894833" target="_blank">查看原帖</a></td><td>新品告知型内容代表</td><td>信息型短视频是爆发期的重要点火内容</td></tr>
-          <tr><td>4</td><td>抖音</td><td>薄荷冰淇淋</td><td>中性调侃 / 风险</td><td>7640121179047710075</td><td>牙膏味的冰淇淋哈哈哈哈哈哈</td><td>8,954</td><td><a href="https://www.iesdouyin.com/share/video/7640121179047710075" target="_blank">查看原帖</a></td><td>高互动“牙膏味”调侃</td><td>不应简单判为强负面，但需作为扩散风险监控</td></tr>
-          <tr><td>5</td><td>抖音</td><td>薄荷奶绿</td><td>中性 / 正向场景</td><td>7644586362860449137</td><td>凉凉的薄荷是夏天的印记</td><td>8,071</td><td><a href="https://www.iesdouyin.com/share/video/7644586362860449137" target="_blank">查看原帖</a></td><td>夏日清爽场景典型</td><td>“夏天的印记”可强化季节心智</td></tr>
+          <tr><td>4</td><td>抖音</td><td>薄荷冰淇淋</td><td>中性调侃 / 风险</td><td>7640121179047710075</td><td>牙膏味的冰淇淋哈哈哈哈哈哈</td><td>8,954</td><td><a href="https://www.iesdouyin.com/share/video/7640121179047710075" target="_blank">查看原帖</a></td><td>高互动"牙膏味"调侃</td><td>不应简单判为强负面，但需作为扩散风险监控</td></tr>
+          <tr><td>5</td><td>抖音</td><td>薄荷奶绿</td><td>中性 / 正向场景</td><td>7644586362860449137</td><td>凉凉的薄荷是夏天的印记</td><td>8,071</td><td><a href="https://www.iesdouyin.com/share/video/7644586362860449137" target="_blank">查看原帖</a></td><td>夏日清爽场景典型</td><td>"夏天的印记"可强化季节心智</td></tr>
           <tr><td>6</td><td>抖音</td><td>薄荷冰淇淋</td><td>中性 / 期待</td><td>7645837246050623354</td><td>薄荷爱好者狂喜</td><td>5,999</td><td><a href="https://www.douyin.com/video/7645837246050623354" target="_blank">查看原帖</a></td><td>核心种子人群表达</td><td>薄荷爱好者适合作为首轮定向运营人群</td></tr>
           <tr><td>7</td><td>小红书</td><td>薄荷圣代</td><td>正面</td><td>6a0ed28a00000000350240d3</td><td>圣代碗颜值味道双在线</td><td>1,827</td><td><a href="https://www.xiaohongshu.com/discovery/item/6a0ed28a00000000350240d3" target="_blank">查看原帖</a></td><td>小红书颜值种草代表</td><td>圣代适合以颜值和出片场景放大</td></tr>
           <tr><td>8</td><td>抖音</td><td>薄荷冰淇淋</td><td>正面</td><td>7644781147759958184</td><td>薄荷冰淇淋好喝好吃</td><td>1,214</td><td><a href="https://www.iesdouyin.com/share/video/7644781147759958184" target="_blank">查看原帖</a></td><td>冰淇淋正向反馈代表</td><td>冰淇淋是更稳健的口碑主推 SKU</td></tr>
@@ -997,28 +951,28 @@
       </table>
     </div>
     <div class="acceptance-callout">
-      链接与内容 ID 来自原始抓取及过程性证据文件。本报告完成“可追溯字段补齐”，但未替代客户人工审核；正式 POC 验收时，应逐条检查链接可访问性、平台匹配、原文一致性和业务代表性。薄荷咖啡因有效体验样本与可追溯高互动原帖不足，未强行纳入 TOP 10。
+      链接与内容 ID 来自原始抓取及过程性证据文件。本报告完成"可追溯字段补齐"，但未替代客户人工审核；正式 POC 验收时，应逐条检查链接可访问性、平台匹配、原文一致性和业务代表性。薄荷咖啡因有效体验样本与可追溯高互动原帖不足，未强行纳入 TOP 10。
     </div>
     <div class="insight-box">
       <h3>评论证据解读</h3>
       <ul>
-        <li><strong>正面声量的传播语言偏情绪化：</strong>“幸福是一杯薄荷奶绿”“夏天的印记”比“薄荷味浓/淡”更容易获得互动，适合复用为抖音话题模板。</li>
-        <li><strong>负面内容的破坏力来自可复制标签：</strong>“牙膏味”“避雷”“难喝”短、直观、易跟风，必须通过产品说明、达人实测和门店口径提前稀释。</li>
-        <li><strong>中性观望是可转化人群：</strong>“好不好喝”“先观望”意味着用户并未拒绝产品，只是缺少可信体验证据，适合用小红书测评和门店试饮降低决策成本。</li>
+        <li><strong>正面声量的传播语言偏情绪化：</strong>"幸福是一杯薄荷奶绿""夏天的印记"比"薄荷味浓/淡"更容易获得互动，适合复用为抖音话题模板。</li>
+        <li><strong>负面内容的破坏力来自可复制标签：</strong>"牙膏味""避雷""难喝"短、直观、易跟风，必须通过产品说明、达人实测和门店口径提前稀释。</li>
+        <li><strong>中性观望是可转化人群：</strong>"好不好喝""先观望"意味着用户并未拒绝产品，只是缺少可信体验证据，适合用小红书测评和门店试饮降低决策成本。</li>
       </ul>
     </div>
   </div>
 
-  <!-- ==================== P8 Strategy ==================== -->
+  <!-- ==================== P8 策略建议（分析部分） ==================== -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">P8</span>
+      <span class="section-num">P7</span>
       <h2 class="section-title">策略建议</h2>
     </div>
     <div class="insight-box" style="margin-top:0;margin-bottom:20px;">
       <h3>行动总原则</h3>
       <ul>
-        <li><strong>先稳风味边界：</strong>把“清爽”和“牙膏味”的分界讲清楚，并在重点 SKU 上优化配比。</li>
+        <li><strong>先稳风味边界：</strong>把"清爽"和"牙膏味"的分界讲清楚，并在重点 SKU 上优化配比。</li>
         <li><strong>再稳供给体验：</strong>爆发期用户被种草后最怕买不到，补货信息本身可以成为二次传播内容。</li>
         <li><strong>最后放大平台分工：</strong>抖音做情绪引爆，小红书做测评种草，微博做即时回应，避免三端同质化。</li>
       </ul>
@@ -1038,23 +992,23 @@
         <tr>
           <td><span class="priority-badge priority-p0">P0</span></td>
           <td>产品体验</td>
-          <td>“牙膏味”跨奶绿、冰淇淋、圣代、咖啡出现，正在从单条吐槽变成系列风险标签</td>
-          <td>薄荷浓度与产品底味的平衡是系列口碑的核心边界，若失控会削弱“清爽/夏日感”心智</td>
-          <td>研发侧降低薄荷浓度梯度；传播侧把口径从“薄荷很浓”改为“清凉、低负担、夏日感”，奶绿重点补强茶感/奶感表达</td>
-          <td>“牙膏味/刺激”相关UGC占比下降20%</td>
+          <td>"牙膏味"跨奶绿、冰淇淋、圣代、咖啡出现，正在从单条吐槽变成系列风险标签</td>
+          <td>薄荷浓度与产品底味的平衡是系列口碑的核心边界，若失控会削弱"清爽/夏日感"心智</td>
+          <td>研发侧降低薄荷浓度梯度；传播侧把口径从"薄荷很浓"改为"清凉、低负担、夏日感"，奶绿重点补强茶感/奶感表达</td>
+          <td>"牙膏味/刺激"相关UGC占比下降20%</td>
         </tr>
         <tr>
           <td><span class="priority-badge priority-p0">P0</span></td>
           <td>内容传播</td>
-          <td>抖音聚合口径互动效率430.00次/条，爆款内容以“幸福感/夏日感”而非硬测评获得互动</td>
+          <td>抖音聚合口径互动效率430.00次/条，爆款内容以"幸福感/夏日感"而非硬测评获得互动</td>
           <td>消费者更愿意分享可表达情绪与场景的内容，单纯产品参数不是主要互动驱动力</td>
-          <td>复用“幸福是一杯薄荷奶绿”“夏天的印记”式情绪模板，发起清凉场景短视频挑战，并让KOC做门店真实到手体验</td>
+          <td>复用"幸福是一杯薄荷奶绿""夏天的印记"式情绪模板，发起清凉场景短视频挑战，并让KOC做门店真实到手体验</td>
           <td>抖音UGC互动量增长30%</td>
         </tr>
         <tr>
           <td><span class="priority-badge priority-p0">P0</span></td>
           <td>风险沟通</td>
-          <td>“避雷”“难喝”“苦”等短标签在抖音和微博具备快速扩散能力</td>
+          <td>"避雷""难喝""苦"等短标签在抖音和微博具备快速扩散能力</td>
           <td>负面风险来自易复制的标签化表达，需要区分真实负面与调侃后快速响应</td>
           <td>建立24小时负面标签监控；对牙膏味用幽默化二创引导，对药苦味用原料/浓度解释降低误解</td>
           <td>负面响应时间缩短50%，避雷类内容互动占比下降</td>
@@ -1062,9 +1016,9 @@
         <tr>
           <td><span class="priority-badge priority-p1">P1</span></td>
           <td>供给节奏</td>
-          <td>供给维度正面占比仅12.85%，“买不到/断货”会把尝鲜兴趣转成抱怨</td>
-          <td>热度已经形成，但门店可得性正在阻断尝鲜转化，并损耗“全国上新”的可信度</td>
-          <td>优先保障高需求城市与高校周边；微博发布补货信息，抖音门店号用“补货到店”做二次内容</td>
+          <td>供给维度正面占比仅12.85%，"买不到/断货"会把尝鲜兴趣转成抱怨</td>
+          <td>热度已经形成，但门店可得性正在阻断尝鲜转化，并损耗"全国上新"的可信度</td>
+          <td>优先保障高需求城市与高校周边；微博发布补货信息，抖音门店号用"补货到店"做二次内容</td>
           <td>断货相关UGC下降30%</td>
         </tr>
         <tr>
@@ -1078,9 +1032,9 @@
         <tr>
           <td><span class="priority-badge priority-p1">P1</span></td>
           <td>产品体验</td>
-          <td>冰淇淋是口碑基石，最容易形成“好吃/凉爽/适合夏天”的正向资产</td>
+          <td>冰淇淋是口碑基石，最容易形成"好吃/凉爽/适合夏天"的正向资产</td>
           <td>冷冻甜品形态对薄荷风味的承接更稳定，适合作为扩大系列接受面的主推入口</td>
-          <td>把薄荷冰淇淋作为清爽主推 SKU，搭配圣代做颜值与性价比内容，弱化“浓薄荷”表述</td>
+          <td>把薄荷冰淇淋作为清爽主推 SKU，搭配圣代做颜值与性价比内容，弱化"浓薄荷"表述</td>
           <td>冰淇淋正向标签占比提升</td>
         </tr>
         <tr>
@@ -1088,17 +1042,17 @@
           <td>风险沟通</td>
           <td>薄荷咖啡样本量较低，用户反馈仍偏尝鲜和观望，不宜过早放大</td>
           <td>现有样本不足以证明规模化主推价值，需先降低决策不确定性</td>
-          <td>先小规模验证“薄荷+咖啡”的融合接受度，用达人盲测和门店试饮收集真实反馈</td>
+          <td>先小规模验证"薄荷+咖啡"的融合接受度，用达人盲测和门店试饮收集真实反馈</td>
           <td>咖啡正负反馈样本达到可判断阈值后再扩量</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- ==================== P9 Appendix ==================== -->
+  <!-- ==================== P9 数据附录（分析部分后） ==================== -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">P9</span>
+      <span class="section-num">P8</span>
       <h2 class="section-title">数据附录</h2>
     </div>
     <h3 style="font-size:15px;font-weight:700;color:var(--mint-900);margin-bottom:12px;">数据来源明细</h3>
@@ -1149,22 +1103,22 @@
         <tbody>
           <tr><td>正 / 中 / 负三分类</td><td>随机抽样，由客户业务人员独立判断后与系统结果比对</td><td>≥300 条</td><td>一致率 ≥90%</td><td><span class="status-badge status-pending">待验收</span></td></tr>
           <tr><td>高互动内容情感</td><td>重点复核 Top 100，避免调侃、反讽导致误判</td><td>100 条</td><td>一致率 ≥90%</td><td><span class="status-badge status-pending">待验收</span></td></tr>
-          <tr><td>风险关键词内容</td><td>专项复核“牙膏味、避雷、难喝、苦、买不到”等语境</td><td>≥100 条</td><td>一致率 ≥90%</td><td><span class="status-badge status-pending">待验收</span></td></tr>
+          <tr><td>风险关键词内容</td><td>专项复核"牙膏味、避雷、难喝、买不到"等语境</td><td>≥100 条</td><td>一致率 ≥90%</td><td><span class="status-badge status-pending">待验收</span></td></tr>
           <tr><td>分 SKU 情感归因</td><td>每个 SKU 分层抽样，检查情感与对象归属</td><td>每 SKU ≥50 条</td><td>一致率 ≥90%</td><td><span class="status-badge status-pending">待验收</span></td></tr>
         </tbody>
       </table>
     </div>
     <div class="acceptance-callout">
-      语境复核重点：“牙膏味”可能是中性调侃或负面劝退；“买不到”属于供给负面，不等于产品口味负面；“薄荷很浓”对薄荷爱好者可能是正面，对泛消费者可能是负面。高互动内容应保留“情感分类”和“潜在风险标签”两个字段。
+      语境复核重点："牙膏味"可能是中性调侃或负面劝退；"买不到"属于供给负面，不等于产品口味负面；"薄荷很浓"对薄荷爱好者可能是正面，对泛消费者可能是负面。高互动内容应保留"情感分类"和"潜在风险标签"两个字段。
     </div>
 
     <h3 style="font-size:15px;font-weight:700;color:var(--mint-900);margin:24px 0 12px;">供给问题代表证据</h3>
     <table class="appendix-table">
       <thead><tr><th>平台</th><th>SKU / 区域</th><th>消费者反馈</th><th>业务含义</th><th>追溯状态</th></tr></thead>
       <tbody>
-        <tr><td>抖音</td><td>薄荷奶绿</td><td>“新品薄荷奶绿，奶茶店都买不到。”</td><td>上新传播已形成需求，但门店可得性阻断尝鲜转化</td><td><a href="https://www.douyin.com/video/7645095292509557627" target="_blank">原帖</a></td></tr>
-        <tr><td>抖音</td><td>北京 / 薄荷奶绿</td><td>“为啥北京没有薄荷奶绿”</td><td>区域上市节奏不一致会放大“全国上新”与实际体验的落差</td><td>过程数据原声，正式验收补 URL</td></tr>
-        <tr><td>微博</td><td>学校周边 / 冰淇淋与圣代</td><td>“去年一直在断货没吃上，终于上线了”</td><td>断货记忆会延续到本次返场，稳定供应本身能形成正向内容</td><td>过程数据原声，正式验收补 URL</td></tr>
+        <tr><td>抖音</td><td>薄荷奶绿</td><td>"新品薄荷奶绿，奶茶店都买不到。"</td><td>上新传播已形成需求，但门店可得性阻断尝鲜转化</td><td><a href="https://www.douyin.com/video/7645095292509557627" target="_blank">原帖</a></td></tr>
+        <tr><td>抖音</td><td>北京 / 薄荷奶绿</td><td>"为啥北京没有薄荷奶绿"</td><td>区域上市节奏不一致会放大"全国上新"与实际体验的落差</td><td>过程数据原声，正式验收补 URL</td></tr>
+        <tr><td>微博</td><td>学校周边 / 冰淇淋与圣代</td><td>"去年一直在断货没吃上，终于上线了"</td><td>断货记忆会延续到本次返场，稳定供应本身能形成正向内容</td><td>过程数据原声，正式验收补 URL</td></tr>
       </tbody>
     </table>
 
@@ -1183,12 +1137,55 @@
     </table>
   </div>
 
-  <div class="report-footer">
-    蜜雪冰城薄荷系列新品口碑分析与POC验证报告 | 数据周期 2026.05.01 - 2026.06.05 | 报告更新日期 2026年6月6日
+  <!-- ==================== P0/POC 验收标准（最后） ==================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">P9</span>
+      <h2 class="section-title">POC 验收标准对照</h2>
+    </div>
+    <div class="poc-summary">
+      <strong>验收结论：</strong>当前报告已完成数据抓取、基础汇总、平台与口碑分析、代表性评论提取及策略建议等核心能力展示；数据准确性与情感分类一致性尚未完成客户业务侧人工抽样，因此相关指标应标记为<strong>"待共同验收"</strong>，不能仅凭系统输出判定已达到 90%。
+    </div>
+    <div class="table-scroll">
+      <table class="validation-table">
+        <thead>
+          <tr><th>客户 POC 要求</th><th>当前结果</th><th>状态</th><th>验收边界 / 待补动作</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>指定新品关键词抓取</td><td>覆盖薄荷奶绿、薄荷冰淇淋、薄荷圣代、薄荷咖啡；覆盖微博、抖音、小红书</td><td><span class="status-badge status-covered">初步覆盖</span></td><td>正式验收前确认关键词、别名词和排除词清单</td></tr>
+          <tr><td>基础数据汇总</td><td>聚合声量 14,061 条、互动量 215.1 万；Excel 打标样本 7,796 条</td><td><span class="status-badge status-covered">初步覆盖</span></td><td>补充有效样本、去重及广告/水贴处理规则</td></tr>
+          <tr><td>各平台占比与关键词</td><td>已提供平台占比、互动效率、平台角色及集中关键词</td><td><span class="status-badge status-covered">已覆盖</span></td><td>关键词为过程数据归纳，正式验收可抽样复核</td></tr>
+          <tr><td>正 / 中 / 负评价</td><td>Excel 口径：正面 32.39%、中性 58.21%、负面 9.40%</td><td><span class="status-badge status-partial">结果已出</span></td><td>需人工抽样复核，确认三分类一致性是否 ≥90%</td></tr>
+          <tr><td>高频词可视化</td><td>已展示正负高频词，并给出分平台关键词表</td><td><span class="status-badge status-covered">已覆盖</span></td><td>当前采用高频词条形图，避免词云面积造成数量误读</td></tr>
+          <tr><td>TOP 10 代表性评论链接</td><td>已补充内容 ID、URL、SKU、情感、互动量、入选理由与业务含义</td><td><span class="status-badge status-partial">待逐条审核</span></td><td>链接来自原始抓取字段，客户业务人员需逐条打开核验真实性与代表性</td></tr>
+          <tr><td>消费者反馈驱动策略</td><td>已按产品、内容、风险、供给和平台运营输出动作及指标</td><td><span class="status-badge status-covered">初步覆盖</span></td><td>策略合理性最终由客户业务专家评分</td></tr>
+          <tr><td>数据抓取准确性 ≥90%</td><td>已区分来源与口径，尚无双方人工抽检结果</td><td><span class="status-badge status-pending">待验收</span></td><td>建议抽样相关性、来源、去重、SKU 归类和噪声剔除</td></tr>
+          <tr><td>情感一致性 ≥90%</td><td>已形成自动三分类，尚无客户人工复核记录</td><td><span class="status-badge status-pending">待验收</span></td><td>建议随机抽样 ≥300 条，并专项复核高互动及风险关键词内容</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:16px;font-weight:700;color:var(--mint-900);margin:24px 0 12px;">关键词抓取与噪声处理规则</h3>
+    <div class="table-scroll">
+      <table class="keyword-table">
+        <thead><tr><th>类型</th><th>关键词 / 规则</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>品牌词</td><td>蜜雪冰城、蜜雪、雪王</td><td>限定品牌主体，降低无关薄荷内容混入</td></tr>
+          <tr><td>系列词</td><td>薄荷系列、薄荷新品、全国薄荷、蜜雪薄荷</td><td>覆盖系列级上新讨论</td></tr>
+          <tr><td>SKU 词与别名</td><td>薄荷奶绿、雪王薄荷奶绿、薄荷冰淇淋、薄荷甜筒、薄荷圣代、薄荷脆皮小圣代、薄荷咖啡、雪顶咖啡</td><td>支持分产品识别；咖啡别名仍需扩充验证</td></tr>
+          <tr><td>体验 / 风险词</td><td>夏日、清爽、冰凉、好吃、牙膏味、避雷、难喝、苦、买不到、断货</td><td>用于口碑主题和风险标签分析，不单独作为品牌抓取条件</td></tr>
+          <tr><td>排除与降权</td><td>非蜜雪品牌、无关薄荷内容、转卖、抽奖、重复转发、广告、水军、水贴、纯官方发布</td><td>口碑统计中剔除或单列；宏观传播声量可保留并标记</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="acceptance-callout">
+      当前 14,061 条来自"品牌/薄荷相关关键词"的聚合口径；7,796 条为可进行情感与标签分析的 Excel 样本。两者服务于不同分析目标，不应直接相减、合并或用同一情感比例解释。
+    </div>
   </div>
 
-</div>
+</div><!-- end .container -->
 
+<!-- ==================== ECharts Scripts ==================== -->
 <script>
 // ===== P3 Volume Trend =====
 (function(){
@@ -1196,7 +1193,7 @@
   var dates = [
     '5/26','5/27','5/28','5/29','5/30','5/31','6/1','6/2','6/3','6/4','6/5'
   ];
-  var weibo = [25,76,237,690,587,585,899,597,694,756,147];
+  var weibo = [25,76,237,690,587,899,597,694,756,147];
   var douyin = [16,595,412,380,350,420,595,380,310,340,95];
   var xhs = [8,45,120,180,160,155,210,145,125,130,40];
 
@@ -1272,7 +1269,7 @@
     tooltip: { trigger: 'axis' },
     grid: { left: 80, right: 40, top: 50, bottom: 40 },
     xAxis: { type: 'category', data: ['微博','抖音','小红书'], axisLabel: {fontSize: 13} },
-    yAxis: { type: 'value', name: '次/条', axisLabel: {fontSize: 11} },
+    yAxis: { type: 'value', axisLabel: {fontSize: 11} },
     series: [{
       type: 'bar', barWidth: '50%',
       data: [
@@ -1348,9 +1345,9 @@
 (function(){
   var chart = echarts.init(document.getElementById('chartL1Tags'));
   var tags = [
-    {name:'新品与产品生命周期', value: 5628},
-    {name:'产品体验', value: 1268},
-    {name:'风险沟通', value: 690}
+    {name:'新品与产品生命周期', value:5628},
+    {name:'产品体验', value:1268},
+    {name:'风险沟通', value:690}
   ];
   var sorted = tags.slice().sort(function(a,b){ return a.value - b.value; });
   var option = {
@@ -1368,6 +1365,10 @@
   window.addEventListener('resize', function(){ chart.resize(); });
 })();
 </script>
+
+<div class="report-footer">
+  蜜雪冰城薄荷系列新品口碑分析与POC验证报告 | 数据周期 2026.05.01 - 2026.06.05 | 报告更新日期 2026年6月6日
+</div>
 
 </body>
 </html>
