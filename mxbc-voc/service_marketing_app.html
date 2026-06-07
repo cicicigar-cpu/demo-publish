@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>客服 VOC 与外溢风险看板 - 蜜雪冰城 POC</title>
-  <link rel="stylesheet" href="./mx_dashboard.css?v=20260606h">
+  <link rel="stylesheet" href="./mx_dashboard.css?v=20260607b">
 </head>
 <body data-app="service">
   <div class="layout">
@@ -23,7 +23,7 @@
     </aside>
     <main class="main">
       <header class="topbar">
-        <div class="top-title"><span class="hamburger">☰</span><span>客服 VOC 与外溢风险看板</span></div>
+        <div class="top-title"><span class="hamburger">☰</span><span>客诉社媒聚合分析看板</span></div>
         <div class="top-actions"><span>中文⌄</span><span>帮助</span><span>通知</span><span class="avatar">账号</span><span>欢迎！蜜雪客诉部</span></div>
       </header>
       <section class="filterbar">
@@ -35,21 +35,21 @@
         <label class="filter-control"><span>风险等级</span><select id="serviceRisk"><option value="全部">全部</option><option>P1 高风险</option><option>P2 中高风险</option><option>P3 一般风险</option><option>观察信号</option></select></label>
         <button class="ai-report-btn" data-template="complaint">生成 AI 报告</button>
       </section>
-      <div class="filter-note">热线/在线客服为内部客诉主口径；外卖评价、社媒为外部反馈与外溢风险补充口径。</div>
+      </section>
       <section class="content">
         <div id="complaint" class="page active"></div>
         <div id="brandMind" class="page"></div>
         <div id="warning" class="page"></div>
         <div id="serviceRegions" class="page"></div>
         <div id="aiInsights" class="page ai-insights-page">
-          <iframe class="ai-embed-frame" src="./ai_insights.html?embed=service&v=20260606h" title="客诉看板 AI 洞察"></iframe>
+          <iframe class="ai-embed-frame" src="./ai_insights.html?embed=service&v=20260607b" title="客诉看板 AI 洞察"></iframe>
         </div>
         <div class="footer-note">数据来源：D:\mx_tagging_outputs\蜜雪POC_客诉_数据case_打标结果.xlsx、蜜雪POC客诉同天社媒抖红微B快_24509814_打标结果.xlsx、蜜雪POC薄荷新品数据_24509941_打标结果.xlsx。</div>
       </section>
     </main>
   </div>
-  <script src="./assets/echarts.min.js?v=20260606h"></script>
-  <script src="./mx_dashboard_data.js?v=20260606h"></script>
-  <script src="./mx_dashboard_app.js?v=20260606h"></script>
+  <script src="./assets/echarts.min.js?v=20260607b"></script>
+  <script src="./mx_dashboard_data.js?v=20260607b"></script>
+  <script src="./mx_dashboard_app.js?v=20260607b"></script>
 </body>
 </html>

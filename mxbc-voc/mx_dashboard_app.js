@@ -1961,7 +1961,7 @@
     const target = $("#chinaRiskMap");
     if (!target) return;
     try {
-      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260606h3");
+      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260607b3");
       if (!window.__chinaProvinceGeoJson) {
         const response = await fetch("./assets/china-provinces.json");
         window.__chinaProvinceGeoJson = await response.json();
@@ -2067,7 +2067,7 @@
       <div class="data-status">内部热线：已接入，更新至 2026-05-21 23:59　在线客服：已接入　外卖评价：已接入　社媒数据：已接入；提示：部分社媒地域无法定位门店。</div>
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>客服 VOC 监测总览</div>
+          <div class="page-title"><span class="title-mark"></span>VOC 监测总览</div>
           <p>先以热线和在线客服识别内部客诉主线，再结合外卖评价与社媒判断外部反馈和外溢风险。</p>
         </div>
         <div class="sample-note">当前筛选：${escapeHtml(filterText)}</div>
