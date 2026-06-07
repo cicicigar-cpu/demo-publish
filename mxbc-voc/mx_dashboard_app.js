@@ -30,7 +30,28 @@
     if (emotion === "负向") return "负面";
     if (emotion === "中性") return "中性";
     if (emotion === "正向") return "正面";
-    // 兼容旧的多分类情感
+        
+    // 二级维度声量与 NSR（柱线图）
+    setTimeout(() => {
+      const el2 = document.getElementById('warningSecondaryChart2');
+      if (!el2 || !rep || !rep.secondary) return;
+      const c2 = echarts.init(el2);
+      c2.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['声量', 'NSR'], bottom: 0 },
+        grid: { left: '3%', right: '8%', bottom: '12%', containLabel: true },
+        xAxis: { type: 'category', data: rep.secondary.map(s => s.name), axisLabel: { interval: 0, rotate: 30 } },
+        yAxis: [
+          { type: 'value', name: '声量', position: 'left' },
+          { type: 'value', name: 'NSR%', position: 'right', max: 100 }
+        ],
+        series: [
+          { name: '声量', type: 'bar', data: rep.secondary.map(s => s.volume), itemStyle: { color: '#f59e0b' }, barWidth: '35%' },
+          { name: 'NSR', type: 'line', yAxisIndex: 1, data: rep.secondary.map(s => s.nsr), smooth: true, itemStyle: { color: '#ef4444' } }
+        ]
+      });
+    }, 200);
+// 兼容旧的多分类情感
     const positive = ["满意", "愉悦", "期待", "好奇", "惊喜", "信任", "兴奋"];
     const neutral  = ["理性", "观望", "困惑", "怀旧", "被动接受"];
     const negative = ["不满", "厌恶", "失望", "怀疑", "无助", "烦躁", "后悔"];
@@ -1946,7 +1967,7 @@
     const target = $("#chinaRiskMap");
     if (!target) return;
     try {
-      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260609a");
+      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260609b");
       if (!window.__chinaProvinceGeoJson) {
         const response = await fetch("./assets/china-provinces.json");
         window.__chinaProvinceGeoJson = await response.json();
@@ -2109,7 +2130,7 @@
         { label: "综合风险指数", value: "62.8", note: "基于负向率×声量×增速加权" },
         { label: "高风险问题数", value: fmt(data.brandReputation ? data.brandReputation.reputationDimensions.primary.filter(p => p.nsr >= 50).length : 3), note: "NSR ≥ 50% 的维度" },
         { label: "强客控问题数", value: fmt(data.brandReputation ? data.brandReputation.reputationDimensions.primary.filter(p => p.volume >= 100 && p.nsr >= 20).length : 4), note: "声量≥100且NSR≥20%" },
-        { label: "最高风险维度", value: "食安卫生", note: "NSR 79.4% · 声量 34" },
+        { label: "最高风险维度", value: "食安卫生", note: "NSR -95.6% · 声量 34 · 极高风险" },
       ])}
       
       <!-- 口碑维度分析（来自原口碑维度/NSR分析页） -->
@@ -2118,6 +2139,7 @@
         ${card("二级维度声量与 NSR（柱线图）", `<div id="warningSecondaryChart" style="height:320px"></div>`)}
       </div>
       <div class="warning-grid">
+        ${card("三级维度散点图", `<div id="tertiaryScatter" style="height:340px"></div>`)}
         ${card("风险问题排行", table(["等级", "维度", "声量", "NSR", "风险阶段", "建议动作"], (data.brandReputation ? data.brandReputation.reputationDimensions.primary : []).sort((a,b) => b.nsr - a.nsr).slice(0, 8).map((item, index) => [
           `<span class="badge ${item.nsr >= 60 ? "red" : item.nsr >= 30 ? "amber" : ""}">${item.nsr >= 60 ? "P1" : item.nsr >= 30 ? "P2" : "P3"}</span>`,
           `<button class="link-btn" data-warn-dim="${escapeHtml(item.name)}">${escapeHtml(item.name)}</button>`,
@@ -2126,7 +2148,6 @@
           item.nsr >= 60 ? "高风险" : item.nsr >= 30 ? "需关注" : "观察中",
           item.nsr >= 60 ? "当天确认" : item.nsr >= 30 ? "转品控" : "持续观察"
         ])))}
-        ${card("三级维度散点图", `<div id="tertiaryScatter" style="height:340px"></div>`)}
       </div>
       <div class="warning-detail-head">
         <div><span>当前预警问题</span><strong>${escapeHtml(selected.issue)}</strong></div>
@@ -2428,31 +2449,8 @@
 
   // ── VOC监测总览：站点×维度热力图 ──
   function renderSiteDimHeatmap(d) {
-    if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return "<p>暂无数据</p>";
-    const hm = d.brandReputation.reputationDimensions.heatmap;
-    if (!hm) return "<p>暂无数据</p>";
-    const sites = Object.keys(hm);
-    const dims = d.brandReputation.reputationDimensions.primary.map(p => p.name);
-    // Build header row
-    var headerCells = '<div></div>' + dims.map(function(x) {
-      return '<strong>' + escapeHtml(x.length > 6 ? x.slice(0,6) : x) + '</strong>';
-    }).join('');
-    // Build data rows
-    var dataRows = sites.map(function(site) {
-      var row = hm[site] || {};
-      var label = escapeHtml(site.length > 5 ? site.slice(0,5) : site);
-      var cells = dims.map(function(dim) {
-        var cell = row[dim];
-        if (!cell) return '<span style="background:rgba(22,135,255,0.05)">-</span>';
-        var intensity = Math.min(0.92, 0.08 + (cell.negRate || 0) / 120);
-        var rgb = cell.negRate >= 60 ? '216,60,77' : cell.negRate >= 30 ? '245,166,35' : '22,135,255';
-        var title = site + ' × ' + dim + ': 声量' + cell.total + ', 负向' + cell.negative + ', 负向率' + cell.negRate + '%';
-        return '<span style="background:rgba(' + rgb + ',' + intensity + ')" title="' + escapeHtml(title) + '">' + cell.total + '</span>';
-      }).join('');
-      return '<b>' + label + '</b>' + cells;
-    }).join('');
-    return '<div class="service-heatmap site-dim-heatmap">' + headerCells + dataRows + '</div>' +
-      '<p class="fine-note">颜色深浅代表负向率：红色（≥60%）、橙色（≥30%）、蓝色（<30%），数字为声量。</p>';
+    // 返回 ECharts 热力图容器，初始化在 initSourcePieAndTrend() 中完成
+    return '<div id="siteDimHeatmapChart" style="height:400px"></div><p class="fine-note">颜色深浅代表负向率：红色（≥60%）、橙色（≥30%）、蓝色（<30%），数字为声量。</p>';
   }
 
   // ── VOC监测总览：来源饼图 + 问题时间趋势图 ──
@@ -2500,6 +2498,54 @@
         });
       }
     }
+  
+    // 站点×维度热力图（ECharts heatmap）
+    const heatEl = document.getElementById('siteDimHeatmapChart');
+    if (heatEl && d && d.brandReputation && d.brandReputation.reputationDimensions) {
+      const rep = d.brandReputation.reputationDimensions;
+      const hm = rep.heatmap;
+      if (hm) {
+        const sites = Object.keys(hm);
+        const dims = rep.primary.map(p => p.name);
+        // 构建热力图数据：[siteIndex, dimIndex, { value: total, negRate: negRate }]
+        const heatData = [];
+        sites.forEach((site, si) => {
+          const row = hm[site] || {};
+          dims.forEach((dim, di) => {
+            const cell = row[dim] || {};
+            heatData.push([si, di, cell.total || 0, cell.negRate || 0]);
+          });
+        });
+        const heatChart = echarts.init(heatEl);
+        heatChart.setOption({
+          tooltip: {
+            position: 'top',
+            formatter: function(p) {
+              return sites[p.data[0]] + ' × ' + dims[p.data[1]] + '<br/>声量: ' + p.data[2] + '<br/>负向率: ' + p.data[3] + '%';
+            }
+          },
+          grid: { left: '8%', right: '4%', bottom: '12%', top: '8%' },
+          xAxis: { type: 'category', data: sites, axisLabel: { interval: 0, rotate: 30 } },
+          yAxis: { type: 'category', data: dims },
+          visualMap: {
+            min: 0, max: 100,
+            calculable: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            inRange: { color: ['#e8f4ff', '#93c9f3', '#f6b178', '#e75161'] },
+            textStyle: { color: '#718097', fontSize: 11 },
+          },
+          series: [{
+            type: 'heatmap',
+            data: heatData.map(d => [d[0], d[1], d[2]]),  // [x, y, value]
+            label: { show: true, fontSize: 10, formatter: function(p) { return p.data[2] > 0 ? p.data[2] : '-'; } },
+            emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.5)' } }
+          }]
+        });
+      }
+    }
+
   }
 
   // ── 口碑维度分析页：散点图 + 饼图初始化 ──
@@ -2580,6 +2626,53 @@
         }]
       });
     }
+    
+    // 联动功能：风险问题排行榜点击
+    setTimeout(() => {
+      const warningPage = document.getElementById('warning');
+      if (!warningPage) return;
+      const buttons = warningPage.querySelectorAll('button.link-btn[data-warn-dim]');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const dimName = e.target.dataset.warnDim;
+          if (!dimName) return;
+          // 更新当前预警问题
+          const issueStrong = warningPage.querySelector('.warning-detail-head strong');
+          if (issueStrong) issueStrong.textContent = dimName;
+          // 更新热点事件时间线（模拟数据）
+          const eventChartEl = document.getElementById('warningEventChart');
+          if (eventChartEl) {
+            const eventChart = echarts.getInstanceByDom(eventChartEl) || echarts.init(eventChartEl);
+            // 模拟该维度的时间趋势数据
+            const mockDates = ['05-15','05-16','05-17','05-18','05-19','05-20','05-21'];
+            const mockData1 = mockDates.map(() => Math.floor(Math.random() * 100) + 20);
+            const mockData2 = mockDates.map(() => Math.floor(Math.random() * 50) + 10);
+            eventChart.setOption({
+              xAxis: { data: mockDates },
+              series: [
+                { data: mockData1 },
+                { data: mockData2 },
+                { data: mockData1.map(v => v * 30 + Math.floor(Math.random() * 500)) }
+              ]
+            });
+          }
+          // 更新来源结构饼图
+          const pieEl = document.getElementById('warningSourcePie');
+          if (pieEl) {
+            const pieChart = echarts.getInstanceByDom(pieEl) || echarts.init(pieEl);
+            pieChart.setOption({
+              series: [{ data: [
+                { value: Math.floor(Math.random() * 500) + 200, name: '抖音' },
+                { value: Math.floor(Math.random() * 300) + 100, name: '快手' },
+                { value: Math.floor(Math.random() * 200) + 50, name: '小红书' },
+                { value: Math.floor(Math.random() * 100) + 20, name: '微博' },
+                { value: Math.floor(Math.random() * 50) + 10, name: '热线/在线' }
+              ]}]
+            });
+          }
+        });
+      });
+    }, 300);
   }
 
     // ── 预警页辅助：一级维度声量与NSR + 二级维度详情 ──
@@ -2608,11 +2701,8 @@
   }
 
   function renderWarningSecondary(d) {
-    if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return "";
-    const rep = d.brandReputation.reputationDimensions;
-    return table(["维度", "声量", "声量环比", "NSR"], rep.secondary.map(s => [
-      s.name, fmt(s.volume), (s.volumeChange > 0 ? '+' : '') + s.volumeChange + '%', s.nsr.toFixed(1) + '%'
-    ]));
+    // 二级维度图表已在 renderWarningPrimaryChart 中初始化
+    return "";
   }
 
   // ── 区域页辅助：省份 NSR 分析表 ──
@@ -2637,8 +2727,12 @@
           setTimeout(() => renderWarningPrimaryChart(data), 100);
           setTimeout(() => initWarningCharts(data), 200);
         }
-                if (target === "serviceRegions") {
-          setTimeout(() => initChinaRiskMap(serviceRegionMap().rows), 80);
+        if (target === "serviceRegions") {
+          // 确保区域地图容器已渲染后再初始化
+          setTimeout(() => {
+            const rows = serviceRegionMap().rows;
+            initChinaRiskMap(rows);
+          }, 120);
           setTimeout(() => {
             const tables = document.querySelectorAll("#serviceRegions table");
             if (tables.length < 2) return;
