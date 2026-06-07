@@ -1,7 +1,7 @@
-// VERSION: v=20260610b — 若浏览器加载的版本不对，请硬刷新清除缓存
+// VERSION: v=20260610c — 若浏览器加载的版本不对，请硬刷新清除缓存
 (function () {
   const data = window.MX_DASHBOARD_DATA || {};
-  window.MX_APP_VERSION = 'v=20260610b'; // 在Console输入 MX_APP_VERSION 可确认加载版本
+  window.MX_APP_VERSION = 'v=20260610c'; // 在Console输入 MX_APP_VERSION 可确认加载版本
   const colors = ["#2787f5", "#f05b68", "#20b7b3", "#f5a623", "#7569df", "#45b36b", "#8ea0bd"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -32,28 +32,8 @@
     if (emotion === "负向") return "负面";
     if (emotion === "中性") return "中性";
     if (emotion === "正向") return "正面";
-        
-    // 二级维度声量与 NSR（柱线图）
-    setTimeout(() => {
-      const el2 = document.getElementById('warningSecondaryChart2');
-      if (!el2 || !rep || !rep.secondary) return;
-      const c2 = echarts.init(el2);
-      c2.setOption({
-        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-        legend: { data: ['声量', 'NSR'], bottom: 0 },
-        grid: { left: '3%', right: '8%', bottom: '12%', containLabel: true },
-        xAxis: { type: 'category', data: rep.secondary.map(s => s.name), axisLabel: { interval: 0, rotate: 30 } },
-        yAxis: [
-          { type: 'value', name: '声量', position: 'left' },
-          { type: 'value', name: 'NSR%', position: 'right', max: 100 }
-        ],
-        series: [
-          { name: '声量', type: 'bar', data: rep.secondary.map(s => s.volume), itemStyle: { color: '#f59e0b' }, barWidth: '35%' },
-          { name: 'NSR', type: 'line', yAxisIndex: 1, data: rep.secondary.map(s => s.nsr), smooth: true, itemStyle: { color: '#ef4444' } }
-        ]
-      });
-    }, 200);
-// 兼容旧的多分类情感
+
+    // 兼容旧的多分类情感
     const positive = ["满意", "愉悦", "期待", "好奇", "惊喜", "信任", "兴奋"];
     const neutral  = ["理性", "观望", "困惑", "怀旧", "被动接受"];
     const negative = ["不满", "厌恶", "失望", "怀疑", "无助", "烦躁", "后悔"];
@@ -2138,7 +2118,7 @@
       <!-- 一级维度 + 二级维度 声量与 NSR（柱线图）-->
       <div class="warning-primary-grid">
         ${card("一级维度声量与 NSR", `<div id="warningPrimaryChart" style="height:300px"></div>`)}
-        ${card("二级维度声量与 NSR（柱线图）", `<div id="warningSecondaryChart2" style="height:320px"></div>`)}
+        ${card("二级维度声量与 NSR", `<div id="warningSecondaryChart2" style="height:320px"></div>`)}
       </div>
       <!-- 三级维度散点图 + 风险问题排行 -->
       <div class="warning-grid">
@@ -2169,30 +2149,9 @@
       <div class="full-section">${card("关键词与原声证据", `<div id="warningEvidenceContent"></div>`)}</div>
     `;
 
-    // Initialize warning event chart
-    setTimeout(() => {
-      const eventChartEl = document.getElementById('warningEventChart');
-      if (eventChartEl) {
-        const eventChart = echarts.init(eventChartEl);
-        eventChart.setOption({
-          tooltip: { trigger: 'axis' },
-          legend: { data: ['社媒声量', '内部客诉', '互动量'], bottom: 0 },
-          grid: { left: '3%', right: '4%', bottom: '14%', containLabel: true },
-          xAxis: { type: 'category', data: ['05-15','05-16','05-17','05-18','05-19','05-20','05-21'] },
-          yAxis: [
-            { type: 'value', name: '声量', position: 'left' },
-            { type: 'value', name: '互动', position: 'right' }
-          ],
-          series: [
-            { name: '社媒声量', type: 'line', data: [45,52,48,65,120,95,78], smooth: true, itemStyle: { color: '#ef4b6c' }, markPoint: { data: [{ coord: ['05-19', 120], value: '峰值事件', itemStyle: { color: '#ef4b6c' } }] } },
-            { name: '内部客诉', type: 'line', data: [12,14,11,18,32,28,24], smooth: true, itemStyle: { color: '#1687ff' } },
-            { name: '互动量', type: 'line', yAxisIndex: 1, data: [1200,1500,1300,2100,8500,5200,3800], smooth: true, itemStyle: { color: '#f59e0b' } }
-          ]
-        });
-      }
-    }, 100);
+    // 热点事件时间线和来源饼图将在 initWarningCharts() 中初始化，避免重复初始化
 
-    // 初始化来源饼图和问题时间趋势图
+    // 初始化来源饼图和问题时间趋势图（VOC监测总览的）
     setTimeout(() => initSourcePieAndTrend(), 150);
 
     const region = serviceRegionMap();
@@ -2647,22 +2606,41 @@
       });
     }, 300);
 
-    // 热点事件时间线初始化
-    const eventChartEl2 = document.getElementById('warningEventChart');
-    if (eventChartEl2 && rep.timeTrend) {
+    // 热点事件时间线初始化（使用真实数据 timeTrend）
+    setTimeout(() => {
+      const eventChartEl2 = document.getElementById('warningEventChart');
+      if (!eventChartEl2) return;
+      // 如果已有实例先销毁
+      const existingInstance = echarts.getInstanceByDom(eventChartEl2);
+      if (existingInstance) existingInstance.dispose();
       const ec = echarts.init(eventChartEl2);
-      ec.setOption({
-        tooltip: { trigger: 'axis' },
-        legend: { data: ['社媒声量', '内部客诉'], bottom: 0 },
-        grid: { left: '3%', right: '4%', bottom: '14%', containLabel: true },
-        xAxis: { type: 'category', data: rep.timeTrend.map(t => t.hour), axisLabel: { interval: 2 } },
-        yAxis: { type: 'value', name: '声量' },
-        series: [
-          { name: '社媒声量', type: 'line', data: rep.timeTrend.map(t => t.count), smooth: true, itemStyle: { color: '#ef4b6c' } },
-          { name: '内部客诉', type: 'line', data: rep.timeTrend.map(t => Math.floor(t.count * 0.3)), smooth: true, itemStyle: { color: '#1687ff' } }
-        ]
-      });
-    }
+      if (rep.timeTrend && rep.timeTrend.length > 0) {
+        ec.setOption({
+          tooltip: { trigger: 'axis' },
+          legend: { data: ['社媒声量', '内部客诉'], bottom: 0 },
+          grid: { left: '3%', right: '4%', bottom: '14%', containLabel: true },
+          xAxis: { type: 'category', data: rep.timeTrend.map(t => t.hour), axisLabel: { interval: 2 } },
+          yAxis: { type: 'value', name: '声量' },
+          series: [
+            { name: '社媒声量', type: 'line', data: rep.timeTrend.map(t => t.count), smooth: true, itemStyle: { color: '#ef4b6c' }, areaStyle: { color: 'rgba(239,75,108,0.12)' } },
+            { name: '内部客诉', type: 'line', data: rep.timeTrend.map(t => Math.floor(t.count * 0.3)), smooth: true, itemStyle: { color: '#1687ff' }, areaStyle: { color: 'rgba(22,135,255,0.12)' } }
+          ]
+        });
+      } else {
+        // 无 timeTrend 数据时使用 mock
+        ec.setOption({
+          tooltip: { trigger: 'axis' },
+          legend: { data: ['社媒声量', '内部客诉'], bottom: 0 },
+          grid: { left: '3%', right: '4%', bottom: '14%', containLabel: true },
+          xAxis: { type: 'category', data: ['00:00','02:00','04:00','06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00'] },
+          yAxis: { type: 'value', name: '声量' },
+          series: [
+            { name: '社媒声量', type: 'line', data: [223,51,18,44,89,156,312,287,198,145,97,62], smooth: true, itemStyle: { color: '#ef4b6c' } },
+            { name: '内部客诉', type: 'line', data: [67,15,5,13,27,47,94,86,59,44,29,19], smooth: true, itemStyle: { color: '#1687ff' } }
+          ]
+        });
+      }
+    }, 250);
 
     // 高频提及产品名排行（真实数据）
     const prodEl = document.getElementById('warningProductRank');
@@ -2777,23 +2755,24 @@
       });
     }, 150);
 
-    // 二级维度声量与 NSR（柱线图）
+    // 二级维度声量与 NSR（Top 20）
     setTimeout(() => {
       const el2 = document.getElementById('warningSecondaryChart2');
       if (!el2 || !rep || !rep.secondary) return;
+      const top20 = rep.secondary.slice(0, 20);
       const c2 = echarts.init(el2);
       c2.setOption({
         tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
         legend: { data: ['声量', 'NSR'], bottom: 0 },
-        grid: { left: '3%', right: '8%', bottom: '12%', containLabel: true },
-        xAxis: { type: 'category', data: rep.secondary.map(s => s.name), axisLabel: { interval: 0, rotate: 30 } },
+        grid: { left: '3%', right: '8%', bottom: '18%', containLabel: true },
+        xAxis: { type: 'category', data: top20.map(s => s.name), axisLabel: { interval: 0, rotate: 45, fontSize: 10 } },
         yAxis: [
           { type: 'value', name: '声量', position: 'left' },
           { type: 'value', name: 'NSR%', position: 'right', max: 100 }
         ],
         series: [
-          { name: '声量', type: 'bar', data: rep.secondary.map(s => s.volume), itemStyle: { color: '#f59e0b' }, barWidth: '35%' },
-          { name: 'NSR', type: 'line', yAxisIndex: 1, data: rep.secondary.map(s => s.nsr), smooth: true, itemStyle: { color: '#ef4444' } }
+          { name: '声量', type: 'bar', data: top20.map(s => s.volume), itemStyle: { color: '#f59e0b' }, barWidth: '35%' },
+          { name: 'NSR', type: 'line', yAxisIndex: 1, data: top20.map(s => s.nsr), smooth: true, itemStyle: { color: '#ef4444' } }
         ]
       });
     }, 200);
