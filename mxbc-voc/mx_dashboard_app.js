@@ -1967,7 +1967,7 @@
     const target = $("#chinaRiskMap");
     if (!target) return;
     try {
-      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260609c");
+      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260609d");
       if (!window.__chinaProvinceGeoJson) {
         const response = await fetch("./assets/china-provinces.json");
         window.__chinaProvinceGeoJson = await response.json();
@@ -2165,7 +2165,7 @@
       </div>
       <!-- 预警问题原帖和原声证据 -->
       <div class="full-section">${card("关键词与原声证据", `<div id="warningEvidenceContent"></div>`)}</div>
-    `;;
+    `;
 
     // Initialize warning event chart
     setTimeout(() => {
