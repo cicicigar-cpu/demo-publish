@@ -1,7 +1,7 @@
-// VERSION: v=20260610c — 若浏览器加载的版本不对，请硬刷新清除缓存
+// VERSION: v=20260610d — 若浏览器加载的版本不对，请硬刷新清除缓存
 (function () {
   const data = window.MX_DASHBOARD_DATA || {};
-  window.MX_APP_VERSION = 'v=20260610c'; // 在Console输入 MX_APP_VERSION 可确认加载版本
+  window.MX_APP_VERSION = 'v=20260610d'; // 在Console输入 MX_APP_VERSION 可确认加载版本
   const colors = ["#2787f5", "#f05b68", "#20b7b3", "#f5a623", "#7569df", "#45b36b", "#8ea0bd"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -2146,7 +2146,7 @@
         ${card("高频提及产品名排行", `<div id="warningProductRank" style="min-height:180px"></div>`)}
       </div>
       <!-- 预警问题原帖和原声证据 -->
-      <div class="full-section">${card("关键词与原声证据", `<div id="warningEvidenceContent"></div>`)}</div>
+      <div class="full-section">${card("关键词与原声证据", `<div id="warningEvidenceContent"><p class="fine-note">点击上方风险问题排行中的维度，查看关键词与原声证据。</p></div>`)}</div>
     `;
 
     // 热点事件时间线和来源饼图将在 initWarningCharts() 中初始化，避免重复初始化
@@ -2652,6 +2652,36 @@
       });
       h += '</div>';
       prodEl.innerHTML = h;
+    }
+
+    // 初始化原声证据：默认显示食安卫生（最高风险维度）的数据
+    const evInitEl = document.getElementById('warningEvidenceContent');
+    if (evInitEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.evidenceByDimension) {
+      // 取NSR最低（最差）的维度作为默认展示
+      const primaryDims = rep.primary || [];
+      const worstDim = primaryDims.length > 0
+        ? primaryDims.sort((a, b) => a.nsr - b.nsr)[0].name
+        : '食安卫生';
+      const evList = window.MX_EVIDENCE_DATA.evidenceByDimension[worstDim] || [];
+      if (evList.length > 0) {
+        let evHtml = '<div style="margin-bottom:8px;color:#667087;font-size:13px;">当前展示：<strong style="color:#28324a;">' + worstDim + '</strong> 的原声证据（点击排行中其他维度可切换）</div>';
+        evList.forEach(ev => {
+          const platformClass = (ev.source === '热线' || ev.source === '在线') ? 'hotline' : '';
+          evHtml += '<div class="evidence-group">';
+          evHtml += '<div class="evidence-label">' + (ev.source || '未知') + '</div>';
+          evHtml += '<div class="evidence-item">';
+          evHtml += '<div class="evidence-meta">';
+          evHtml += '<span class="platform-tag ' + platformClass + '">' + (ev.source || '') + '</span>';
+          if (ev.author) evHtml += '<span class="author">' + ev.author + '</span>';
+          if (ev.callTime) evHtml += '<span class="call-time">' + ev.callTime + '</span>';
+          evHtml += '</div>';
+          evHtml += '<div class="evidence-content">' + (ev.content || '') + '</div>';
+          if (ev.url) evHtml += '<div class="evidence-url"><a href="' + ev.url + '" target="_blank">查看原帖</a></div>';
+          evHtml += '</div>';
+          evHtml += '</div>';
+        });
+        evInitEl.innerHTML = evHtml;
+      }
     }
 
     // 联动：点击风险问题排行，更新下方内容
