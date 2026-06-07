@@ -2662,18 +2662,12 @@
       });
     }
 
-    // 高频提及产品名排行初始化（模拟数据）
+    // 高频提及产品名排行（真实数据）
     const prodEl = document.getElementById('warningProductRank');
-    if (prodEl) {
-      const mockProd = [
-        { name: '冰鲜柠檬水', count: 320 },
-        { name: '蜜桃四季春', count: 280 },
-        { name: '杨枝甘露', count: 195 },
-        { name: '满杯百香果', count: 162 },
-        { name: '摇摇奶昔', count: 134 }
-      ];
+    if (prodEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.productRankings) {
+      const realProd = window.MX_EVIDENCE_DATA.productRankings;
       let h = '<div class="product-rank-list">';
-      mockProd.forEach((p, i) => {
+      realProd.forEach((p, i) => {
         h += '<div class="product-rank-item"><span class="rank-num">' + (i+1) + '</span><span class="product-name">' + p.name + '</span><span class="product-count">' + p.count + '次提及</span></div>';
       });
       h += '</div>';
@@ -2726,15 +2720,31 @@
                 });
             pieChart2.setOption({ series: [{ data: pieData }] });
           }
-          // 更新原声证据
+          // 更新原声证据（真实数据）
           const evEl = document.getElementById('warningEvidenceContent');
-          if (evEl) {
-            evEl.innerHTML = '<div class="evidence-group"><div class="evidence-label">社媒原帖</div>'
-            + '<div class="evidence-item"><div class="evidence-meta"><span class="platform-tag">抖音</span><span class="author">用户@***</span></div>'
-            + '<div class="evidence-content">' + dimName + ' 相关问题曝光，评论区出现大量共鸣...</div></div>'
-            + '<div class="evidence-group"><div class="evidence-label">热线摘要</div>'
-            + '<div class="evidence-item"><div class="evidence-meta"><span class="platform-tag hotline">热线</span></div>'
-            + '<div class="evidence-content">用户反馈' + dimName + '问题，要求核实处理。</div></div></div>';
+          if (evEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.evidenceByDimension) {
+            const evList = window.MX_EVIDENCE_DATA.evidenceByDimension[dimName] || [];
+            let evHtml = '';
+            if (evList.length === 0) {
+              evHtml = '<p class="fine-note">暂无该维度的原声证据数据。</p>';
+            } else {
+              evList.forEach(ev => {
+                const platformClass = (ev.source === '热线' || ev.source === '在线') ? 'hotline' : '';
+                evHtml += '<div class="evidence-group">';
+                evHtml += '<div class="evidence-label">' + (ev.source || '未知') + '</div>';
+                evHtml += '<div class="evidence-item">';
+                evHtml += '<div class="evidence-meta">';
+                evHtml += '<span class="platform-tag ' + platformClass + '">' + (ev.source || '') + '</span>';
+                if (ev.author) evHtml += '<span class="author">' + ev.author + '</span>';
+                if (ev.callTime) evHtml += '<span class="call-time">' + ev.callTime + '</span>';
+                evHtml += '</div>';
+                evHtml += '<div class="evidence-content">' + (ev.content || '') + '</div>';
+                if (ev.url) evHtml += '<div class="evidence-url"><a href="' + ev.url + '" target="_blank">查看原帖</a></div>';
+                evHtml += '</div>';
+                evHtml += '</div>';
+              });
+            }
+            evEl.innerHTML = evHtml;
           }
         });
       });
