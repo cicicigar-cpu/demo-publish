@@ -120,19 +120,58 @@
   let activeReport = embedContext === "service" ? "complaint" : "delivery";
   let activeTemplate = activeReport;
   let lastFilters = {};           // ═ 记住看板传来的筛选条件
+  const STORAGE_KEY = "ai_insights_history";
+
+  function saveConversation(key) {
+    const report = reports[key];
+    if (!report) return;
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    // 如果已存在同 key 的记录，更新时间；否则插入到头部
+    const idx = history.findIndex(h => h.key === key);
+    const entry = {
+      id: Date.now(),
+      key: key,
+      title: report.historyTitle || report.title || key,
+      timestamp: new Date().toISOString(),
+    };
+    if (idx >= 0) {
+      history[idx] = { ...history[idx], ...entry, id: history[idx].id };
+    } else {
+      history.unshift(entry);
+    }
+    // 只保留最近 50 条
+    if (history.length > 50) history.length = 50;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  }
+
+  function loadHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
 
   function renderHistory() {
-    $("#historyList").innerHTML = Object.entries(reports).map(([key, report]) => `
+    const localHistory = loadHistory();
+    const hardcodedHTML = Object.entries(reports).map(([key, report]) => `
       <button class="history-record ${key === activeReport ? "active" : ""}" data-report="${key}">
         <strong>${report.historyTitle}</strong>
         <div class="history-row"><span class="history-type">深度研究</span><span class="history-status">已完成</span><time>2026-06-06 16:11</time></div>
       </button>
-    `).join("") + `
-      <button class="history-record" data-question-history>
-        <strong>近 7 天外卖评价高频问题</strong>
-        <div class="history-row"><span class="history-status">8轮对话</span><time>2026-06-06 15:20</time></div>
-      </button>`;
+    `).join("");
+    const localHTML = localHistory.map(item => `
+      <button class="history-record" data-id="${item.id}">
+        <strong>${item.title}</strong>
+        <div class="history-row"><span class="history-status">已完成</span><time>${item.timestamp.slice(0, 16).replace("T", " ")}</time></div>
+      </button>
+    `).join("");
+    $("#historyList").innerHTML = hardcodedHTML + localHTML;
     $$("[data-report]").forEach(item => item.addEventListener("click", () => openConversation(item.dataset.report)));
+    $$("[data-id]").forEach(item => item.addEventListener("click", () => {
+      const entry = localHistory.find(h => String(h.id) === item.dataset.id);
+      if (entry) openConversation(entry.key);
+    }));
   }
 
   function renderThread(key, layer = "summary") {
@@ -191,6 +230,7 @@
     const report = reports[key];
     if (!report) return;
     activeReport = key;
+    saveConversation(key);
     renderHistory();
     $("#agentHome").hidden = true;
     $("#conversationWorkspace").hidden = false;
