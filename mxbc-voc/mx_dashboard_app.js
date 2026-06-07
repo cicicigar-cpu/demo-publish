@@ -1,7 +1,7 @@
-// VERSION: v=20260610a — 若浏览器加载的版本不对，请硬刷新清除缓存
+// VERSION: v=20260610b — 若浏览器加载的版本不对，请硬刷新清除缓存
 (function () {
   const data = window.MX_DASHBOARD_DATA || {};
-  window.MX_APP_VERSION = 'v=20260610a'; // 在Console输入 MX_APP_VERSION 可确认加载版本
+  window.MX_APP_VERSION = 'v=20260610b'; // 在Console输入 MX_APP_VERSION 可确认加载版本
   const colors = ["#2787f5", "#f05b68", "#20b7b3", "#f5a623", "#7569df", "#45b36b", "#8ea0bd"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -2150,7 +2150,7 @@
           item.nsr.toFixed(1) + '%',
           item.nsr >= 60 ? "高风险" : item.nsr >= 30 ? "需关注" : "观察中",
           item.nsr >= 60 ? "当天确认" : item.nsr >= 30 ? "转品控" : "持续观察"
-        ]))}
+        ])))}
       </div>
       <div class="warning-detail-head">
         <div><span>当前预警问题</span><strong id="warningCurrentDim">点击上方维度查看详情</strong></div>
