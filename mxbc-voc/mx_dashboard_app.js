@@ -1334,7 +1334,7 @@
     $("#regions").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>区域风险试点地图</div>
+          <div class="page-title"><span class="title-mark"></span>区域风险地图</div>
           <p>以风险指数为核心，定位高风险区域与门店，识别问题集中环节，驱动精准治理。</p>
         </div>
         <div class="sample-note">当前筛选同步自顶部控件：${escapeHtml([d.filterState.region, d.filterState.platform, d.filterState.issue].join(" / "))}</div>
@@ -2049,7 +2049,7 @@
     const filterText = [state.time, state.source, state.dim, state.region, state.product, state.risk].join(" / ");
 
     $("#complaint").innerHTML = `
-      <div class="data-status">内部热线：已接入，更新至 2026-05-21 23:59　在线客服：已接入　外卖评价：已接入　社媒数据：已接入；提示：部分社媒地域无法定位门店。</div>
+      <div class="data-status">内部热线：已接入，更新至 2026-05-21 23:59　在线客服：已接入　社媒数据：已接入；提示：部分社媒地域无法定位门店。</div>
       <div class="dashboard-head">
         <div>
           <div class="page-title"><span class="title-mark"></span>VOC 监测总览</div>
@@ -2071,6 +2071,7 @@
       </div>
       <div class="section-label">重点问题发现与归因</div>
       <div class="service-workbench">
+        ${card("站点 × 问题维度热力图", renderSiteDimHeatmap(data))}
         ${card("重点问题排行榜", table(["排名", "问题", "风险", "综合问题量", "内部客诉", "外部公开反馈", "外溢评分ⓘ", "环比"], (rows.length ? rows : serviceProblems).map((item, index) => [
           index + 1,
           `<button class="link-btn" data-service-issue="${index}">${escapeHtml(item.issue)}</button>`,
@@ -2084,8 +2085,8 @@
         ${card("当前问题摘要", serviceIssueSummary(selected))}
       </div>
       <div class="service-mid-grid">
-        ${card("内外部来源拆解", sourceBreakdown(selected))}
-        ${card("当前问题归因概览", serviceAttribution(selected))}
+        ${card("来源结构分布", `<div id="sourcePieChart" style="height:260px"></div>`)}
+        ${card("问题时间趋势", `<div id="problemTimeTrend" style="height:260px"></div>`)}
         ${card("产品 × 问题热力图", productIssueHeatmap(selected))}
         ${card("问题区域分布 TOP 榜", table(["排名ⓘ", "区域", "综合问题量", "内部客诉", "外部公开反馈", "风险评分", "环比"], [
           ["1", "河南", "46", "5", "41", "86", "+52%"],
@@ -2100,15 +2101,15 @@
     $("#warning").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>重点问题预警</div>
-          <p>判断哪些问题正在从内部投诉变成外部舆情，哪些问题需要同步品牌、公关、产品或区域运营。</p>
+          <div class="page-title"><span class="title-mark"></span>口碑维度分析</div>
+          <p>按维度拆解客诉与社媒声量，识别高风险问题、强客控问题，并提供多级联动下钻分析。</p>
         </div>
       </div>
       ${kpis([
-        { label: "P1 高风险预警数", value: "8", note: "需要当天确认" },
-        { label: "社媒外溢型问题数", value: "12", note: "社媒高、内部低" },
-        { label: "内外共振型问题数", value: "5", note: "内部和外部同时升高" },
-        { label: "强负向敏感问题数", value: "18", note: "食安 / 欺骗 / 异物" },
+        { label: "综合风险指数", value: "62.8", note: "基于负向率×声量×增速加权" },
+        { label: "高风险问题数", value: fmt(data.brandReputation ? data.brandReputation.reputationDimensions.primary.filter(p => p.nsr >= 50).length : 3), note: "NSR ≥ 50% 的维度" },
+        { label: "强客控问题数", value: fmt(data.brandReputation ? data.brandReputation.reputationDimensions.primary.filter(p => p.volume >= 100 && p.nsr >= 20).length : 4), note: "声量≥100且NSR≥20%" },
+        { label: "最高风险维度", value: "食安卫生", note: "NSR 79.4% · 声量 34" },
       ])}
       
       <!-- 口碑维度分析（来自原口碑维度/NSR分析页） -->
@@ -2117,15 +2118,15 @@
         ${card("二级维度详情", `<div id="warningSecondaryDetail">${renderWarningSecondary(data)}</div>`)}
       </div>
       <div class="warning-grid">
-        ${card("内外部风险四象限", warningQuadrant())}
-        ${card("预警问题列表", table(["等级ⓘ", "问题", "风险类型", "命中规则", "主要来源", "风险阶段", "客服动作ⓘ"], serviceProblems.slice(0, 4).map((item, index) => [
-          item.risk,
-          `<button class="link-btn" data-service-issue="${index}">${escapeHtml(item.issue)}</button>`,
-          item.type,
-          index === 0 ? "互动突增 + 品质质疑" : index === 1 ? "食安标签 + 强负向" : "客诉量持续上升",
-          item.platforms,
-          ["快速上升", "内外共振", "持续高位", "跨平台扩散"][index], ["当天确认", "转品控", "转区域运营", "持续观察"][index]
+        ${card("风险问题排行", table(["等级", "维度", "声量", "NSR", "风险阶段", "建议动作"], (data.brandReputation ? data.brandReputation.reputationDimensions.primary : []).sort((a,b) => b.nsr - a.nsr).slice(0, 8).map((item, index) => [
+          `<span class="badge ${item.nsr >= 60 ? "red" : item.nsr >= 30 ? "amber" : ""}">${item.nsr >= 60 ? "P1" : item.nsr >= 30 ? "P2" : "P3"}</span>`,
+          `<button class="link-btn" data-warn-dim="${escapeHtml(item.name)}">${escapeHtml(item.name)}</button>`,
+          fmt(item.volume),
+          item.nsr.toFixed(1) + '%',
+          item.nsr >= 60 ? "高风险" : item.nsr >= 30 ? "需关注" : "观察中",
+          item.nsr >= 60 ? "当天确认" : item.nsr >= 30 ? "转品控" : "持续观察"
         ])))}
+        ${card("三级维度散点图", `<div id="tertiaryScatter" style="height:340px"></div>`)}
       </div>
       <div class="warning-detail-head">
         <div><span>当前预警问题</span><strong>${escapeHtml(selected.issue)}</strong></div>
@@ -2169,9 +2170,13 @@
           { name: "社媒负向", values: [7, 8, 12, 18, 26, 42, selected.social], color: colors[1] },
           { name: "互动指数", values: [18, 25, 22, 38, 48, 62, Math.round(selected.score)], color: colors[3] },
         ], ["D-6", "D-5", "D-4", "D-3", "D-2", "D-1", "今日"], 230))}
-        ${card("归因模型结果", serviceAttribution(selected))}
-        ${card("来源结构", sourceBreakdown(selected))}
+        ${card("来源结构", `<div id="warningSourcePie" style="height:230px"></div>`)}
         ${card("产品与问题归因", productIssueHeatmap(selected))}
+      </div>
+      <div class="section-label">问题详解：整合客诉与 VOC 数据</div>
+      <div class="warning-rep-grid">
+        ${card("二级维度详情（点击一级维度联动）", `<div id="warningSecondaryDetail2">${renderWarningSecondary(data)}</div>`)}
+        ${card("声量趋势 & 平台分布", `<div id="warnDimTrend" style="height:260px"></div>`)}
       </div>
       <div class="full-section">${card("关键词与原声证据", serviceEvidence(selected))}</div>
     `;
@@ -2199,6 +2204,9 @@
       }
     }, 100);
 
+    // 初始化来源饼图和问题时间趋势图
+    setTimeout(() => initSourcePieAndTrend(), 150);
+
     const region = serviceRegionMap();
     $("#serviceRegions").innerHTML = `
       <div class="dashboard-head">
@@ -2216,7 +2224,6 @@
         { label: "内外共振问题数", value: "9", note: "客服与社媒同步升高" },
       ])}
             ${card("省份 NSR 分析", `<div id="regionNsrTable">${renderRegionNsrTable(data)}</div>`)}
-      <div class="region-quadrant-wrap">${card("区域风险四象限", regionQuadrant())}</div>
       <div class="region-grid">
         ${card("全国区域风险地图", region.map)}
         ${card("区域风险排行榜", table(["排名", "区域", "风险指数", "内部", "社媒", "TOP 问题", "环比"], region.rows.map((row, index) => [
@@ -2419,7 +2426,163 @@
 
 
 
-  // ── 预警页辅助：一级维度声量与NSR + 二级维度详情 ──
+  // ── VOC监测总览：站点×维度热力图 ──
+  function renderSiteDimHeatmap(d) {
+    if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return "<p>暂无数据</p>";
+    const hm = d.brandReputation.reputationDimensions.heatmap;
+    if (!hm) return "<p>暂无数据</p>";
+    const sites = Object.keys(hm);
+    const dims = d.brandReputation.reputationDimensions.primary.map(p => p.name);
+    // Build header row
+    var headerCells = '<div></div>' + dims.map(function(x) {
+      return '<strong>' + escapeHtml(x.length > 6 ? x.slice(0,6) : x) + '</strong>';
+    }).join('');
+    // Build data rows
+    var dataRows = sites.map(function(site) {
+      var row = hm[site] || {};
+      var label = escapeHtml(site.length > 5 ? site.slice(0,5) : site);
+      var cells = dims.map(function(dim) {
+        var cell = row[dim];
+        if (!cell) return '<span style="background:rgba(22,135,255,0.05)">-</span>';
+        var intensity = Math.min(0.92, 0.08 + (cell.negRate || 0) / 120);
+        var rgb = cell.negRate >= 60 ? '216,60,77' : cell.negRate >= 30 ? '245,166,35' : '22,135,255';
+        var title = site + ' × ' + dim + ': 声量' + cell.total + ', 负向' + cell.negative + ', 负向率' + cell.negRate + '%';
+        return '<span style="background:rgba(' + rgb + ',' + intensity + ')" title="' + escapeHtml(title) + '">' + cell.total + '</span>';
+      }).join('');
+      return '<b>' + label + '</b>' + cells;
+    }).join('');
+    return '<div class="service-heatmap site-dim-heatmap">' + headerCells + dataRows + '</div>' +
+      '<p class="fine-note">颜色深浅代表负向率：红色（≥60%）、橙色（≥30%）、蓝色（<30%），数字为声量。</p>';
+  }
+
+  // ── VOC监测总览：来源饼图 + 问题时间趋势图 ──
+  function initSourcePieAndTrend() {
+    // 来源饼图
+    const pieEl = document.getElementById('sourcePieChart');
+    if (pieEl) {
+      const pieChart = echarts.init(pieEl);
+      pieChart.setOption({
+        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+        legend: { bottom: 0, type: 'scroll' },
+        series: [{
+          type: 'pie', radius: ['35%', '65%'], center: ['50%', '45%'],
+          label: { show: true, formatter: '{b}\n{d}%' },
+          data: [
+            { value: 1046, name: '抖音', itemStyle: { color: '#2787f5' } },
+            { value: 802, name: '快手', itemStyle: { color: '#f5a623' } },
+            { value: 379, name: '小红书', itemStyle: { color: '#f05b68' } },
+            { value: 94, name: '微博', itemStyle: { color: '#20b7b3' } },
+            { value: 60, name: '热线/在线', itemStyle: { color: '#7569df' } }
+          ]
+        }]
+      });
+    }
+    // 问题时间趋势图
+    const trendEl = document.getElementById('problemTimeTrend');
+    if (trendEl && window.MX_DASHBOARD_DATA && window.MX_DASHBOARD_DATA.brandReputation) {
+      const tt = window.MX_DASHBOARD_DATA.brandReputation.reputationDimensions.timeTrend;
+      if (tt) {
+        const trendChart = echarts.init(trendEl);
+        trendChart.setOption({
+          tooltip: { trigger: 'axis' },
+          grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
+          xAxis: { type: 'category', data: tt.map(t => t.hour), axisLabel: { interval: 2 } },
+          yAxis: { type: 'value', name: '声量' },
+          series: [{
+            type: 'line', data: tt.map(t => t.count), smooth: true,
+            itemStyle: { color: '#2787f5' },
+            areaStyle: { color: 'rgba(39,135,245,0.15)' },
+            markPoint: {
+              data: [{ type: 'max', name: '峰值' }],
+              symbolSize: 40
+            }
+          }]
+        });
+      }
+    }
+  }
+
+  // ── 口碑维度分析页：散点图 + 饼图初始化 ──
+  function initWarningCharts(d) {
+    if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return;
+    const rep = d.brandReputation.reputationDimensions;
+
+    // 三级维度散点图
+    const scatterEl = document.getElementById('tertiaryScatter');
+    if (scatterEl && rep.tertiary) {
+      const scatterChart = echarts.init(scatterEl);
+      scatterChart.setOption({
+        tooltip: {
+          trigger: 'item',
+          formatter: function(p) {
+            return p.data[3] + '<br/>声量: ' + p.data[0] + '<br/>NSR: ' + p.data[1] + '%';
+          }
+        },
+        grid: { left: '3%', right: '8%', bottom: '8%', containLabel: true },
+        xAxis: { type: 'value', name: '声量', nameLocation: 'middle', nameGap: 25 },
+        yAxis: { type: 'value', name: 'NSR%', max: 100 },
+        series: [{
+          type: 'scatter',
+          symbolSize: function(data) { return Math.max(8, Math.sqrt(data[0]) * 3); },
+          data: rep.tertiary.map(t => [t.volume, t.nsr, t.parentDim2, t.name]),
+          itemStyle: {
+            color: function(params) {
+              var nsr = params.data[1];
+              if (nsr >= 60) return '#d83c4d';
+              if (nsr >= 30) return '#f5a623';
+              return '#2787f5';
+            }
+          },
+          label: {
+            show: true,
+            formatter: function(p) { return p.data[3]; },
+            position: 'right',
+            fontSize: 10
+          }
+        }]
+      });
+    }
+
+    // 预警页来源饼图
+    const warnPieEl = document.getElementById('warningSourcePie');
+    if (warnPieEl) {
+      const wpChart = echarts.init(warnPieEl);
+      wpChart.setOption({
+        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+        legend: { bottom: 0 },
+        series: [{
+          type: 'pie', radius: ['30%', '60%'], center: ['50%', '45%'],
+          label: { show: true, formatter: '{b}\\n{d}%' },
+          data: [
+            { value: 1046, name: '抖音' },
+            { value: 802, name: '快手' },
+            { value: 379, name: '小红书' },
+            { value: 94, name: '微博' },
+            { value: 60, name: '热线/在线' }
+          ]
+        }]
+      });
+    }
+
+    // 维度趋势图
+    const dimTrendEl = document.getElementById('warnDimTrend');
+    if (dimTrendEl && rep.timeTrend) {
+      const dtChart = echarts.init(dimTrendEl);
+      dtChart.setOption({
+        tooltip: { trigger: 'axis' },
+        grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
+        xAxis: { type: 'category', data: rep.timeTrend.map(t => t.hour), axisLabel: { interval: 2 } },
+        yAxis: { type: 'value', name: '声量' },
+        series: [{
+          type: 'bar', data: rep.timeTrend.map(t => t.count),
+          itemStyle: { color: '#2787f5', borderRadius: [3, 3, 0, 0] },
+          barWidth: '50%'
+        }]
+      });
+    }
+  }
+
+    // ── 预警页辅助：一级维度声量与NSR + 二级维度详情 ──
   function renderWarningPrimaryChart(d) {
     if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return;
     const rep = d.brandReputation.reputationDimensions;
@@ -2472,6 +2635,7 @@
         document.body.classList.toggle("ai-tab-active", target === "aiInsights");
         if (target === "warning") {
           setTimeout(() => renderWarningPrimaryChart(data), 100);
+          setTimeout(() => initWarningCharts(data), 200);
         }
                 if (target === "serviceRegions") {
           setTimeout(() => initChinaRiskMap(serviceRegionMap().rows), 80);
@@ -2488,7 +2652,7 @@
             });
           }, 200);
         }
-        // 外卖看板：切换到问题风险归因或区域风险试点地图时，触发渲染
+        // 外卖看板：切换到问题风险归因或区域风险地图时，触发渲染
         if (target === "issues") {
           if (!currentDeliveryData && data.delivery) currentDeliveryData = filteredDelivery(data.delivery);
           if (currentDeliveryData) renderIssueDrill();
@@ -2548,7 +2712,11 @@
     setupTabs();
     const app = document.body.dataset.app;
     if (app === "delivery") renderDelivery();
-    if (app === "service") renderService();
+    if (app === "service") {
+      renderService();
+      // 默认首屏是社媒品牌心智，需要立即渲染
+      setTimeout(() => renderBrandMind(), 200);
+    }
     // brand app deprecated, use brandMind tab instead
 
     $$(".ai-report-btn").forEach(btn => {

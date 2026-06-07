@@ -36480,304 +36480,637 @@ window.MX_DASHBOARD_DATA = {
       ]
     },
     "reputationDimensions": {
-      "primary": [
+    "primary": [
         {
-          "name": "产品体验",
-          "volume": 34,
-          "volumeChange": 5,
-          "nsr": 52.0
+            "name": "品牌声誉与社媒传播",
+            "volume": 2322,
+            "volumeChange": 5,
+            "nsr": 3.5
         },
         {
-          "name": "品牌声誉与社媒传播",
-          "volume": 27,
-          "volumeChange": 3,
-          "nsr": 48.0
+            "name": "咨询建议与其他",
+            "volume": 1097,
+            "volumeChange": 3,
+            "nsr": 4.0
         },
         {
-          "name": "订单履约与配送",
-          "volume": 22,
-          "volumeChange": -2,
-          "nsr": 45.0
+            "name": "门店运营与合规",
+            "volume": 429,
+            "volumeChange": 8,
+            "nsr": 6.8
         },
         {
-          "name": "服务质量",
-          "volume": 22,
-          "volumeChange": 4,
-          "nsr": 55.0
+            "name": "产品体验",
+            "volume": 380,
+            "volumeChange": 12,
+            "nsr": 27.6
         },
         {
-          "name": "包装与周边",
-          "volume": 19,
-          "volumeChange": 1,
-          "nsr": 38.0
+            "name": "价格活动与会员权益",
+            "volume": 352,
+            "volumeChange": 5,
+            "nsr": 5.7
         },
         {
-          "name": "价格活动与会员权益",
-          "volume": 18,
-          "volumeChange": 2,
-          "nsr": 42.0
+            "name": "新品与产品生命周期",
+            "volume": 153,
+            "volumeChange": -2,
+            "nsr": 9.8
         },
         {
-          "name": "食安卫生",
-          "volume": 17,
-          "volumeChange": 6,
-          "nsr": 68.0
+            "name": "服务质量",
+            "volume": 74,
+            "volumeChange": 16,
+            "nsr": 64.9
         },
         {
-          "name": "门店运营与合规",
-          "volume": 17,
-          "volumeChange": 3,
-          "nsr": 62.0
+            "name": "包装与周边",
+            "volume": 46,
+            "volumeChange": 3,
+            "nsr": 26.1
         },
         {
-          "name": "咨询建议与其他",
-          "volume": 16,
-          "volumeChange": 1,
-          "nsr": 28.0
+            "name": "食安卫生",
+            "volume": 34,
+            "volumeChange": 6,
+            "nsr": 79.4
         },
         {
-          "name": "新品与产品生命周期",
-          "volume": 15,
-          "volumeChange": -1,
-          "nsr": 35.0
+            "name": "订单履约与配送",
+            "volume": 14,
+            "volumeChange": -5,
+            "nsr": 64.3
         }
-      ],
-      "secondary": [
+    ],
+    "secondary": [
         {
-          "name": "口味偏好/规格体验",
-          "volume": 9,
-          "volumeChange": 2,
-          "nsr": 48.0
+            "name": "社媒内容形态",
+            "parentDim": "品牌声誉与社媒传播",
+            "volume": 1565,
+            "volumeChange": 3,
+            "nsr": 0.4
         },
         {
-          "name": "服务态度",
-          "volume": 7,
-          "volumeChange": 1,
-          "nsr": 62.0
+            "name": "内容质量",
+            "parentDim": "品牌声誉与社媒传播",
+            "volume": 282,
+            "volumeChange": 2,
+            "nsr": 0.0
         },
         {
-          "name": "薄荷系列",
-          "volume": 7,
-          "volumeChange": 4,
-          "nsr": 32.0
+            "name": "品牌IP",
+            "parentDim": "品牌声誉与社媒传播",
+            "volume": 164,
+            "volumeChange": 5,
+            "nsr": 0.0
         },
         {
-          "name": "异物问题",
-          "volume": 6,
-          "volumeChange": 2,
-          "nsr": 85.0
+            "name": "情绪表达",
+            "parentDim": "品牌声誉与社媒传播",
+            "volume": 74,
+            "volumeChange": 12,
+            "nsr": 79.7
         },
         {
-          "name": "社媒内容形态",
-          "volume": 5,
-          "volumeChange": 1,
-          "nsr": 45.0
+            "name": "品牌运营",
+            "parentDim": "品牌声誉与社媒传播",
+            "volume": 55,
+            "volumeChange": 8,
+            "nsr": 1.8
         },
         {
-          "name": "舆情风险",
-          "volume": 5,
-          "volumeChange": 3,
-          "nsr": 72.0
+            "name": "无效泛化",
+            "parentDim": "咨询建议与其他",
+            "volume": 1043,
+            "volumeChange": 2,
+            "nsr": 4.0
         },
         {
-          "name": "小料/配料",
-          "volume": 5,
-          "volumeChange": 0,
-          "nsr": 38.0
+            "name": "咨询类",
+            "parentDim": "咨询建议与其他",
+            "volume": 41,
+            "volumeChange": 5,
+            "nsr": 0.0
         },
         {
-          "name": "口味/品质异常",
-          "volume": 4,
-          "volumeChange": 1,
-          "nsr": 65.0
+            "name": "加盟商经营",
+            "parentDim": "门店运营与合规",
+            "volume": 329,
+            "volumeChange": 6,
+            "nsr": 4.3
         },
         {
-          "name": "制作稳定性",
-          "volume": 4,
-          "volumeChange": 1,
-          "nsr": 58.0
+            "name": "综合口味评价",
+            "parentDim": "产品体验",
+            "volume": 226,
+            "volumeChange": 8,
+            "nsr": 30.5
         },
         {
-          "name": "优惠活动",
-          "volume": 4,
-          "volumeChange": 0,
-          "nsr": 35.0
+            "name": "口味偏好/规格体验",
+            "parentDim": "产品体验",
+            "volume": 44,
+            "volumeChange": 5,
+            "nsr": 22.7
+        },
+        {
+            "name": "价格感知",
+            "parentDim": "价格活动与会员权益",
+            "volume": 176,
+            "volumeChange": 3,
+            "nsr": 5.1
+        },
+        {
+            "name": "服务态度",
+            "parentDim": "服务质量",
+            "volume": 38,
+            "volumeChange": 10,
+            "nsr": 71.1
+        },
+        {
+            "name": "异物问题",
+            "parentDim": "食安卫生",
+            "volume": 11,
+            "volumeChange": 4,
+            "nsr": 81.8
+        },
+        {
+            "name": "新品期待",
+            "parentDim": "新品与产品生命周期",
+            "volume": 108,
+            "volumeChange": -3,
+            "nsr": 7.4
+        },
+        {
+            "name": "周边产品",
+            "parentDim": "包装与周边",
+            "volume": 42,
+            "volumeChange": 2,
+            "nsr": 23.8
         }
-      ],
-      "nsrBrands": [
+    ],
+    "tertiary": [
         {
-          "rank": 1,
-          "brand": "瑞幸咖啡",
-          "volume": 309000,
-          "volumeChange": 4.83,
-          "nsr": 63.85,
-          "nsrChange": 7.05,
-          "positive": 56000,
-          "positiveChange": 11.33,
-          "negative": 12000,
-          "negativeChange": -10.85
+            "name": "商业推广",
+            "parentDim1": "品牌声誉与社媒传播",
+            "parentDim2": "社媒内容形态",
+            "volume": 655,
+            "nsr": 0.0
         },
         {
-          "rank": 2,
-          "brand": "蜜雪冰城",
-          "volume": 141000,
-          "volumeChange": 15.66,
-          "nsr": 61.34,
-          "nsrChange": 0.04,
-          "positive": 21000,
-          "positiveChange": 16.21,
-          "negative": 5125,
-          "negativeChange": 16.06
+            "name": "日常晒单",
+            "parentDim1": "品牌声誉与社媒传播",
+            "parentDim2": "社媒内容形态",
+            "volume": 426,
+            "nsr": 1.2
         },
         {
-          "rank": 3,
-          "brand": "星巴克",
-          "volume": 115000,
-          "volumeChange": 3.88,
-          "nsr": 48.41,
-          "nsrChange": 0.2,
-          "positive": 12000,
-          "positiveChange": -12.48,
-          "negative": 4155,
-          "negativeChange": -12.53
+            "name": "探店打卡",
+            "parentDim1": "品牌声誉与社媒传播",
+            "parentDim2": "社媒内容形态",
+            "volume": 217,
+            "nsr": 0.5
         },
         {
-          "rank": 4,
-          "brand": "霸王茶姬",
-          "volume": 85000,
-          "volumeChange": -5.84,
-          "nsr": 33.04,
-          "nsrChange": -7.31,
-          "positive": 14000,
-          "positiveChange": -13.79,
-          "negative": 7106,
-          "negativeChange": 2.1
+            "name": "玩梗二创",
+            "parentDim1": "品牌声誉与社媒传播",
+            "parentDim2": "社媒内容形态",
+            "volume": 193,
+            "nsr": 0.0
         },
         {
-          "rank": 5,
-          "brand": "古茗",
-          "volume": 76000,
-          "volumeChange": 2.08,
-          "nsr": 64.14,
-          "nsrChange": -2.69,
-          "positive": 18000,
-          "positiveChange": -3.91,
-          "negative": 3944,
-          "negativeChange": 5.57
+            "name": "语气态度",
+            "parentDim1": "服务质量",
+            "parentDim2": "服务态度",
+            "volume": 9,
+            "nsr": 77.8
         },
         {
-          "rank": 6,
-          "brand": "喜茶",
-          "volume": 52000,
-          "volumeChange": -26.89,
-          "nsr": 58.37,
-          "nsrChange": -2.83,
-          "positive": 13000,
-          "positiveChange": -27.05,
-          "negative": 3453,
-          "negativeChange": -20.33
+            "name": "冲突升级",
+            "parentDim1": "服务质量",
+            "parentDim2": "服务态度",
+            "volume": 3,
+            "nsr": 100.0
+        },
+        {
+            "name": "浓淡",
+            "parentDim1": "产品体验",
+            "parentDim2": "口味偏好/规格体验",
+            "volume": 4,
+            "nsr": 100.0
+        },
+        {
+            "name": "整体口味",
+            "parentDim1": "产品体验",
+            "parentDim2": "综合口味评价",
+            "volume": 4,
+            "nsr": 100.0
+        },
+        {
+            "name": "错送做错",
+            "parentDim1": "订单履约与配送",
+            "parentDim2": "订单准确性",
+            "volume": 3,
+            "nsr": 100.0
+        },
+        {
+            "name": "人体/毛发类",
+            "parentDim1": "食安卫生",
+            "parentDim2": "异物问题",
+            "volume": 1,
+            "nsr": 100.0
+        },
+        {
+            "name": "虫类/生物类",
+            "parentDim1": "食安卫生",
+            "parentDim2": "异物问题",
+            "volume": 1,
+            "nsr": 100.0
+        },
+        {
+            "name": "封口",
+            "parentDim1": "包装与周边",
+            "parentDim2": "防洒漏封口",
+            "volume": 2,
+            "nsr": 100.0
+        },
+        {
+            "name": "用工纠纷",
+            "parentDim1": "门店运营与合规",
+            "parentDim2": "用工加盟",
+            "volume": 1,
+            "nsr": 100.0
+        },
+        {
+            "name": "强烈吐槽",
+            "parentDim1": "品牌声誉与社媒传播",
+            "parentDim2": "情绪表达",
+            "volume": 74,
+            "nsr": 79.7
+        },
+        {
+            "name": "雪王IP",
+            "parentDim1": "品牌声誉与社媒传播",
+            "parentDim2": "品牌IP",
+            "volume": 164,
+            "nsr": 0.0
+        },
+        {
+            "name": "低价值内容",
+            "parentDim1": "品牌声誉与社媒传播",
+            "parentDim2": "内容质量",
+            "volume": 231,
+            "nsr": 0.0
+        },
+        {
+            "name": "加盟商经营",
+            "parentDim1": "门店运营与合规",
+            "parentDim2": "加盟商经营",
+            "volume": 329,
+            "nsr": 4.3
+        },
+        {
+            "name": "中性提及",
+            "parentDim1": "咨询建议与其他",
+            "parentDim2": "无效泛化",
+            "volume": 973,
+            "nsr": 3.4
+        },
+        {
+            "name": "价格感知",
+            "parentDim1": "价格活动与会员权益",
+            "parentDim2": "价格感知",
+            "volume": 176,
+            "nsr": 5.1
+        },
+        {
+            "name": "售卖状态",
+            "parentDim1": "新品与产品生命周期",
+            "parentDim2": "供给与生命周期",
+            "volume": 1,
+            "nsr": 100.0
         }
-      ],
-      "nsrProvinces": [
-        {
-          "rank": 1,
-          "province": "广东",
-          "volume": 9891,
-          "volumeChange": -17.74,
-          "nsr": 25.41,
-          "nsrChange": -10.58,
-          "positive": 1540,
-          "positiveChange": -17.16,
-          "negative": 916,
-          "negativeChange": 4.89
+    ],
+    "heatmap": {
+        "在线客服": {
+            "品牌声誉与社媒传播": {
+                "total": 1,
+                "negative": 1,
+                "negRate": 100.0
+            },
+            "咨询建议与其他": {
+                "total": 1,
+                "negative": 0,
+                "negRate": 0.0
+            },
+            "门店运营与合规": {
+                "total": 1,
+                "negative": 1,
+                "negRate": 100.0
+            },
+            "产品体验": {
+                "total": 18,
+                "negative": 18,
+                "negRate": 100.0
+            },
+            "服务质量": {
+                "total": 24,
+                "negative": 23,
+                "negRate": 95.8
+            },
+            "包装与周边": {
+                "total": 2,
+                "negative": 2,
+                "negRate": 100.0
+            },
+            "食安卫生": {
+                "total": 4,
+                "negative": 4,
+                "negRate": 100.0
+            },
+            "订单履约与配送": {
+                "total": 9,
+                "negative": 7,
+                "negRate": 77.8
+            }
         },
-        {
-          "rank": 2,
-          "province": "江苏",
-          "volume": 5483,
-          "volumeChange": -15.47,
-          "nsr": 16.82,
-          "nsrChange": -22.87,
-          "positive": 785,
-          "positiveChange": -38.15,
-          "negative": 559,
-          "negativeChange": 0.36
+        "抖音app": {
+            "品牌声誉与社媒传播": {
+                "total": 1046,
+                "negative": 43,
+                "negRate": 4.1
+            },
+            "咨询建议与其他": {
+                "total": 676,
+                "negative": 34,
+                "negRate": 5.0
+            },
+            "门店运营与合规": {
+                "total": 313,
+                "negative": 12,
+                "negRate": 3.8
+            },
+            "产品体验": {
+                "total": 148,
+                "negative": 11,
+                "negRate": 7.4
+            },
+            "价格活动与会员权益": {
+                "total": 178,
+                "negative": 5,
+                "negRate": 2.8
+            },
+            "新品与产品生命周期": {
+                "total": 69,
+                "negative": 3,
+                "negRate": 4.3
+            },
+            "服务质量": {
+                "total": 21,
+                "negative": 11,
+                "negRate": 52.4
+            },
+            "包装与周边": {
+                "total": 8,
+                "negative": 0,
+                "negRate": 0.0
+            },
+            "食安卫生": {
+                "total": 17,
+                "negative": 14,
+                "negRate": 82.4
+            },
+            "订单履约与配送": {
+                "total": 2,
+                "negative": 1,
+                "negRate": 50.0
+            }
         },
-        {
-          "rank": 3,
-          "province": "浙江",
-          "volume": 4975,
-          "volumeChange": -13.84,
-          "nsr": 15.58,
-          "nsrChange": -11.66,
-          "positive": 753,
-          "positiveChange": -26.89,
-          "negative": 550,
-          "negativeChange": -6.62
+        "小红书": {
+            "品牌声誉与社媒传播": {
+                "total": 379,
+                "negative": 21,
+                "negRate": 5.5
+            },
+            "咨询建议与其他": {
+                "total": 293,
+                "negative": 7,
+                "negRate": 2.4
+            },
+            "门店运营与合规": {
+                "total": 95,
+                "negative": 15,
+                "negRate": 15.8
+            },
+            "产品体验": {
+                "total": 128,
+                "negative": 43,
+                "negRate": 33.6
+            },
+            "价格活动与会员权益": {
+                "total": 107,
+                "negative": 13,
+                "negRate": 12.1
+            },
+            "新品与产品生命周期": {
+                "total": 45,
+                "negative": 8,
+                "negRate": 17.8
+            },
+            "服务质量": {
+                "total": 25,
+                "negative": 13,
+                "negRate": 52.0
+            },
+            "包装与周边": {
+                "total": 32,
+                "negative": 8,
+                "negRate": 25.0
+            },
+            "食安卫生": {
+                "total": 13,
+                "negative": 9,
+                "negRate": 69.2
+            },
+            "订单履约与配送": {
+                "total": 3,
+                "negative": 1,
+                "negRate": 33.3
+            }
         },
-        {
-          "rank": 4,
-          "province": "上海",
-          "volume": 4534,
-          "volumeChange": 18.73,
-          "nsr": 49.23,
-          "nsrChange": 12.19,
-          "positive": 1267,
-          "positiveChange": 65.84,
-          "negative": 431,
-          "negativeChange": 22.79
+        "快手app": {
+            "品牌声誉与社媒传播": {
+                "total": 802,
+                "negative": 9,
+                "negRate": 1.1
+            },
+            "咨询建议与其他": {
+                "total": 81,
+                "negative": 1,
+                "negRate": 1.2
+            },
+            "门店运营与合规": {
+                "total": 17,
+                "negative": 0,
+                "negRate": 0.0
+            },
+            "产品体验": {
+                "total": 42,
+                "negative": 0,
+                "negRate": 0.0
+            },
+            "价格活动与会员权益": {
+                "total": 59,
+                "negative": 0,
+                "negRate": 0.0
+            },
+            "新品与产品生命周期": {
+                "total": 32,
+                "negative": 0,
+                "negRate": 0.0
+            }
         },
-        {
-          "rank": 5,
-          "province": "广西",
-          "volume": 3960,
-          "volumeChange": -7.58,
-          "nsr": 57.0,
-          "nsrChange": 1.82,
-          "positive": 639,
-          "positiveChange": -13.3,
-          "negative": 175,
-          "negativeChange": 15.87
+        "微博": {
+            "品牌声誉与社媒传播": {
+                "total": 94,
+                "negative": 7,
+                "negRate": 7.4
+            },
+            "咨询建议与其他": {
+                "total": 46,
+                "negative": 2,
+                "negRate": 4.3
+            },
+            "门店运营与合规": {
+                "total": 3,
+                "negative": 1,
+                "negRate": 33.3
+            },
+            "产品体验": {
+                "total": 44,
+                "negative": 33,
+                "negRate": 75.0
+            },
+            "价格活动与会员权益": {
+                "total": 7,
+                "negative": 2,
+                "negRate": 28.6
+            },
+            "新品与产品生命周期": {
+                "total": 6,
+                "negative": 3,
+                "negRate": 50.0
+            },
+            "服务质量": {
+                "total": 4,
+                "negative": 1,
+                "negRate": 25.0
+            },
+            "包装与周边": {
+                "total": 4,
+                "negative": 2,
+                "negRate": 50.0
+            }
         }
-      ],
-      "quadrant": [
+    },
+    "timeTrend": [
         {
-          "name": "品牌体验",
-          "volume": 8200,
-          "nsr": 94.2,
-          "quadrant": "high-volume-high-nsr"
+            "hour": "00:00",
+            "count": 223
         },
         {
-          "name": "产品",
-          "volume": 7800,
-          "nsr": 88.05,
-          "quadrant": "high-volume-high-nsr"
+            "hour": "01:00",
+            "count": 103
         },
         {
-          "name": "价格活动",
-          "volume": 2100,
-          "nsr": 92.05,
-          "quadrant": "low-volume-high-nsr"
+            "hour": "02:00",
+            "count": 51
         },
         {
-          "name": "服务",
-          "volume": 5200,
-          "nsr": 82.05,
-          "quadrant": "high-volume-low-nsr"
+            "hour": "03:00",
+            "count": 29
         },
         {
-          "name": "门店",
-          "volume": 3100,
-          "nsr": 78.2,
-          "quadrant": "high-volume-low-nsr"
+            "hour": "04:00",
+            "count": 18
         },
         {
-          "name": "场景",
-          "volume": 1200,
-          "nsr": 95.0,
-          "quadrant": "low-volume-high-nsr"
+            "hour": "05:00",
+            "count": 29
+        },
+        {
+            "hour": "06:00",
+            "count": 44
+        },
+        {
+            "hour": "07:00",
+            "count": 65
+        },
+        {
+            "hour": "08:00",
+            "count": 121
+        },
+        {
+            "hour": "09:00",
+            "count": 358
+        },
+        {
+            "hour": "10:00",
+            "count": 269
+        },
+        {
+            "hour": "11:00",
+            "count": 252
+        },
+        {
+            "hour": "12:00",
+            "count": 252
+        },
+        {
+            "hour": "13:00",
+            "count": 237
+        },
+        {
+            "hour": "14:00",
+            "count": 296
+        },
+        {
+            "hour": "15:00",
+            "count": 283
+        },
+        {
+            "hour": "16:00",
+            "count": 334
+        },
+        {
+            "hour": "17:00",
+            "count": 331
+        },
+        {
+            "hour": "18:00",
+            "count": 324
+        },
+        {
+            "hour": "19:00",
+            "count": 327
+        },
+        {
+            "hour": "20:00",
+            "count": 287
+        },
+        {
+            "hour": "21:00",
+            "count": 294
+        },
+        {
+            "hour": "22:00",
+            "count": 282
+        },
+        {
+            "hour": "23:00",
+            "count": 227
         }
-      ]
-    }
+    ]
+}
   }
 };
