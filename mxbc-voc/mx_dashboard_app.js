@@ -1961,7 +1961,7 @@
     const target = $("#chinaRiskMap");
     if (!target) return;
     try {
-      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260607b3");
+      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260607c3");
       if (!window.__chinaProvinceGeoJson) {
         const response = await fetch("./assets/china-provinces.json");
         window.__chinaProvinceGeoJson = await response.json();
@@ -2218,10 +2218,10 @@
     $("#serviceRegions").innerHTML = `
       <div class="dashboard-head">
         <div>
-          <div class="page-title"><span class="title-mark"></span>区域线索与门店排查</div>
+          <div class="page-title"><span class="title-mark"></span>区域洞察</div>
           <p>从全国、区域、城市和门店维度辅助定位责任单元，并用原声证据支撑区域排查。</p>
         </div>
-        <div class="sample-note">社媒地域为传播区域或用户属地参考，不直接等同于涉事门店。</div>
+        <div class="sample-note">社媒地域为传播区域或用户属地参考，不直接等同于涉事门店。区域数据基于社媒公开声量，客诉数据暂无省份字段，待补充。</div>
       </div>
       ${kpis([
         { label: "待排查区域线索数", value: "16", note: "风险指数高于阈值" },
@@ -2240,7 +2240,7 @@
       </div>
       <div class="service-mid-grid">
         ${card("区域 × 问题热力图", `<div class="service-heatmap region-issue">
-          <div></div>${["食安卫生", "产品体验", "包装打包", "配送履约", "服务售后", "品牌声誉", "订单履约"].map(x => `<strong>${x}</strong>`).join("")}
+          <div></div>${["品牌声誉与社媒传播", "咨询建议与其他", "门店运营与合规", "产品体验", "价格活动与会员权益", "服务质量", "食安卫生"].map(x => `<strong>${x}</strong>`).join("")}
           ${["河南", "广东", "山东", "江苏", "浙江", "四川", "湖北", "湖南"].map((r, ri) => `<b>${r}</b>${[86, 78, 64, 58, 62, 91, 72].map((v, ci) => `<span style="background:rgba(22,135,255,${.12 + ((v + ri * 7 + ci * 3) % 50) / 70})">${(v + ri * 7 + ci * 3) % 100}</span>`).join("")}`).join("")}
         </div>`)}
         ${card("城市 / 门店明细表", table(["区域", "城市", "门店 / 点位", "问题", "来源", "反馈量", "强负向", "风险", "最近原声"], [
