@@ -1,7 +1,7 @@
-// VERSION: v=20260610d — 若浏览器加载的版本不对，请硬刷新清除缓存
+// VERSION: v=20260610e — 若浏览器加载的版本不对，请硬刷新清除缓存
 (function () {
   const data = window.MX_DASHBOARD_DATA || {};
-  window.MX_APP_VERSION = 'v=20260610d'; // 在Console输入 MX_APP_VERSION 可确认加载版本
+  window.MX_APP_VERSION = 'v=20260610e'; // 在Console输入 MX_APP_VERSION 可确认加载版本
   const colors = ["#2787f5", "#f05b68", "#20b7b3", "#f5a623", "#7569df", "#45b36b", "#8ea0bd"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -2145,6 +2145,11 @@
       <div class="warning-product-grid">
         ${card("高频提及产品名排行", `<div id="warningProductRank" style="min-height:180px"></div>`)}
       </div>
+      <!-- 正负面词云 -->
+      <div class="warning-wordcloud-grid">
+        ${card("正面词云", `<div id="warningPosWordCloud" style="height:280px;position:relative;"></div>`)}
+        ${card("负面词云", `<div id="warningNegWordCloud" style="height:280px;position:relative;"></div>`)}
+      </div>
       <!-- 预警问题原帖和原声证据 -->
       <div class="full-section">${card("关键词与原声证据", `<div id="warningEvidenceContent"><p class="fine-note">点击上方风险问题排行中的维度，查看关键词与原声证据。</p></div>`)}</div>
     `;
@@ -2655,16 +2660,85 @@
     }
 
     // 初始化原声证据：默认显示食安卫生（最高风险维度）的数据
-    const evInitEl = document.getElementById('warningEvidenceContent');
-    if (evInitEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.evidenceByDimension) {
-      // 取NSR最低（最差）的维度作为默认展示
-      const primaryDims = rep.primary || [];
-      const worstDim = primaryDims.length > 0
-        ? primaryDims.sort((a, b) => a.nsr - b.nsr)[0].name
-        : '食安卫生';
-      const evList = window.MX_EVIDENCE_DATA.evidenceByDimension[worstDim] || [];
-      if (evList.length > 0) {
-        let evHtml = '<div style="margin-bottom:8px;color:#667087;font-size:13px;">当前展示：<strong style="color:#28324a;">' + worstDim + '</strong> 的原声证据（点击排行中其他维度可切换）</div>';
+    const primaryDims = rep.primary || [];
+    const worstDim = primaryDims.length > 0
+      ? primaryDims.sort((a, b) => a.nsr - b.nsr)[0].name
+      : '食安卫生';
+    updateEvidenceAndWordCloud(worstDim);
+
+    // 联动：点击风险问题排行，更新下方内容
+    setTimeout(() => {
+      const wPage = document.getElementById('warning');
+      if (!wPage) return;
+      const btns = wPage.querySelectorAll('button.link-btn[data-warn-dim]');
+      btns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const dimName = e.target.dataset.warnDim;
+          if (!dimName) return;
+
+          // 更新当前预警问题标题
+          const curDimEl = document.getElementById('warningCurrentDim');
+          const judgeEl = document.getElementById('warningJudgement');
+          if (curDimEl) curDimEl.textContent = dimName;
+          if (judgeEl) {
+            const dimData = rep.primary.find(p => p.name === dimName);
+            if (dimData) {
+              judgeEl.innerHTML = '该维度当前声量 <strong>' + fmt(dimData.volume) + '</strong>，NSR <strong>' + dimData.nsr.toFixed(1) + '%</strong>，' + (dimData.nsr < 0 ? '负向占主导，建议重点关注。' : '整体偏正向，继续保持。');
+            }
+          }
+
+          // 更新热点事件时间线（使用真实数据 timeTrend）
+          const ecEl = document.getElementById('warningEventChart');
+          if (ecEl && rep.timeTrend) {
+            const ecChart = echarts.getInstanceByDom(ecEl) || echarts.init(ecEl);
+            ecChart.setOption({
+              xAxis: { data: rep.timeTrend.map(t => t.hour) },
+              series: [
+                { data: rep.timeTrend.map(t => t.count) },
+                { data: rep.timeTrend.map(t => Math.floor(t.count * 0.3)) }
+              ]
+            });
+          }
+          // 更新来源结构饼图（使用真实数据 heatmap 汇总）
+          const pieEl2 = document.getElementById('warningSourcePie');
+          if (pieEl2 && rep.heatmap) {
+            const pieChart2 = echarts.getInstanceByDom(pieEl2) || echarts.init(pieEl2);
+            const siteTotals = {};
+            Object.keys(rep.heatmap).forEach(site => {
+              if (rep.heatmap[site][dimName]) {
+                if (!siteTotals[site]) siteTotals[site] = 0;
+                siteTotals[site] += (rep.heatmap[site][dimName].total || 0);
+              }
+            });
+            const pieData = Object.keys(siteTotals).length > 0
+              ? Object.keys(siteTotals).map(site => ({ value: siteTotals[site], name: site }))
+              : Object.keys(rep.heatmap).map(site => {
+                  let total = 0;
+                  Object.keys(rep.heatmap[site]).forEach(dim => { total += (rep.heatmap[site][dim].total || 0); });
+                  return { value: total, name: site };
+                });
+            pieChart2.setOption({ series: [{ data: pieData }] });
+          }
+
+          // 更新原声证据和词云
+          updateEvidenceAndWordCloud(dimName);
+        });
+      });
+    }, 400);
+  }
+
+  function updateEvidenceAndWordCloud(dimName) {
+    const rep = (window.MX_DASHBOARD_DATA && window.MX_DASHBOARD_DATA.brandReputation && window.MX_DASHBOARD_DATA.brandReputation.reputationDimensions) || {};
+
+    // 更新原声证据
+    const evEl = document.getElementById('warningEvidenceContent');
+    if (evEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.evidenceByDimension) {
+      const evList = window.MX_EVIDENCE_DATA.evidenceByDimension[dimName] || [];
+      let evHtml = '';
+      if (evList.length === 0) {
+        evHtml = '<p class="fine-note">暂无该维度的原声证据数据。</p>';
+      } else {
+        evHtml = '<div style="margin-bottom:8px;color:#667087;font-size:13px;">当前展示：<strong style="color:#28324a;">' + escapeHtml(dimName) + '</strong> 的原声证据</div>';
         evList.forEach(ev => {
           const platformClass = (ev.source === '热线' || ev.source === '在线') ? 'hotline' : '';
           evHtml += '<div class="evidence-group">';
@@ -2680,88 +2754,45 @@
           evHtml += '</div>';
           evHtml += '</div>';
         });
-        evInitEl.innerHTML = evHtml;
       }
+      evEl.innerHTML = evHtml;
     }
 
-    // 联动：点击风险问题排行，更新下方内容
-    setTimeout(() => {
-      const wPage = document.getElementById('warning');
-      if (!wPage) return;
-      const btns = wPage.querySelectorAll('button.link-btn[data-warn-dim]');
-      btns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const dimName = e.target.dataset.warnDim;
-          if (!dimName) return;
-          // 更新当前预警问题
-          const strongEl = document.getElementById('warningCurrentDim');
-          if (strongEl) strongEl.textContent = dimName;
-          // 更新热点事件时间线（使用真实数据 timeTrend）
-          const ecEl = document.getElementById('warningEventChart');
-          if (ecEl && rep.timeTrend) {
-            const ecChart = echarts.getInstanceByDom(ecEl) || echarts.init(ecEl);
-            // 使用 timeTrend 真实数据（所有维度汇总，理想情况应按选中维度过滤）
-            ecChart.setOption({
-              xAxis: { data: rep.timeTrend.map(t => t.hour) },
-              series: [
-                { data: rep.timeTrend.map(t => t.count) },
-                { data: rep.timeTrend.map(t => Math.floor(t.count * 0.3)) }
-              ]
-            });
-          }
-          // 更新来源结构饼图（使用真实数据 heatmap 汇总）
-          const pieEl2 = document.getElementById('warningSourcePie');
-          if (pieEl2 && rep.heatmap) {
-            const pieChart2 = echarts.getInstanceByDom(pieEl2) || echarts.init(pieEl2);
-            // 汇总选中维度的各站点声量（从heatmap过滤）
-            const siteTotals = {};
-            Object.keys(rep.heatmap).forEach(site => {
-              if (rep.heatmap[site][dimName]) {
-                if (!siteTotals[site]) siteTotals[site] = 0;
-                siteTotals[site] += (rep.heatmap[site][dimName].total || 0);
-              }
-            });
-            const pieData = Object.keys(siteTotals).length > 0 
-              ? Object.keys(siteTotals).map(site => ({ value: siteTotals[site], name: site }))
-              : Object.keys(rep.heatmap).map(site => {
-                  let total = 0;
-                  Object.keys(rep.heatmap[site]).forEach(dim => { total += (rep.heatmap[site][dim].total || 0); });
-                  return { value: total, name: site };
-                });
-            pieChart2.setOption({ series: [{ data: pieData }] });
-          }
-          // 更新原声证据（真实数据）
-          const evEl = document.getElementById('warningEvidenceContent');
-          if (evEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.evidenceByDimension) {
-            const evList = window.MX_EVIDENCE_DATA.evidenceByDimension[dimName] || [];
-            let evHtml = '';
-            if (evList.length === 0) {
-              evHtml = '<p class="fine-note">暂无该维度的原声证据数据。</p>';
-            } else {
-              evList.forEach(ev => {
-                const platformClass = (ev.source === '热线' || ev.source === '在线') ? 'hotline' : '';
-                evHtml += '<div class="evidence-group">';
-                evHtml += '<div class="evidence-label">' + (ev.source || '未知') + '</div>';
-                evHtml += '<div class="evidence-item">';
-                evHtml += '<div class="evidence-meta">';
-                evHtml += '<span class="platform-tag ' + platformClass + '">' + (ev.source || '') + '</span>';
-                if (ev.author) evHtml += '<span class="author">' + ev.author + '</span>';
-                if (ev.callTime) evHtml += '<span class="call-time">' + ev.callTime + '</span>';
-                evHtml += '</div>';
-                evHtml += '<div class="evidence-content">' + (ev.content || '') + '</div>';
-                if (ev.url) evHtml += '<div class="evidence-url"><a href="' + ev.url + '" target="_blank">查看原帖</a></div>';
-                evHtml += '</div>';
-                evHtml += '</div>';
-              });
-            }
-            evEl.innerHTML = evHtml;
-          }
+    // 更新词云
+    const posEl = document.getElementById('warningPosWordCloud');
+    const negEl = document.getElementById('warningNegWordCloud');
+    if (posEl && negEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.wordCloudByDimension) {
+      const wcData = window.MX_EVIDENCE_DATA.wordCloudByDimension[dimName];
+      if (wcData) {
+        // 正面词云
+        const posWords = wcData.positive || [];
+        let posHtml = '<div class="wordcloud-container">';
+        posWords.forEach((w, i) => {
+          const sizeClass = i < 3 ? 'wordcloud-pos-large' : i < 10 ? 'wordcloud-pos' : 'wordcloud-pos-small';
+          posHtml += '<span class="wordcloud-item ' + sizeClass + '">' + escapeHtml(w.name) + '</span>';
         });
-      });
-    }, 400);
+        posHtml += '</div>';
+        posEl.innerHTML = posHtml;
+
+        // 负面词云
+        const negWords = wcData.negative || [];
+        let negHtml = '<div class="wordcloud-container">';
+        negWords.forEach((w, i) => {
+          const sizeClass = i < 3 ? 'wordcloud-neg-large' : i < 10 ? 'wordcloud-neg' : 'wordcloud-neg-small';
+          negHtml += '<span class="wordcloud-item ' + sizeClass + '">' + escapeHtml(w.name) + '</span>';
+        });
+        negHtml += '</div>';
+        negEl.innerHTML = negHtml;
+      }
+    }
   }
 
-    // ── 预警页辅助：一级维度声量与NSR + 二级维度详情 ──
+  function renderWarningSecondary(d) {
+    // 二级维度图表已在 renderWarningPrimaryChart 中初始化
+    return "";
+  }
+
+  // ── 预警页辅助：一级维度声量与NSR + 二级维度详情 ──
   function renderWarningPrimaryChart(d) {
     if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return;
     const rep = d.brandReputation.reputationDimensions;

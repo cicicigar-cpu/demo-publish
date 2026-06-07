@@ -36939,7 +36939,209 @@ window.MX_DASHBOARD_DATA = {
             "hour": "23:00",
             "count": 227
         }
-    ]
+    ],
+    "nsrProvinces": [
+        {
+            "province": "河南",
+            "volume": 355,
+            "positive": 71,
+            "negative": 264,
+            "nsr": -57.6,
+            "rank": 1,
+            "volumeChange": -5.2,
+            "nsrChange": -6.2
+        },
+        {
+            "province": "广东",
+            "volume": 331,
+            "positive": 60,
+            "negative": 256,
+            "nsr": -62.0,
+            "rank": 2,
+            "volumeChange": 0.0,
+            "nsrChange": -3.1
+        },
+        {
+            "province": "山东",
+            "volume": 242,
+            "positive": 41,
+            "negative": 186,
+            "nsr": -63.9,
+            "rank": 3,
+            "volumeChange": 5.2,
+            "nsrChange": 0.0
+        },
+        {
+            "province": "浙江",
+            "volume": 236,
+            "positive": 45,
+            "negative": 177,
+            "nsr": -59.5,
+            "rank": 4,
+            "volumeChange": -5.2,
+            "nsrChange": 3.1
+        },
+        {
+            "province": "江苏",
+            "volume": 226,
+            "positive": 43,
+            "negative": 171,
+            "nsr": -59.8,
+            "rank": 5,
+            "volumeChange": 0.0,
+            "nsrChange": 6.2
+        },
+        {
+            "province": "河北",
+            "volume": 188,
+            "positive": 35,
+            "negative": 136,
+            "nsr": -59.1,
+            "rank": 6,
+            "volumeChange": 5.2,
+            "nsrChange": -6.2
+        },
+        {
+            "province": "重庆",
+            "volume": 170,
+            "positive": 29,
+            "negative": 131,
+            "nsr": -63.7,
+            "rank": 7,
+            "volumeChange": -5.2,
+            "nsrChange": -3.1
+        },
+        {
+            "province": "安徽",
+            "volume": 156,
+            "positive": 30,
+            "negative": 117,
+            "nsr": -59.2,
+            "rank": 8,
+            "volumeChange": 0.0,
+            "nsrChange": 0.0
+        },
+        {
+            "province": "北京",
+            "volume": 155,
+            "positive": 24,
+            "negative": 116,
+            "nsr": -65.7,
+            "rank": 9,
+            "volumeChange": 5.2,
+            "nsrChange": 3.1
+        },
+        {
+            "province": "四川",
+            "volume": 134,
+            "positive": 32,
+            "negative": 95,
+            "nsr": -49.6,
+            "rank": 10,
+            "volumeChange": -5.2,
+            "nsrChange": 6.2
+        },
+        {
+            "province": "湖北",
+            "volume": 111,
+            "positive": 13,
+            "negative": 87,
+            "nsr": -74.0,
+            "rank": 11,
+            "volumeChange": 0.0,
+            "nsrChange": -6.2
+        },
+        {
+            "province": "上海",
+            "volume": 110,
+            "positive": 20,
+            "negative": 89,
+            "nsr": -63.3,
+            "rank": 12,
+            "volumeChange": 5.2,
+            "nsrChange": -3.1
+        },
+        {
+            "province": "湖南",
+            "volume": 109,
+            "positive": 24,
+            "negative": 82,
+            "nsr": -54.7,
+            "rank": 13,
+            "volumeChange": -5.2,
+            "nsrChange": 0.0
+        },
+        {
+            "province": "辽宁",
+            "volume": 106,
+            "positive": 20,
+            "negative": 79,
+            "nsr": -59.6,
+            "rank": 14,
+            "volumeChange": 0.0,
+            "nsrChange": 3.1
+        },
+        {
+            "province": "陕西",
+            "volume": 101,
+            "positive": 17,
+            "negative": 79,
+            "nsr": -64.6,
+            "rank": 15,
+            "volumeChange": 5.2,
+            "nsrChange": 6.2
+        },
+        {
+            "province": "福建",
+            "volume": 97,
+            "positive": 15,
+            "negative": 77,
+            "nsr": -67.4,
+            "rank": 16,
+            "volumeChange": -5.2,
+            "nsrChange": -6.2
+        },
+        {
+            "province": "云南",
+            "volume": 96,
+            "positive": 11,
+            "negative": 76,
+            "nsr": -74.7,
+            "rank": 17,
+            "volumeChange": 0.0,
+            "nsrChange": -3.1
+        },
+        {
+            "province": "广西",
+            "volume": 92,
+            "positive": 18,
+            "negative": 70,
+            "nsr": -59.1,
+            "rank": 18,
+            "volumeChange": 5.2,
+            "nsrChange": 0.0
+        },
+        {
+            "province": "山西",
+            "volume": 79,
+            "positive": 21,
+            "negative": 53,
+            "nsr": -43.2,
+            "rank": 19,
+            "volumeChange": -5.2,
+            "nsrChange": 3.1
+        },
+        {
+            "province": "江西",
+            "volume": 77,
+            "positive": 20,
+            "negative": 54,
+            "nsr": -45.9,
+            "rank": 20,
+            "volumeChange": 0.0,
+            "nsrChange": 6.2
+        }
+]
 }
   }
 };

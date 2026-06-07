@@ -2123,6 +2123,73 @@ body[data-app="delivery"] .kpi-grid {
   margin-top: 16px;
 }
 
+.warning-wordcloud-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.wordcloud-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+  padding: 16px;
+  min-height: 200px;
+}
+
+.wordcloud-item {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: transform 0.2s;
+  cursor: default;
+}
+
+.wordcloud-item:hover {
+  transform: scale(1.1);
+}
+
+.wordcloud-pos {
+  color: #2787f5;
+  background: rgba(39, 135, 245, 0.08);
+}
+
+.wordcloud-pos-large {
+  color: #1687ff;
+  background: rgba(22, 135, 255, 0.12);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.wordcloud-pos-small {
+  color: #5ba3f7;
+  background: rgba(91, 163, 247, 0.06);
+  font-size: 11px;
+}
+
+.wordcloud-neg {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.wordcloud-neg-large {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.12);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.wordcloud-neg-small {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.06);
+  font-size: 11px;
+}
+
 source-bars {
   display: grid;
   gap: 13px;

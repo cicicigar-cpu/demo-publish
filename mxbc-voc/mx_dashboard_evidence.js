@@ -1,4 +1,4 @@
-// 产品排行和原声证据真实数据（由 parse_evidence_data.py 自动生成）
+// 产品排行、原声证据和词云真实数据（由 parse_evidence_data.py 自动生成）
 window.MX_EVIDENCE_DATA = {
   "productRankings": [
     {
@@ -769,5 +769,1805 @@ window.MX_EVIDENCE_DATA = {
         "callTime": "2026-05-21 11:20"
       }
     ]
+  },
+  "wordCloudByDimension": {
+    "包装与周边": {
+      "positive": [
+        {
+          "name": "冰箱贴",
+          "value": 1.5
+        },
+        {
+          "name": "旗舰店",
+          "value": 1
+        },
+        {
+          "name": "残次",
+          "value": 1
+        },
+        {
+          "name": "杭州",
+          "value": 1
+        },
+        {
+          "name": "残次品",
+          "value": 1
+        },
+        {
+          "name": "不倒翁",
+          "value": 1
+        },
+        {
+          "name": "女大学生",
+          "value": 1
+        },
+        {
+          "name": "鱼豆腐",
+          "value": 1
+        },
+        {
+          "name": "在校大学生",
+          "value": 1
+        },
+        {
+          "name": "虎皮",
+          "value": 1
+        },
+        {
+          "name": "美学",
+          "value": 1
+        },
+        {
+          "name": "信徒",
+          "value": 1
+        },
+        {
+          "name": "太会",
+          "value": 1
+        },
+        {
+          "name": "样子",
+          "value": 1
+        },
+        {
+          "name": "沈星",
+          "value": 1
+        },
+        {
+          "name": "头套",
+          "value": 1
+        },
+        {
+          "name": "深空",
+          "value": 1
+        },
+        {
+          "name": "谷子",
+          "value": 1
+        },
+        {
+          "name": "全套",
+          "value": 1
+        },
+        {
+          "name": "一端",
+          "value": 0.5
+        },
+        {
+          "name": "黑色",
+          "value": 0.5
+        },
+        {
+          "name": "衣服",
+          "value": 0.5
+        },
+        {
+          "name": "圣代",
+          "value": 0.5
+        },
+        {
+          "name": "勺子",
+          "value": 0.5
+        },
+        {
+          "name": "可恶",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "一端",
+          "value": 0.5
+        },
+        {
+          "name": "黑色",
+          "value": 0.5
+        },
+        {
+          "name": "衣服",
+          "value": 0.5
+        },
+        {
+          "name": "圣代",
+          "value": 0.5
+        },
+        {
+          "name": "勺子",
+          "value": 0.5
+        },
+        {
+          "name": "可恶",
+          "value": 0.5
+        },
+        {
+          "name": "昆虫",
+          "value": 0.5
+        },
+        {
+          "name": "放大镜",
+          "value": 0.5
+        },
+        {
+          "name": "大起大落",
+          "value": 0.5
+        },
+        {
+          "name": "买了",
+          "value": 0.5
+        },
+        {
+          "name": "隐藏",
+          "value": 0.5
+        },
+        {
+          "name": "质感",
+          "value": 0.5
+        },
+        {
+          "name": "周边",
+          "value": 0.5
+        },
+        {
+          "name": "冰箱贴",
+          "value": 0.5
+        }
+      ]
+    },
+    "新品与产品生命周期": {
+      "positive": [
+        {
+          "name": "好好吃",
+          "value": 2
+        },
+        {
+          "name": "好喝",
+          "value": 2
+        },
+        {
+          "name": "霸气",
+          "value": 1.5
+        },
+        {
+          "name": "甜蜜蜜",
+          "value": 1.5
+        },
+        {
+          "name": "甜食",
+          "value": 1
+        },
+        {
+          "name": "饮食",
+          "value": 1
+        },
+        {
+          "name": "博主",
+          "value": 1
+        },
+        {
+          "name": "新品",
+          "value": 1
+        },
+        {
+          "name": "新人",
+          "value": 1
+        },
+        {
+          "name": "森林",
+          "value": 1
+        },
+        {
+          "name": "血书",
+          "value": 1
+        },
+        {
+          "name": "玫果",
+          "value": 1
+        },
+        {
+          "name": "果粒",
+          "value": 1
+        },
+        {
+          "name": "奶茶店",
+          "value": 1
+        },
+        {
+          "name": "门店",
+          "value": 1
+        },
+        {
+          "name": "薄荷",
+          "value": 1
+        },
+        {
+          "name": "地区",
+          "value": 1
+        },
+        {
+          "name": "广告",
+          "value": 1
+        },
+        {
+          "name": "哈密瓜",
+          "value": 1
+        },
+        {
+          "name": "味道",
+          "value": 1
+        },
+        {
+          "name": "平价",
+          "value": 1
+        },
+        {
+          "name": "饮品",
+          "value": 1
+        },
+        {
+          "name": "美食",
+          "value": 1
+        },
+        {
+          "name": "文创",
+          "value": 0.5
+        },
+        {
+          "name": "拼贴",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "旗舰店",
+          "value": 1
+        },
+        {
+          "name": "四季春",
+          "value": 1
+        },
+        {
+          "name": "蜜桃",
+          "value": 1
+        },
+        {
+          "name": "亚洲",
+          "value": 1
+        },
+        {
+          "name": "饮料",
+          "value": 1
+        },
+        {
+          "name": "文创",
+          "value": 0.5
+        },
+        {
+          "name": "拼贴",
+          "value": 0.5
+        },
+        {
+          "name": "手帐",
+          "value": 0.5
+        },
+        {
+          "name": "创界",
+          "value": 0.5
+        },
+        {
+          "name": "霸气",
+          "value": 0.5
+        },
+        {
+          "name": "甜蜜蜜",
+          "value": 0.5
+        },
+        {
+          "name": "风吹半夏",
+          "value": 0.5
+        }
+      ]
+    },
+    "未知": {
+      "positive": [
+        {
+          "name": "五指",
+          "value": 0.5
+        },
+        {
+          "name": "真人",
+          "value": 0.5
+        },
+        {
+          "name": "霸气",
+          "value": 0.5
+        },
+        {
+          "name": "仙道",
+          "value": 0.5
+        },
+        {
+          "name": "奶茶店",
+          "value": 0.5
+        },
+        {
+          "name": "带我去",
+          "value": 0.5
+        },
+        {
+          "name": "奶茶",
+          "value": 0.5
+        },
+        {
+          "name": "男朋友",
+          "value": 0.5
+        },
+        {
+          "name": "显眼",
+          "value": 0.5
+        },
+        {
+          "name": "素材",
+          "value": 0.5
+        },
+        {
+          "name": "无法呼吸",
+          "value": 0.5
+        },
+        {
+          "name": "源于",
+          "value": 0.5
+        },
+        {
+          "name": "赛里木湖",
+          "value": 0.5
+        },
+        {
+          "name": "结婚证",
+          "value": 0.5
+        },
+        {
+          "name": "门票",
+          "value": 0.5
+        },
+        {
+          "name": "圣地",
+          "value": 0.5
+        },
+        {
+          "name": "终身",
+          "value": 0.5
+        },
+        {
+          "name": "卡卡",
+          "value": 0.5
+        },
+        {
+          "name": "预警",
+          "value": 0.5
+        },
+        {
+          "name": "心事",
+          "value": 0.5
+        },
+        {
+          "name": "次列车",
+          "value": 0.5
+        },
+        {
+          "name": "总部",
+          "value": 0.5
+        },
+        {
+          "name": "自行车",
+          "value": 0.5
+        },
+        {
+          "name": "地铁",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "黑水",
+          "value": 1
+        },
+        {
+          "name": "红牛",
+          "value": 1
+        },
+        {
+          "name": "提神醒脑",
+          "value": 1
+        },
+        {
+          "name": "瑞幸",
+          "value": 1
+        },
+        {
+          "name": "五指",
+          "value": 0.5
+        },
+        {
+          "name": "真人",
+          "value": 0.5
+        },
+        {
+          "name": "霸气",
+          "value": 0.5
+        },
+        {
+          "name": "仙道",
+          "value": 0.5
+        },
+        {
+          "name": "奶茶店",
+          "value": 0.5
+        },
+        {
+          "name": "带我去",
+          "value": 0.5
+        },
+        {
+          "name": "奶茶",
+          "value": 0.5
+        },
+        {
+          "name": "男朋友",
+          "value": 0.5
+        },
+        {
+          "name": "显眼",
+          "value": 0.5
+        },
+        {
+          "name": "素材",
+          "value": 0.5
+        },
+        {
+          "name": "无法呼吸",
+          "value": 0.5
+        },
+        {
+          "name": "源于",
+          "value": 0.5
+        },
+        {
+          "name": "赛里木湖",
+          "value": 0.5
+        },
+        {
+          "name": "结婚证",
+          "value": 0.5
+        },
+        {
+          "name": "门票",
+          "value": 0.5
+        },
+        {
+          "name": "圣地",
+          "value": 0.5
+        },
+        {
+          "name": "终身",
+          "value": 0.5
+        },
+        {
+          "name": "卡卡",
+          "value": 0.5
+        },
+        {
+          "name": "预警",
+          "value": 0.5
+        },
+        {
+          "name": "心事",
+          "value": 0.5
+        },
+        {
+          "name": "次列车",
+          "value": 0.5
+        }
+      ]
+    },
+    "食安卫生": {
+      "positive": [
+        {
+          "name": "真棒",
+          "value": 2
+        },
+        {
+          "name": "沾水",
+          "value": 2
+        },
+        {
+          "name": "东方明珠",
+          "value": 2
+        },
+        {
+          "name": "爱喝",
+          "value": 2
+        },
+        {
+          "name": "东西",
+          "value": 1.5
+        },
+        {
+          "name": "饮品",
+          "value": 1
+        },
+        {
+          "name": "陈俊生",
+          "value": 1
+        },
+        {
+          "name": "阿迪达斯",
+          "value": 1
+        },
+        {
+          "name": "徐家汇",
+          "value": 1
+        },
+        {
+          "name": "贺函",
+          "value": 1
+        },
+        {
+          "name": "洞洞鞋",
+          "value": 1
+        },
+        {
+          "name": "半身",
+          "value": 1
+        },
+        {
+          "name": "果茶",
+          "value": 1
+        },
+        {
+          "name": "茉莉绿茶",
+          "value": 1
+        },
+        {
+          "name": "食品安全",
+          "value": 0.5
+        },
+        {
+          "name": "大圣",
+          "value": 0.5
+        },
+        {
+          "name": "草莓",
+          "value": 0.5
+        },
+        {
+          "name": "碎片",
+          "value": 0.5
+        },
+        {
+          "name": "叶子",
+          "value": 0.5
+        },
+        {
+          "name": "红茶",
+          "value": 0.5
+        },
+        {
+          "name": "柠檬",
+          "value": 0.5
+        },
+        {
+          "name": "睡不着",
+          "value": 0.5
+        },
+        {
+          "name": "果酱",
+          "value": 0.5
+        },
+        {
+          "name": "店长",
+          "value": 0.5
+        },
+        {
+          "name": "虫子",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "食品安全",
+          "value": 0.5
+        },
+        {
+          "name": "大圣",
+          "value": 0.5
+        },
+        {
+          "name": "草莓",
+          "value": 0.5
+        },
+        {
+          "name": "碎片",
+          "value": 0.5
+        },
+        {
+          "name": "叶子",
+          "value": 0.5
+        },
+        {
+          "name": "红茶",
+          "value": 0.5
+        },
+        {
+          "name": "柠檬",
+          "value": 0.5
+        },
+        {
+          "name": "东西",
+          "value": 0.5
+        },
+        {
+          "name": "睡不着",
+          "value": 0.5
+        },
+        {
+          "name": "果酱",
+          "value": 0.5
+        },
+        {
+          "name": "店长",
+          "value": 0.5
+        },
+        {
+          "name": "虫子",
+          "value": 0.5
+        },
+        {
+          "name": "大学生",
+          "value": 0.5
+        }
+      ]
+    },
+    "产品体验": {
+      "positive": [
+        {
+          "name": "变好",
+          "value": 2
+        },
+        {
+          "name": "新鲜",
+          "value": 2
+        },
+        {
+          "name": "好喝",
+          "value": 2
+        },
+        {
+          "name": "珍珠奶茶",
+          "value": 1
+        },
+        {
+          "name": "西柚",
+          "value": 1
+        },
+        {
+          "name": "白月光",
+          "value": 1
+        },
+        {
+          "name": "后厨",
+          "value": 1
+        },
+        {
+          "name": "全职妈妈",
+          "value": 1
+        },
+        {
+          "name": "咖啡",
+          "value": 1
+        },
+        {
+          "name": "调酒",
+          "value": 1
+        },
+        {
+          "name": "果立方",
+          "value": 1
+        },
+        {
+          "name": "到底是谁",
+          "value": 1
+        },
+        {
+          "name": "喝到",
+          "value": 1
+        },
+        {
+          "name": "柠檬茶",
+          "value": 1
+        },
+        {
+          "name": "太太",
+          "value": 1
+        },
+        {
+          "name": "奶茶",
+          "value": 1
+        },
+        {
+          "name": "桑葚",
+          "value": 1
+        },
+        {
+          "name": "伊利",
+          "value": 1
+        },
+        {
+          "name": "枸杞",
+          "value": 1
+        },
+        {
+          "name": "形态",
+          "value": 1
+        },
+        {
+          "name": "红茶",
+          "value": 1
+        },
+        {
+          "name": "霸气",
+          "value": 1
+        },
+        {
+          "name": "饮品",
+          "value": 1
+        },
+        {
+          "name": "打卡",
+          "value": 1
+        },
+        {
+          "name": "华中农业大学",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "门店",
+          "value": 1
+        },
+        {
+          "name": "芒果酱",
+          "value": 1
+        },
+        {
+          "name": "泛白",
+          "value": 1
+        },
+        {
+          "name": "杨枝甘露",
+          "value": 1
+        },
+        {
+          "name": "乾坤",
+          "value": 1
+        },
+        {
+          "name": "华中农业大学",
+          "value": 0.5
+        },
+        {
+          "name": "小站",
+          "value": 0.5
+        },
+        {
+          "name": "美食",
+          "value": 0.5
+        },
+        {
+          "name": "食堂",
+          "value": 0.5
+        },
+        {
+          "name": "桂林米粉",
+          "value": 0.5
+        }
+      ]
+    },
+    "价格活动与会员权益": {
+      "positive": [
+        {
+          "name": "奶茶",
+          "value": 2
+        },
+        {
+          "name": "领证",
+          "value": 1.5
+        },
+        {
+          "name": "周边",
+          "value": 1.5
+        },
+        {
+          "name": "罐子",
+          "value": 1
+        },
+        {
+          "name": "爷爷",
+          "value": 1
+        },
+        {
+          "name": "布里",
+          "value": 1
+        },
+        {
+          "name": "磁铁",
+          "value": 1
+        },
+        {
+          "name": "情侣",
+          "value": 1
+        },
+        {
+          "name": "冰激凌",
+          "value": 1
+        },
+        {
+          "name": "品类",
+          "value": 1
+        },
+        {
+          "name": "总部",
+          "value": 1
+        },
+        {
+          "name": "太太",
+          "value": 1
+        },
+        {
+          "name": "抖音",
+          "value": 1
+        },
+        {
+          "name": "团购",
+          "value": 1
+        },
+        {
+          "name": "纪念章",
+          "value": 0.5
+        },
+        {
+          "name": "仪式",
+          "value": 0.5
+        },
+        {
+          "name": "店里",
+          "value": 0.5
+        },
+        {
+          "name": "图片",
+          "value": 0.5
+        },
+        {
+          "name": "拼多多",
+          "value": 0.5
+        },
+        {
+          "name": "冰箱贴",
+          "value": 0.5
+        },
+        {
+          "name": "秋水",
+          "value": 0.5
+        },
+        {
+          "name": "武汉",
+          "value": 0.5
+        },
+        {
+          "name": "杯套",
+          "value": 0.5
+        },
+        {
+          "name": "民宿",
+          "value": 0.5
+        },
+        {
+          "name": "丽江旅游",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "信差",
+          "value": 2
+        },
+        {
+          "name": "领证",
+          "value": 0.5
+        },
+        {
+          "name": "纪念章",
+          "value": 0.5
+        },
+        {
+          "name": "仪式",
+          "value": 0.5
+        },
+        {
+          "name": "店里",
+          "value": 0.5
+        },
+        {
+          "name": "图片",
+          "value": 0.5
+        },
+        {
+          "name": "拼多多",
+          "value": 0.5
+        },
+        {
+          "name": "冰箱贴",
+          "value": 0.5
+        },
+        {
+          "name": "秋水",
+          "value": 0.5
+        },
+        {
+          "name": "周边",
+          "value": 0.5
+        },
+        {
+          "name": "武汉",
+          "value": 0.5
+        },
+        {
+          "name": "杯套",
+          "value": 0.5
+        },
+        {
+          "name": "民宿",
+          "value": 0.5
+        },
+        {
+          "name": "丽江旅游",
+          "value": 0.5
+        },
+        {
+          "name": "海底",
+          "value": 0.5
+        },
+        {
+          "name": "丽江",
+          "value": 0.5
+        }
+      ]
+    },
+    "品牌声誉与社媒传播": {
+      "positive": [
+        {
+          "name": "爱喝",
+          "value": 2
+        },
+        {
+          "name": "米线",
+          "value": 1
+        },
+        {
+          "name": "美味",
+          "value": 1
+        },
+        {
+          "name": "余额",
+          "value": 1
+        },
+        {
+          "name": "玉米",
+          "value": 1
+        },
+        {
+          "name": "牛肉",
+          "value": 1
+        },
+        {
+          "name": "柠檬",
+          "value": 1
+        },
+        {
+          "name": "零食",
+          "value": 1
+        },
+        {
+          "name": "扎堆",
+          "value": 1
+        },
+        {
+          "name": "咋样",
+          "value": 1
+        },
+        {
+          "name": "冰淇淋",
+          "value": 1
+        },
+        {
+          "name": "小女生",
+          "value": 1
+        },
+        {
+          "name": "麻辣烫",
+          "value": 1
+        },
+        {
+          "name": "小吃",
+          "value": 1
+        },
+        {
+          "name": "这一刻",
+          "value": 1
+        },
+        {
+          "name": "女士",
+          "value": 1
+        },
+        {
+          "name": "拿铁",
+          "value": 1
+        },
+        {
+          "name": "甜咖啡",
+          "value": 1
+        },
+        {
+          "name": "反式脂肪酸",
+          "value": 1
+        },
+        {
+          "name": "黑咖啡",
+          "value": 1
+        },
+        {
+          "name": "鹤岗",
+          "value": 0.5
+        },
+        {
+          "name": "特产",
+          "value": 0.5
+        },
+        {
+          "name": "家乡",
+          "value": 0.5
+        },
+        {
+          "name": "创意",
+          "value": 0.5
+        },
+        {
+          "name": "南城",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "鹤岗",
+          "value": 0.5
+        },
+        {
+          "name": "特产",
+          "value": 0.5
+        },
+        {
+          "name": "家乡",
+          "value": 0.5
+        },
+        {
+          "name": "创意",
+          "value": 0.5
+        },
+        {
+          "name": "南城",
+          "value": 0.5
+        },
+        {
+          "name": "兄妹俩",
+          "value": 0.5
+        },
+        {
+          "name": "甜品",
+          "value": 0.5
+        },
+        {
+          "name": "美食",
+          "value": 0.5
+        },
+        {
+          "name": "一家",
+          "value": 0.5
+        },
+        {
+          "name": "情侣",
+          "value": 0.5
+        },
+        {
+          "name": "加持",
+          "value": 0.5
+        },
+        {
+          "name": "领证",
+          "value": 0.5
+        },
+        {
+          "name": "感觉",
+          "value": 0.5
+        },
+        {
+          "name": "热门",
+          "value": 0.5
+        },
+        {
+          "name": "降温",
+          "value": 0.5
+        },
+        {
+          "name": "起来",
+          "value": 0.5
+        }
+      ]
+    },
+    "服务质量": {
+      "positive": [
+        {
+          "name": "店员",
+          "value": 2.5
+        },
+        {
+          "name": "单曲循环",
+          "value": 1
+        },
+        {
+          "name": "不得不说",
+          "value": 1
+        },
+        {
+          "name": "她说",
+          "value": 1
+        },
+        {
+          "name": "视频",
+          "value": 1
+        },
+        {
+          "name": "翰林",
+          "value": 1
+        },
+        {
+          "name": "店家",
+          "value": 1
+        },
+        {
+          "name": "店铺",
+          "value": 1
+        },
+        {
+          "name": "店里",
+          "value": 1
+        },
+        {
+          "name": "水果",
+          "value": 1
+        },
+        {
+          "name": "小姐姐",
+          "value": 1
+        },
+        {
+          "name": "外套",
+          "value": 1
+        },
+        {
+          "name": "喊住",
+          "value": 1
+        },
+        {
+          "name": "拿稳",
+          "value": 1
+        },
+        {
+          "name": "店门",
+          "value": 1
+        },
+        {
+          "name": "故障",
+          "value": 1
+        },
+        {
+          "name": "破防",
+          "value": 1
+        },
+        {
+          "name": "收银机",
+          "value": 1
+        },
+        {
+          "name": "打印机",
+          "value": 1
+        },
+        {
+          "name": "冰箱贴",
+          "value": 1
+        },
+        {
+          "name": "买了",
+          "value": 1
+        },
+        {
+          "name": "河南郑州",
+          "value": 0.5
+        },
+        {
+          "name": "土狗",
+          "value": 0.5
+        },
+        {
+          "name": "旺季",
+          "value": 0.5
+        },
+        {
+          "name": "大军",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "问题",
+          "value": 2
+        },
+        {
+          "name": "延安路",
+          "value": 1
+        },
+        {
+          "name": "买了",
+          "value": 1
+        },
+        {
+          "name": "黑皮",
+          "value": 1
+        },
+        {
+          "name": "在上海",
+          "value": 1
+        },
+        {
+          "name": "河南郑州",
+          "value": 0.5
+        },
+        {
+          "name": "土狗",
+          "value": 0.5
+        },
+        {
+          "name": "旺季",
+          "value": 0.5
+        },
+        {
+          "name": "大军",
+          "value": 0.5
+        },
+        {
+          "name": "嘴甜",
+          "value": 0.5
+        },
+        {
+          "name": "实诚",
+          "value": 0.5
+        },
+        {
+          "name": "店员",
+          "value": 0.5
+        },
+        {
+          "name": "奶茶",
+          "value": 0.5
+        },
+        {
+          "name": "特制",
+          "value": 0.5
+        }
+      ]
+    },
+    "咨询建议与其他": {
+      "positive": [
+        {
+          "name": "铜丝",
+          "value": 2
+        },
+        {
+          "name": "报备",
+          "value": 2
+        },
+        {
+          "name": "物质",
+          "value": 2
+        },
+        {
+          "name": "契约",
+          "value": 1
+        },
+        {
+          "name": "主场",
+          "value": 1
+        },
+        {
+          "name": "心情",
+          "value": 1
+        },
+        {
+          "name": "产品",
+          "value": 1
+        },
+        {
+          "name": "标的",
+          "value": 1
+        },
+        {
+          "name": "日子",
+          "value": 1
+        },
+        {
+          "name": "鹿家",
+          "value": 1
+        },
+        {
+          "name": "打工人",
+          "value": 1
+        },
+        {
+          "name": "冰雪",
+          "value": 0.5
+        },
+        {
+          "name": "会员",
+          "value": 0.5
+        },
+        {
+          "name": "想要",
+          "value": 0.5
+        },
+        {
+          "name": "得到",
+          "value": 0.5
+        },
+        {
+          "name": "闪购",
+          "value": 0.5
+        },
+        {
+          "name": "老天爷",
+          "value": 0.5
+        },
+        {
+          "name": "靠山",
+          "value": 0.5
+        },
+        {
+          "name": "柠檬水",
+          "value": 0.5
+        },
+        {
+          "name": "小卖部",
+          "value": 0.5
+        },
+        {
+          "name": "办公家具",
+          "value": 0.5
+        },
+        {
+          "name": "写字楼",
+          "value": 0.5
+        },
+        {
+          "name": "总部",
+          "value": 0.5
+        },
+        {
+          "name": "企业",
+          "value": 0.5
+        },
+        {
+          "name": "环境",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "纪律性",
+          "value": 1
+        },
+        {
+          "name": "公费",
+          "value": 1
+        },
+        {
+          "name": "这群人",
+          "value": 1
+        },
+        {
+          "name": "组织",
+          "value": 1
+        },
+        {
+          "name": "冰雪",
+          "value": 0.5
+        },
+        {
+          "name": "会员",
+          "value": 0.5
+        },
+        {
+          "name": "想要",
+          "value": 0.5
+        },
+        {
+          "name": "得到",
+          "value": 0.5
+        },
+        {
+          "name": "闪购",
+          "value": 0.5
+        },
+        {
+          "name": "老天爷",
+          "value": 0.5
+        },
+        {
+          "name": "靠山",
+          "value": 0.5
+        },
+        {
+          "name": "柠檬水",
+          "value": 0.5
+        },
+        {
+          "name": "小卖部",
+          "value": 0.5
+        },
+        {
+          "name": "办公家具",
+          "value": 0.5
+        },
+        {
+          "name": "写字楼",
+          "value": 0.5
+        },
+        {
+          "name": "总部",
+          "value": 0.5
+        },
+        {
+          "name": "企业",
+          "value": 0.5
+        },
+        {
+          "name": "环境",
+          "value": 0.5
+        },
+        {
+          "name": "小吃摊",
+          "value": 0.5
+        },
+        {
+          "name": "雨城区",
+          "value": 0.5
+        },
+        {
+          "name": "华府",
+          "value": 0.5
+        },
+        {
+          "name": "大兴",
+          "value": 0.5
+        },
+        {
+          "name": "雅安",
+          "value": 0.5
+        }
+      ]
+    },
+    "门店运营与合规": {
+      "positive": [
+        {
+          "name": "店员",
+          "value": 1.0
+        },
+        {
+          "name": "初审",
+          "value": 0.5
+        },
+        {
+          "name": "答案",
+          "value": 0.5
+        },
+        {
+          "name": "面试",
+          "value": 0.5
+        },
+        {
+          "name": "奶茶店",
+          "value": 0.5
+        },
+        {
+          "name": "奶茶",
+          "value": 0.5
+        },
+        {
+          "name": "食堂",
+          "value": 0.5
+        },
+        {
+          "name": "禹州",
+          "value": 0.5
+        },
+        {
+          "name": "店长",
+          "value": 0.5
+        },
+        {
+          "name": "找工作",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "加盟费",
+          "value": 2
+        },
+        {
+          "name": "店员",
+          "value": 1.0
+        },
+        {
+          "name": "老板",
+          "value": 1
+        },
+        {
+          "name": "思路",
+          "value": 1
+        },
+        {
+          "name": "建议",
+          "value": 1
+        },
+        {
+          "name": "公司",
+          "value": 1
+        },
+        {
+          "name": "媳妇",
+          "value": 1
+        },
+        {
+          "name": "直播间",
+          "value": 1
+        },
+        {
+          "name": "起因",
+          "value": 1
+        },
+        {
+          "name": "小面",
+          "value": 1
+        },
+        {
+          "name": "一般见识",
+          "value": 1
+        },
+        {
+          "name": "茶桶",
+          "value": 1
+        },
+        {
+          "name": "工作站",
+          "value": 1
+        },
+        {
+          "name": "甜筒",
+          "value": 1
+        },
+        {
+          "name": "橙子",
+          "value": 1
+        },
+        {
+          "name": "柠檬",
+          "value": 1
+        },
+        {
+          "name": "入口",
+          "value": 1
+        },
+        {
+          "name": "官网",
+          "value": 1
+        },
+        {
+          "name": "官方",
+          "value": 1
+        },
+        {
+          "name": "电话",
+          "value": 1
+        },
+        {
+          "name": "明细表",
+          "value": 1
+        },
+        {
+          "name": "加盟",
+          "value": 1
+        },
+        {
+          "name": "初审",
+          "value": 0.5
+        },
+        {
+          "name": "答案",
+          "value": 0.5
+        },
+        {
+          "name": "面试",
+          "value": 0.5
+        }
+      ]
+    },
+    "订单履约与配送": {
+      "positive": [
+        {
+          "name": "门店",
+          "value": 1.0
+        },
+        {
+          "name": "商场",
+          "value": 0.5
+        },
+        {
+          "name": "随拍",
+          "value": 0.5
+        },
+        {
+          "name": "旗舰店",
+          "value": 0.5
+        },
+        {
+          "name": "程序",
+          "value": 0.5
+        },
+        {
+          "name": "幸运",
+          "value": 0.5
+        },
+        {
+          "name": "碰上",
+          "value": 0.5
+        },
+        {
+          "name": "自取",
+          "value": 0.5
+        },
+        {
+          "name": "评论",
+          "value": 0.5
+        },
+        {
+          "name": "避免",
+          "value": 0.5
+        },
+        {
+          "name": "双响炮",
+          "value": 0.5
+        },
+        {
+          "name": "糖蜜",
+          "value": 0.5
+        },
+        {
+          "name": "店员",
+          "value": 0.5
+        },
+        {
+          "name": "没加糖",
+          "value": 0.5
+        }
+      ],
+      "negative": [
+        {
+          "name": "店员",
+          "value": 1.5
+        },
+        {
+          "name": "门店",
+          "value": 1.0
+        },
+        {
+          "name": "甜度",
+          "value": 1
+        },
+        {
+          "name": "常温",
+          "value": 1
+        },
+        {
+          "name": "勃然",
+          "value": 1
+        },
+        {
+          "name": "商场",
+          "value": 0.5
+        },
+        {
+          "name": "随拍",
+          "value": 0.5
+        },
+        {
+          "name": "旗舰店",
+          "value": 0.5
+        },
+        {
+          "name": "程序",
+          "value": 0.5
+        },
+        {
+          "name": "幸运",
+          "value": 0.5
+        },
+        {
+          "name": "碰上",
+          "value": 0.5
+        },
+        {
+          "name": "自取",
+          "value": 0.5
+        },
+        {
+          "name": "评论",
+          "value": 0.5
+        },
+        {
+          "name": "避免",
+          "value": 0.5
+        },
+        {
+          "name": "双响炮",
+          "value": 0.5
+        },
+        {
+          "name": "糖蜜",
+          "value": 0.5
+        },
+        {
+          "name": "没加糖",
+          "value": 0.5
+        }
+      ]
+    }
   }
 };
