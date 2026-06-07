@@ -1946,7 +1946,7 @@
     const target = $("#chinaRiskMap");
     if (!target) return;
     try {
-      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260609a");
+      const echartsApi = window.echarts || await import("./assets/echarts.esm.min.js?v=20260608a");
       if (!window.__chinaProvinceGeoJson) {
         const response = await fetch("./assets/china-provinces.json");
         window.__chinaProvinceGeoJson = await response.json();
@@ -2115,7 +2115,7 @@
       <!-- 口碑维度分析（来自原口碑维度/NSR分析页） -->
       <div class="warning-rep-grid">
         ${card("一级维度声量与 NSR", `<div id="warningPrimaryChart" style="height:300px"></div>`)}
-        ${card("二级维度声量与 NSR（柱线图）", `<div id="warningSecondaryChart" style="height:320px"></div>`)}
+        ${card("二级维度详情", `<div id="warningSecondaryDetail">${renderWarningSecondary(data)}</div>`)}
       </div>
       <div class="warning-grid">
         ${card("风险问题排行", table(["等级", "维度", "声量", "NSR", "风险阶段", "建议动作"], (data.brandReputation ? data.brandReputation.reputationDimensions.primary : []).sort((a,b) => b.nsr - a.nsr).slice(0, 8).map((item, index) => [
@@ -2175,7 +2175,7 @@
       </div>
       <div class="section-label">问题详解：整合客诉与 VOC 数据</div>
       <div class="warning-rep-grid">
-        ${card("二级维度声量与 NSR（点击一级维度联动）", `<div id="warningSecondaryChart2" style="height:320px"></div>`)}
+        ${card("二级维度详情（点击一级维度联动）", `<div id="warningSecondaryDetail2">${renderWarningSecondary(data)}</div>`)}
         ${card("声量趋势 & 平台分布", `<div id="warnDimTrend" style="height:260px"></div>`)}
       </div>
       <div class="full-section">${card("关键词与原声证据", serviceEvidence(selected))}</div>

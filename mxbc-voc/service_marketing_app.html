@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>客诉社媒聚合分析看板 - 蜜雪冰城 POC</title>
-  <link rel="stylesheet" href="./mx_dashboard.css?v=20260608a">
+  <link rel="stylesheet" href="./mx_dashboard.css?v=20260609a">
 </head>
 <body data-app="service">
   <div class="layout">
@@ -14,8 +14,8 @@
         <span>数说雷达</span>
       </a>
       <div class="side-section">分析看板</div>
-      <button class="side-item tab" data-target="complaint"><span class="side-dot"></span><span>VOC 监测总览</span></button>
-      <button class="side-item tab active" data-target="brandMind"><span class="side-dot"></span><span>社媒品牌心智</span></button>
+      <button class="side-item tab" data-target="brandMind"><span class="side-dot"></span><span>社媒品牌心智</span></button>
+      <button class="side-item tab active" data-target="complaint"><span class="side-dot"></span><span>VOC 监测总览</span></button>
       <button class="side-item tab" data-target="warning"><span class="side-dot"></span><span>口碑维度分析</span></button>
       <button class="side-item tab" data-target="serviceRegions"><span class="side-dot"></span><span>区域洞察</span></button>
       <div class="side-section">AI Agent</div>
@@ -36,19 +36,19 @@
         <button class="ai-report-btn" data-template="complaint">生成 AI 报告</button>
       </section>
       <section class="content">
-        <div id="complaint" class="page"></div>
-        <div id="brandMind" class="page active"></div>
+        <div id="complaint" class="page active"></div>
+        <div id="brandMind" class="page"></div>
         <div id="warning" class="page"></div>
         <div id="serviceRegions" class="page"></div>
         <div id="aiInsights" class="page ai-insights-page">
-          <iframe class="ai-embed-frame" src="./ai_insights.html?embed=service&v=20260608a" title="客诉看板 AI 洞察"></iframe>
+          <iframe class="ai-embed-frame" src="./ai_insights.html?embed=service&v=20260609a" title="客诉看板 AI 洞察"></iframe>
         </div>
         <div class="footer-note">数据来源：蜜雪POC_客诉_数据case_打标结果.xlsx、蜜雪POC客诉同天社媒抖红微B快_打标结果.xlsx、蜜雪POC薄荷新品数据_打标结果.xlsx。</div>
       </section>
     </main>
   </div>
-  <script src="./assets/echarts.min.js?v=20260608a"></script>
-  <script src="./mx_dashboard_data.js?v=20260608a"></script>
-  <script src="./mx_dashboard_app.js?v=20260608a"></script>
+  <script src="./assets/echarts.min.js?v=20260609a"></script>
+  <script src="./mx_dashboard_data.js?v=20260609a"></script>
+  <script src="./mx_dashboard_app.js?v=20260609a"></script>
 </body>
 </html>
