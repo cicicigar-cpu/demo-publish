@@ -1,7 +1,7 @@
-// VERSION: v=20260610g — 若浏览器加载的版本不对，请硬刷新清除缓存
+// VERSION: v=20260610h — 若浏览器加载的版本不对，请硬刷新清除缓存
 (function () {
   const data = window.MX_DASHBOARD_DATA || {};
-  window.MX_APP_VERSION = 'v=20260610g'; // 在Console输入 MX_APP_VERSION 可确认加载版本
+  window.MX_APP_VERSION = 'v=20260610h'; // 在Console输入 MX_APP_VERSION 可确认加载版本
   const colors = ["#2787f5", "#f05b68", "#20b7b3", "#f5a623", "#7569df", "#45b36b", "#8ea0bd"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -1648,7 +1648,7 @@
 
   const serviceProblems = [
     {
-      issue: "杨枝甘露 AB货 / 颜色差异", risk: "P1", total: 186, internal: 24, social: 162, score: 82.5, change: "+46%", type: "社媒外溢型", product: "杨枝甘露", platforms: "抖音 / 小红书 / 微博", regions: "河南 / 广东 / 山东",
+      issue: "AB货 / 颜色差异", risk: "P1", total: 186, internal: 24, social: 162, score: 82.5, change: "+46%", type: "社媒外溢型", product: "杨枝甘露", platforms: "抖音 / 小红书 / 微博", regions: "河南 / 广东 / 山东",
       keywords: ["AB货", "颜色不一样", "芒果酱", "发白", "少加料", "出品不一致"],
       judgement: "该问题在社媒侧讨论明显高于内部客诉，属于外部先发酵问题。内部客服系统中相关投诉量暂未同步放大，但公开平台中已出现较高互动和品质质疑表达，建议优先关注。",
       sources: [["抖音", 58], ["小红书", 22], ["微博", 7], ["外卖评价", 8], ["在线客服", 3], ["热线", 2]],
@@ -2456,7 +2456,7 @@
           tooltip: {
             position: 'top',
             formatter: function(p) {
-              return sites[p.data[0]] + ' × ' + dims[p.data[1]] + '<br/>声量: ' + p.data[2] + '<br/>负向率: ' + p.data[3] + '%';
+              return sites[p.data[0]] + ' × ' + dims[p.data[1]] + '<br/>声量: ' + p.data[2] + '<br/>负向率: ' + (p.data[3] !== undefined ? p.data[3] + '%' : '-');
             }
           },
           grid: { left: '8%', right: '4%', bottom: '12%', top: '8%' },
@@ -2473,7 +2473,7 @@
           },
           series: [{
             type: 'heatmap',
-            data: heatData.map(d => [d[0], d[1], d[2]]),  // [x, y, value]
+            data: heatData.map(d => [d[0], d[1], d[2], d[3]]),  // [x, y, value, negRate]
             label: { show: true, fontSize: 10, formatter: function(p) { return p.data[2] > 0 ? p.data[2] : '-'; } },
             emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.5)' } }
           }]
