@@ -1,7 +1,7 @@
-// VERSION: v=20260610e — 若浏览器加载的版本不对，请硬刷新清除缓存
+// VERSION: v=20260610f — 若浏览器加载的版本不对，请硬刷新清除缓存
 (function () {
   const data = window.MX_DASHBOARD_DATA || {};
-  window.MX_APP_VERSION = 'v=20260610e'; // 在Console输入 MX_APP_VERSION 可确认加载版本
+  window.MX_APP_VERSION = 'v=20260610f'; // 在Console输入 MX_APP_VERSION 可确认加载版本
   const colors = ["#2787f5", "#f05b68", "#20b7b3", "#f5a623", "#7569df", "#45b36b", "#8ea0bd"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -2145,13 +2145,13 @@
       <div class="warning-product-grid">
         ${card("高频提及产品名排行", `<div id="warningProductRank" style="min-height:180px"></div>`)}
       </div>
-      <!-- 正负面词云 -->
-      <div class="warning-wordcloud-grid">
-        ${card("正面词云", `<div id="warningPosWordCloud" style="height:280px;position:relative;"></div>`)}
-        ${card("负面词云", `<div id="warningNegWordCloud" style="height:280px;position:relative;"></div>`)}
-      </div>
-      <!-- 预警问题原帖和原声证据 -->
-      <div class="full-section">${card("关键词与原声证据", `<div id="warningEvidenceContent"><p class="fine-note">点击上方风险问题排行中的维度，查看关键词与原声证据。</p></div>`)}</div>
+      <!-- 正负面词云（沿用外卖问题风险归因样式） -->
+      <div id="warningWordCloudSection" class="wordcloud-section"></div>
+      <!-- 口碑原帖（沿用外卖问题风险归因样式） -->
+      <section class="card evidence-quotes">
+        <div class="card-header"><div class="card-title"><span class="mini-mark"></span>口碑原帖</div><div class="card-tools"><span class="active">按时间</span><span>按风险</span></div></div>
+        <div id="warningPostList"></div>
+      </section>
     `;
 
     // 热点事件时间线和来源饼图将在 initWarningCharts() 中初始化，避免重复初始化
@@ -2175,7 +2175,7 @@
         { label: "环比增幅最高（线索）", value: "广东 +35%", note: "食安与异味问题上升" },
         { label: "内外共振问题数", value: "9", note: "客服与社媒同步升高" },
       ])}
-            ${card("省份 NSR 分析", `<div id="regionNsrTable">${renderRegionNsrTable(data)}</div>`)}
+            ${card("省份 NSR 分析", `<div id="regionNsrTable" style="max-height:420px;overflow-y:auto;">${renderRegionNsrTable(data)}</div>`)}
       <div class="region-grid">
         ${card("全国区域风险地图", region.map)}
         ${card("区域风险排行榜", table(["排名", "区域", "风险指数", "内部", "社媒", "TOP 问题", "环比"], region.rows.map((row, index) => [
@@ -2730,59 +2730,38 @@
   function updateEvidenceAndWordCloud(dimName) {
     const rep = (window.MX_DASHBOARD_DATA && window.MX_DASHBOARD_DATA.brandReputation && window.MX_DASHBOARD_DATA.brandReputation.reputationDimensions) || {};
 
-    // 更新原声证据
-    const evEl = document.getElementById('warningEvidenceContent');
-    if (evEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.evidenceByDimension) {
-      const evList = window.MX_EVIDENCE_DATA.evidenceByDimension[dimName] || [];
-      let evHtml = '';
-      if (evList.length === 0) {
-        evHtml = '<p class="fine-note">暂无该维度的原声证据数据。</p>';
-      } else {
-        evHtml = '<div style="margin-bottom:8px;color:#667087;font-size:13px;">当前展示：<strong style="color:#28324a;">' + escapeHtml(dimName) + '</strong> 的原声证据</div>';
-        evList.forEach(ev => {
-          const platformClass = (ev.source === '热线' || ev.source === '在线') ? 'hotline' : '';
-          evHtml += '<div class="evidence-group">';
-          evHtml += '<div class="evidence-label">' + (ev.source || '未知') + '</div>';
-          evHtml += '<div class="evidence-item">';
-          evHtml += '<div class="evidence-meta">';
-          evHtml += '<span class="platform-tag ' + platformClass + '">' + (ev.source || '') + '</span>';
-          if (ev.author) evHtml += '<span class="author">' + ev.author + '</span>';
-          if (ev.callTime) evHtml += '<span class="call-time">' + ev.callTime + '</span>';
-          evHtml += '</div>';
-          evHtml += '<div class="evidence-content">' + (ev.content || '') + '</div>';
-          if (ev.url) evHtml += '<div class="evidence-url"><a href="' + ev.url + '" target="_blank">查看原帖</a></div>';
-          evHtml += '</div>';
-          evHtml += '</div>';
-        });
-      }
-      evEl.innerHTML = evHtml;
+    // 更新词云（沿用外卖问题风险归因的 wordcloud-section + comparisonCloud 样式）
+    const cloudEl = document.getElementById('warningWordCloudSection');
+    if (cloudEl) {
+      const wcData = (window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.wordCloudByDimension) ? window.MX_EVIDENCE_DATA.wordCloudByDimension[dimName] : null;
+      const posWords = wcData ? (wcData.positive || []) : [];
+      const negWords = wcData ? (wcData.negative || []) : [];
+      cloudEl.innerHTML = `
+        <div class="wordcloud-card">
+          <div class="wordcloud-header"><span class="wordcloud-dot positive"></span>正面词云</div>
+          ${comparisonCloud(posWords, "positive")}
+        </div>
+        <div class="wordcloud-card">
+          <div class="wordcloud-header"><span class="wordcloud-dot negative"></span>负面词云</div>
+          ${comparisonCloud(negWords, "negative")}
+        </div>`;
     }
 
-    // 更新词云
-    const posEl = document.getElementById('warningPosWordCloud');
-    const negEl = document.getElementById('warningNegWordCloud');
-    if (posEl && negEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.wordCloudByDimension) {
-      const wcData = window.MX_EVIDENCE_DATA.wordCloudByDimension[dimName];
-      if (wcData) {
-        // 正面词云
-        const posWords = wcData.positive || [];
-        let posHtml = '<div class="wordcloud-container">';
-        posWords.forEach((w, i) => {
-          const sizeClass = i < 3 ? 'wordcloud-pos-large' : i < 10 ? 'wordcloud-pos' : 'wordcloud-pos-small';
-          posHtml += '<span class="wordcloud-item ' + sizeClass + '">' + escapeHtml(w.name) + '</span>';
-        });
-        posHtml += '</div>';
-        posEl.innerHTML = posHtml;
-
-        // 负面词云
-        const negWords = wcData.negative || [];
-        let negHtml = '<div class="wordcloud-container">';
-        negWords.forEach((w, i) => {
-          const sizeClass = i < 3 ? 'wordcloud-neg-large' : i < 10 ? 'wordcloud-neg' : 'wordcloud-neg-small';
-          negHtml += '<span class="wordcloud-item ' + sizeClass + '">' + escapeHtml(w.name) + '</span>';
-        });
-        negHtml += '</div>';
-        negEl.innerHTML = negHtml;
+    // 更新口碑原帖（沿用外卖问题风险归因的 social-post 样式）
+    const postEl = document.getElementById('warningPostList');
+    if (postEl && window.MX_EVIDENCE_DATA && window.MX_EVIDENCE_DATA.evidenceByDimension) {
+      const evList = window.MX_EVIDENCE_DATA.evidenceByDimension[dimName] || [];
+      if (evList.length === 0) {
+        postEl.innerHTML = '<p class="fine-note">暂无该维度的原声证据数据。</p>';
+      } else {
+        // 转换为 deliveryPosts 需要的格式
+        const items = evList.map(ev => ({
+          channel: ev.source || '社媒平台',
+          time: ev.callTime || ev.date || '',
+          quote: ev.content || '',
+          url: ev.url || ''
+        }));
+        postEl.innerHTML = deliveryPosts(items, dimName);
       }
     }
   }
