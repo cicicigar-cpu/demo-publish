@@ -25,6 +25,12 @@
   }
 
   function normalizeEmotion(emotion) {
+    // 4分类情感直接映射
+    if (emotion === "愤怒") return "愤怒";
+    if (emotion === "负向") return "负面";
+    if (emotion === "中性") return "中性";
+    if (emotion === "正向") return "正面";
+    // 兼容旧的多分类情感
     const positive = ["满意", "愉悦", "期待", "好奇", "惊喜", "信任", "兴奋"];
     const neutral  = ["理性", "观望", "困惑", "怀旧", "被动接受"];
     const negative = ["不满", "厌恶", "失望", "怀疑", "无助", "烦躁", "后悔"];
@@ -33,7 +39,7 @@
     if (positive.includes(emotion)) return "正面";
     if (neutral.includes(emotion)) return "中性";
     if (negative.includes(emotion)) return "负面";
-    return "负面";
+    return "中性";
   }
 
   function badgeClass(emotion) {
