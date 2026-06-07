@@ -1,7 +1,7 @@
-// VERSION: v=20260610f — 若浏览器加载的版本不对，请硬刷新清除缓存
+// VERSION: v=20260610g — 若浏览器加载的版本不对，请硬刷新清除缓存
 (function () {
   const data = window.MX_DASHBOARD_DATA || {};
-  window.MX_APP_VERSION = 'v=20260610f'; // 在Console输入 MX_APP_VERSION 可确认加载版本
+  window.MX_APP_VERSION = 'v=20260610g'; // 在Console输入 MX_APP_VERSION 可确认加载版本
   const colors = ["#2787f5", "#f05b68", "#20b7b3", "#f5a623", "#7569df", "#45b36b", "#8ea0bd"];
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -2145,13 +2145,17 @@
       <div class="warning-product-grid">
         ${card("高频提及产品名排行", `<div id="warningProductRank" style="min-height:180px"></div>`)}
       </div>
-      <!-- 正负面词云（沿用外卖问题风险归因样式） -->
-      <div id="warningWordCloudSection" class="wordcloud-section"></div>
-      <!-- 口碑原帖（沿用外卖问题风险归因样式） -->
-      <section class="card evidence-quotes">
-        <div class="card-header"><div class="card-title"><span class="mini-mark"></span>口碑原帖</div><div class="card-tools"><span class="active">按时间</span><span>按风险</span></div></div>
-        <div id="warningPostList"></div>
-      </section>
+      <!-- 词云 + 原帖 左右分栏布局 -->
+      <div class="warning-cloud-evidence-layout">
+        <div class="warning-cloud-panel">
+          <div class="cloud-panel-title"><span class="mini-mark"></span><strong>关键词词云</strong></div>
+          <div id="warningWordCloudSection" class="wordcloud-section"></div>
+        </div>
+        <section class="card evidence-quotes">
+          <div class="card-header"><div class="card-title"><span class="mini-mark"></span>口碑原帖</div><div class="card-tools"><span class="active">按时间</span><span>按风险</span></div></div>
+          <div id="warningPostList"></div>
+        </section>
+      </div>
     `;
 
     // 热点事件时间线和来源饼图将在 initWarningCharts() 中初始化，避免重复初始化

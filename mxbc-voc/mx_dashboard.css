@@ -2123,6 +2123,44 @@ body[data-app="delivery"] .kpi-grid {
   margin-top: 16px;
 }
 
+/* 词云 + 原帖 左右分栏布局 */
+.warning-cloud-evidence-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+.warning-cloud-panel {
+  background: #fafbfd;
+  border-radius: 8px;
+  padding: 14px;
+}
+.warning-cloud-panel .cloud-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #1a2744;
+}
+.warning-cloud-panel .cloud-panel-title strong {
+  font-size: 14px;
+}
+/* 左侧词云区域内，正面在上、负面在下 */
+.warning-cloud-panel .wordcloud-section {
+  gap: 12px;
+}
+/* 右侧原帖卡片撑满 */
+.warning-cloud-evidence-layout .evidence-quotes {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.warning-cloud-evidence-layout .evidence-quotes .social-post-list {
+  max-height: 560px;
+  overflow-y: auto;
+}
+
 .warning-wordcloud-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
