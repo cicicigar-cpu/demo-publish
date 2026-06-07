@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>品牌口碑与社媒心智 - 蜜雪冰城 POC</title>
+  <link rel="stylesheet" href="./mx_dashboard.css?v=20260606h">
+</head>
+<body data-app="brand">
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="side-brand" href="./index.html">
+        <span class="brand-mark">D</span>
+        <span>数说雷达</span>
+      </a>
+      <div class="side-section">分析看板</div>
+      <button class="side-item tab active" data-target="brandOverview"><span class="side-dot"></span><span>品牌心智总览</span></button>
+      <button class="side-item tab" data-target="brandSocial"><span class="side-dot"></span><span>社媒矩阵与热议内容</span></button>
+      <button class="side-item tab" data-target="brandConsumer"><span class="side-dot"></span><span>消费者画像</span></button>
+      <button class="side-item tab" data-target="brandReputation"><span class="side-dot"></span><span>口碑维度 / NSR 分析</span></button>
+      <div class="side-section">AI Agent</div>
+      <button class="side-item tab" data-target="aiInsights"><span class="side-dot"></span><span>AI 洞察</span></button>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="top-title"><span class="hamburger">☰</span><span>品牌口碑与社媒心智</span></div>
+        <div class="top-actions"><span>中文⌄</span><span>帮助</span><span>通知</span><span class="avatar">账号</span><span>欢迎！蜜雪品牌部</span></div>
+      </header>
+      <section class="filterbar">
+        <label class="filter-control"><span>时间</span><select id="brandTime"><option value="近7天">近7天</option><option value="昨日">昨日</option><option value="近30天">近30天</option><option value="本月">本月</option></select></label>
+        <label class="filter-control"><span>社媒平台</span><select id="brandPlatform"><option value="全部">全部平台</option><option value="抖音">抖音</option><option value="小红书">小红书</option><option value="微博">微博</option><option value="微信">微信</option><option value="B站">B站</option><option value="快手">快手</option></select></label>
+        <label class="filter-control"><span>内容类型</span><select id="brandContentType"><option value="全部">全部</option><option value="UGC">UGC</option><option value="PGC">PGC</option><option value="BGC">BGC</option></select></label>
+        <label class="filter-control"><span>情感类型</span><select id="brandSentiment"><option value="全部">全部</option><option value="正面">正面</option><option value="中性">中性</option><option value="负面">负面</option></select></label>
+        <label class="filter-control"><span>区域</span><select id="brandRegion"><option value="全国">全国</option><option>河南</option><option>广东</option><option>山东</option><option>江苏</option><option>浙江</option><option>四川</option><option>湖北</option><option>湖南</option></select></label>
+        <button class="ai-report-btn" data-template="brand">生成 AI 报告</button>
+      </section>
+      <div class="filter-note">社媒数据为公开平台讨论内容，用于品牌口碑监测与外溢风险预警；与内部客诉数据口径不同，不建议合并为同一分母。</div>
+      <section class="content">
+        <div id="brandOverview" class="page active"></div>
+        <div id="brandSocial" class="page"></div>
+        <div id="brandConsumer" class="page"></div>
+        <div id="brandReputation" class="page"></div>
+        <div id="aiInsights" class="page ai-insights-page">
+          <iframe class="ai-embed-frame" src="./ai_insights.html?embed=brand&v=20260606h" title="品牌口碑 AI 洞察"></iframe>
+        </div>
+        <div class="footer-note">数据来源：社媒公开数据聚合（抖音、小红书、微博、微信、B站、快手）。</div>
+      </section>
+    </main>
+  </div>
+  <script src="./assets/echarts.min.js?v=20260606h"></script>
+  <script src="./mx_dashboard_data.js?v=20260606h"></script>
+  <script src="./mx_dashboard_app.js?v=20260606h"></script>
+</body>
+</html>

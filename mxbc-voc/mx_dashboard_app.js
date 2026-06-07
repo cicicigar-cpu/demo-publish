@@ -1901,6 +1901,42 @@
     </svg>`;
   }
 
+
+  function regionQuadrant() {
+    const rows = serviceRegionMap().rows;
+    const width = 720, height = 360;
+    const pad = { top: 55, right: 30, bottom: 50, left: 70 };
+    const plotW = width - pad.left - pad.right;
+    const plotH = height - pad.top - pad.bottom;
+    const vols = rows.map(r => r[2] + r[3]);
+    const risks = rows.map(r => r[1]);
+    const maxV = Math.max(...vols, 1), maxR = Math.max(...risks, 1);
+    const midV = vols.sort((a,b)=>a-b)[Math.floor(vols.length/2)];
+    const midR = risks.sort((a,b)=>a-b)[Math.floor(risks.length/2)];
+    const cx = v => pad.left + (v / maxV) * plotW;
+    const cy = v => pad.top + plotH - (v / maxR) * plotH;
+    const qcolors = { "高压区域":"#ef4b6c","热点区域":"#f59e0b","隐患区域":"#1687ff","观察区域":"#94a3b8" };
+    const getQ = r => {
+      const v = r[2]+r[3];
+      return v >= midV ? (r[1]>=midR?"高压区域":"热点区域") : (r[1]>=midR?"隐患区域":"观察区域");
+    };
+    return `<svg class="quadrant" viewBox="0 0 ${width} ${height}" width="100%" height="${height}">
+      <line x1="${pad.left}" y1="${cy(midR)}" x2="${width-pad.right}" y2="${cy(midR)}" stroke="#1687ff" stroke-dasharray="4 4"/>
+      <line x1="${cx(midV)}" y1="${pad.top}" x2="${cx(midV)}" y2="${height-pad.bottom}" stroke="#1687ff" stroke-dasharray="4 4"/>
+      <text x="${pad.left+8}" y="${pad.top+20}" fill="#8b95aa" font-size="11">隐患区域</text>
+      <text x="${cx(midV)+8}" y="${pad.top+20}" fill="#8b95aa" font-size="11">高压区域</text>
+      <text x="${pad.left+8}" y="${height-pad.bottom+35}" fill="#8b95aa" font-size="11">观察区域</text>
+      <text x="${cx(midV)+8}" y="${height-pad.bottom+35}" fill="#8b95aa" font-size="11">热点区域</text>
+      <text x="${width/2}" y="${pad.top-10}" fill="#667087" font-size="12" text-anchor="middle">区域四象限 · 问题量 vs 风险指数</text>
+      ${rows.map(r => {
+        const q = getQ(r), rv = r[2]+r[3];
+        return `<circle cx="${cx(rv)}" cy="${cy(r[1])}" r="13" fill="${qcolors[q]}" fill-opacity=".85" stroke="#fff" stroke-width="2"/><text x="${cx(rv)+16}" y="${cy(r[1])-6}" fill="#1e2b42" font-size="12" font-weight="bold">${r[0]}</text>`;
+      }).join('')}
+      <text x="${width/2}" y="${height-6}" fill="#667087" font-size="11" text-anchor="middle">综合问题量（内部+社媒）</text>
+      <text x="16" y="${height/2}" fill="#667087" font-size="11" text-anchor="middle" transform="rotate(-90 16 ${height/2})">风险指数</text>
+    </svg>`;
+  }
+
   function serviceRegionMap() {
     const rows = [
       ["河南", 86.2, 310, 220, "AB货 / 品质质疑", "+48%"],
@@ -1975,6 +2011,7 @@
           select.value = option.value;
           selectedServiceIssue = 0;
           renderService();
+          if (shortName) showRegionEvidence(shortName);
         }
       });
     } catch (error) {
@@ -2082,6 +2119,12 @@
         { label: "内外共振型问题数", value: "5", note: "内部和外部同时升高" },
         { label: "强负向敏感问题数", value: "18", note: "食安 / 欺骗 / 异物" },
       ])}
+      
+      <!-- 口碑维度分析（来自原口碑维度/NSR分析页） -->
+      <div class="warning-rep-grid">
+        ${card("一级维度声量与 NSR", `<div id="warningPrimaryChart" style="height:300px"></div>`)}
+        ${card("二级维度详情", `<div id="warningSecondaryDetail">${renderWarningSecondary(data)}</div>`)}
+      </div>
       <div class="warning-grid">
         ${card("内外部风险四象限", warningQuadrant())}
         ${card("预警问题列表", table(["等级ⓘ", "问题", "风险类型", "命中规则", "主要来源", "风险阶段", "客服动作ⓘ"], serviceProblems.slice(0, 4).map((item, index) => [
@@ -2097,6 +2140,38 @@
         <div><span>当前预警问题</span><strong>${escapeHtml(selected.issue)}</strong></div>
         <p>${escapeHtml(selected.judgement)}</p>
       </div>
+      <div class="warning-event-grid">
+        ${card("热点事件时间线", `<div id="warningEventChart" style="height:260px"></div>`)}
+        ${card("预警问题原帖 / 原声证据", `<div class="warning-evidence-list">
+          <div class="evidence-group">
+            <div class="evidence-label">社媒原帖</div>
+            <div class="evidence-item">
+              <div class="evidence-meta"><span class="platform-tag">抖音</span><span class="author">美食侦探</span><span class="time">2026-05-19 14:32</span></div>
+              <div class="evidence-content">${escapeHtml(selected.issue)}：真的忍不了，${escapeHtml(selected.issue)}问题已经不是第一次了，上次去门店也是同样情况...</div>
+              <div class="evidence-stats">👍 2,340 · 💬 456 · ↗️ 128</div>
+            </div>
+            <div class="evidence-item">
+              <div class="evidence-meta"><span class="platform-tag">小红书</span><span class="author">奶茶测评酱</span><span class="time">2026-05-20 09:15</span></div>
+              <div class="evidence-content">姐妹们避雷！${escapeHtml(selected.issue)}，体验极差，已经投诉到平台了。</div>
+              <div class="evidence-stats">👍 890 · 💬 234 · ↗️ 56</div>
+            </div>
+          </div>
+          <div class="evidence-group">
+            <div class="evidence-label">热线摘要</div>
+            <div class="evidence-item">
+              <div class="evidence-meta"><span class="platform-tag hotline">热线</span><span class="time">2026-05-21 10:22</span></div>
+              <div class="evidence-content">用户反馈${escapeHtml(selected.issue)}，情绪愤怒，要求退款并赔偿，已记录工单。</div>
+            </div>
+          </div>
+          <div class="evidence-group">
+            <div class="evidence-label">在线客服原声</div>
+            <div class="evidence-item">
+              <div class="evidence-meta"><span class="platform-tag online">在线客服</span><span class="time">2026-05-21 11:45</span></div>
+              <div class="evidence-content">顾客：你们这个${escapeHtml(selected.issue)}怎么回事？客服：非常抱歉给您带来不好的体验...</div>
+            </div>
+          </div>
+        </div>`)}
+      </div>
       <div class="service-mid-grid">
         ${card("当前问题趋势走向", svgLine("warningTrend", [
           { name: "内部客诉", values: [12, 16, 20, 26, 38, 52, selected.internal], color: colors[0] },
@@ -2109,6 +2184,29 @@
       </div>
       <div class="full-section">${card("关键词与原声证据", serviceEvidence(selected))}</div>
     `;
+
+    // Initialize warning event chart
+    setTimeout(() => {
+      const eventChartEl = document.getElementById('warningEventChart');
+      if (eventChartEl) {
+        const eventChart = echarts.init(eventChartEl);
+        eventChart.setOption({
+          tooltip: { trigger: 'axis' },
+          legend: { data: ['社媒声量', '内部客诉', '互动量'], bottom: 0 },
+          grid: { left: '3%', right: '4%', bottom: '14%', containLabel: true },
+          xAxis: { type: 'category', data: ['05-15','05-16','05-17','05-18','05-19','05-20','05-21'] },
+          yAxis: [
+            { type: 'value', name: '声量', position: 'left' },
+            { type: 'value', name: '互动', position: 'right' }
+          ],
+          series: [
+            { name: '社媒声量', type: 'line', data: [45,52,48,65,120,95,78], smooth: true, itemStyle: { color: '#ef4b6c' }, markPoint: { data: [{ coord: ['05-19', 120], value: '峰值事件', itemStyle: { color: '#ef4b6c' } }] } },
+            { name: '内部客诉', type: 'line', data: [12,14,11,18,32,28,24], smooth: true, itemStyle: { color: '#1687ff' } },
+            { name: '互动量', type: 'line', yAxisIndex: 1, data: [1200,1500,1300,2100,8500,5200,3800], smooth: true, itemStyle: { color: '#f59e0b' } }
+          ]
+        });
+      }
+    }, 100);
 
     const region = serviceRegionMap();
     $("#serviceRegions").innerHTML = `
@@ -2126,6 +2224,8 @@
         { label: "环比增幅最高（线索）", value: "广东 +35%", note: "食安与异味问题上升" },
         { label: "内外共振问题数", value: "9", note: "客服与社媒同步升高" },
       ])}
+            ${card("省份 NSR 分析", `<div id="regionNsrTable">${renderRegionNsrTable(data)}</div>`)}
+      <div class="region-quadrant-wrap">${card("区域风险四象限", regionQuadrant())}</div>
       <div class="region-grid">
         ${card("全国区域风险地图", region.map)}
         ${card("区域风险排行榜", table(["排名", "区域", "风险指数", "内部", "社媒", "TOP 问题", "环比"], region.rows.map((row, index) => [
@@ -2143,9 +2243,234 @@
           ["山东", "济南", "XX大学店", "出餐慢", "在线客服", "25", "3", "P2", "等了半小时..."],
         ]))}
       </div>
-      <div class="full-section">${card("区域关键词与原声证据", serviceEvidence(serviceProblems[0]))}</div>
+      <div id="regionEvidenceSidebar" class="region-evidence-sidebar" hidden>
+        <div class="sidebar-header">
+          <strong id="regionSidebarTitle">区域原声证据</strong>
+          <button class="sidebar-close" onclick="document.getElementById('regionEvidenceSidebar').hidden=true">×</button>
+        </div>
+        <div class="sidebar-body" id="regionSidebarBody"></div>
+      </div>
     `;
   }
+
+
+
+  function showRegionEvidence(regionName) {
+    const sidebar = document.getElementById('regionEvidenceSidebar');
+    const title = document.getElementById('regionSidebarTitle');
+    const body = document.getElementById('regionSidebarBody');
+    if (!sidebar || !body) return;
+    title.textContent = regionName + ' · 原声证据';
+    const mockPosts = [
+      { platform: '小红书', author: '奶茶测评酱', time: '2026-05-20 09:15', content: regionName + '的蜜雪冰城真的有问题，体验极差，已经投诉到平台了。', likes: 890, comments: 234, shares: 56 },
+      { platform: '抖音', author: '美食侦探', time: '2026-05-21 14:30', content: '提醒大家在' + regionName + '买蜜雪要注意，看到店里操作不规范。', likes: 3200, comments: 580, shares: 210 },
+    ];
+    const mockHotline = { time: '2026-05-21 10:22', content: regionName + '用户反馈饮品质量问题，情绪愤怒，要求退款并赔偿，已记录工单。' };
+    const mockOnline = { time: '2026-05-21 11:45', content: '顾客：你们' + regionName + '这家店怎么回事？客服：非常抱歉给您带来不好的体验...' };
+    body.innerHTML = `
+      <div class="evidence-group">
+        <div class="evidence-label">社媒原帖</div>
+        ${mockPosts.map(post => `
+        <div class="evidence-item">
+          <div class="evidence-meta"><span class="platform-tag">${post.platform}</span><span class="author">${post.author}</span><span class="time">${post.time}</span></div>
+          <div class="evidence-content">${post.content}</div>
+          <div class="evidence-stats">👍 ${post.likes} · 💬 ${post.comments} · ↗️ ${post.shares}</div>
+        </div>`).join('')}
+      </div>
+      <div class="evidence-group">
+        <div class="evidence-label">热线摘要</div>
+        <div class="evidence-item">
+          <div class="evidence-meta"><span class="platform-tag hotline">热线</span><span class="time">${mockHotline.time}</span></div>
+          <div class="evidence-content">${mockHotline.content}</div>
+        </div>
+      </div>
+      <div class="evidence-group">
+        <div class="evidence-label">在线客服原声</div>
+        <div class="evidence-item">
+          <div class="evidence-meta"><span class="platform-tag online">在线客服</span><span class="time">${mockOnline.time}</span></div>
+          <div class="evidence-content">${mockOnline.content}</div>
+        </div>
+      </div>`;
+    sidebar.hidden = false;
+  }
+
+  let brandMindRendered = false;
+  function renderBrandMind() {
+    if (brandMindRendered) return;
+    brandMindRendered = true;
+    const data = window.MX_DASHBOARD_DATA;
+    if (!data || !data.brandReputation) return;
+    const d = data.brandReputation;
+    const ov = d.overview;
+    const sm = d.socialMatrix;
+
+    // ── 上方：品牌心智总览（指标卡 + 排行榜）──
+    $("#brandMind").innerHTML = `
+      <div class="dashboard-head">
+        <div>
+          <div class="page-title"><span class="title-mark"></span>社媒品牌心智</div>
+          <p>监测蜜雪冰城在社媒平台的品牌声量、互动表现、口碑指数（NSR），并与核心竞品对标。</p>
+        </div>
+      </div>
+      <div class="brand-kpi-row">
+        <div class="brand-kpi-card">
+          <div class="brand-kpi-label">品牌声量</div>
+          <div class="brand-kpi-value">${fmt(ov.volume)}</div>
+          <div class="brand-kpi-compare">声量均值 ${fmt(ov.volumeAvg)} <span class="${ov.volumeChange >= 0 ? 'up' : 'down'}">${ov.volumeChange >= 0 ? '▲' : '▼'} ${Math.abs(ov.volumeChange)}%</span></div>
+        </div>
+        <div class="brand-kpi-card">
+          <div class="brand-kpi-label">品牌互动量</div>
+          <div class="brand-kpi-value">${fmt(ov.interaction)}</div>
+          <div class="brand-kpi-compare">互动均值 ${fmt(ov.interactionAvg)} <span class="${ov.interactionChange >= 0 ? 'up' : 'down'}">${ov.interactionChange >= 0 ? '▲' : '▼'} ${Math.abs(ov.interactionChange)}%</span></div>
+        </div>
+        <div class="brand-kpi-card">
+          <div class="brand-kpi-label">品牌 NSR</div>
+          <div class="brand-kpi-value">${ov.nsr.toFixed(2)}%</div>
+          <div class="brand-kpi-compare">NSR 均值 ${ov.nsrAvg.toFixed(2)}% <span class="${ov.nsrChange >= 0 ? 'up' : 'down'}">${ov.nsrChange >= 0 ? '▲' : '▼'} ${Math.abs(ov.nsrChange)}%</span></div>
+        </div>
+        <div class="brand-kpi-card">
+          <div class="brand-kpi-label">负向声量</div>
+          <div class="brand-kpi-value">${fmt(ov.negativeVolume)}</div>
+          <div class="brand-kpi-compare">占比 ${(ov.negativeVolume / ov.volume * 100).toFixed(1)}%</div>
+        </div>
+      </div>
+      <div class="brand-ranking-grid">
+        ${card("品牌声量排行", table(["排名", "品牌", "声量", "排名变化"], d.brandRanking.volume.map(b => [
+          b.rank, b.brand, fmt(b.value), `<span class="rank-change ${b.trend}">${b.change > 0 ? '+' : ''}${b.change}</span>`
+        ])))}
+        ${card("品牌互动量排行", table(["排名", "品牌", "互动量", "排名变化"], d.brandRanking.interaction.map(b => [
+          b.rank, b.brand, fmt(b.value), `<span class="rank-change ${b.trend}">${b.change > 0 ? '+' : ''}${b.change}</span>`
+        ])))}
+        ${card("品牌 NSR 排行", table(["排名", "品牌", "NSR", "排名变化"], d.brandRanking.nsr.map(b => [
+          b.rank, b.brand, b.value.toFixed(2) + '%', `<span class="rank-change ${b.trend}">${b.change > 0 ? '+' : ''}${b.change}</span>`
+        ])))}
+      </div>
+
+      <!-- 下方：社媒声量分布与热议内容 -->
+      <div class="dashboard-head" style="margin-top:32px">
+        <div>
+          <div class="page-title"><span class="title-mark"></span>社媒声量分布与热议内容</div>
+          <p>分析蜜雪冰城在各社媒平台的声量分布、热议话题与典型原帖。</p>
+        </div>
+      </div>
+      <div class="brand-social-kpis">
+        <div class="brand-social-kpi"><div class="label">平台总声量</div><div class="value">${fmt(sm.platforms.reduce((s,p)=>s+p.volume,0))}</div></div>
+        <div class="brand-social-kpi"><div class="label">总互动量</div><div class="value">${fmt(sm.platforms.reduce((s,p)=>s+p.interaction,0))}</div></div>
+        <div class="brand-social-kpi"><div class="label">综合 NSR</div><div class="value">${(sm.platforms.reduce((s,p)=>s+p.nsr*p.volume,0)/sm.platforms.reduce((s,p)=>s+p.volume,0)).toFixed(2)}%</div></div>
+      </div>
+      <div class="brand-social-grid">
+        ${card("平台声量分布", `<div id="brandPlatformChart" style="height:280px"></div>`)}
+        ${card("话题清单", table(["排名", "话题", "平台", "声量", "互动量", "NSR"], sm.topics.map(t => [
+          t.rank, t.topic, t.platform, fmt(t.volume), fmt(t.interaction), t.nsr.toFixed(2) + '%'
+        ])))}
+      </div>
+      <div class="brand-hot-grid">
+        ${card("品牌热度趋势", `<div id="brandTrendChart" style="height:300px"></div>`)}
+        ${card("热议原帖", `<div class="brand-post-list">${sm.hotPosts.map((post, i) => `
+          <div class="brand-post-item">
+            <div class="brand-post-header">
+              <span class="brand-post-platform">${post.platform}</span>
+              <span class="brand-post-author">${escapeHtml(post.author)}</span>
+              <span class="brand-post-time">${post.time}</span>
+            </div>
+            <div class="brand-post-content">${escapeHtml(post.content)}</div>
+            <div class="brand-post-stats">
+              <span>互动 ${fmt(post.likes)}</span>
+              <span>评论 ${fmt(post.comments)}</span>
+              <span>转发 ${fmt(post.shares)}</span>
+              <span class="brand-post-nsr ${post.nsr >= 70 ? 'good' : post.nsr >= 40 ? 'mid' : 'bad'}">NSR ${post.nsr}%</span>
+            </div>
+          </div>
+        `).join('')}</div>`)}
+      </div>
+    `;
+
+    // ── ECharts 初始化 ──
+    setTimeout(() => {
+      const initChart = (id, opt) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const c = echarts.init(el);
+        if (c) c.setOption(opt);
+      };
+
+      // 平台声量分布
+      initChart('brandPlatformChart', {
+        tooltip: { trigger: 'axis' },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: sm.platforms.map(p => p.name) },
+        yAxis: { type: 'value', name: '声量' },
+        series: [{ type: 'bar', data: sm.platforms.map(p => p.volume), itemStyle: { color: '#1687ff' }, borderRadius: [4, 4, 0, 0], barWidth: '40%' }]
+      });
+
+      // 品牌热度趋势
+      initChart('brandTrendChart', {
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['声量', '互动量'], bottom: 0 },
+        grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
+        xAxis: { type: 'category', boundaryGap: false, data: sm.trend.dates },
+        yAxis: [
+          { type: 'value', name: '声量', position: 'left' },
+          { type: 'value', name: '互动量', position: 'right' }
+        ],
+        series: [
+          { name: '声量', type: 'line', data: sm.trend.volume, smooth: true, itemStyle: { color: '#1687ff' }, areaStyle: { color: 'rgba(22,135,255,0.1)' } },
+          { name: '互动量', type: 'line', yAxisIndex: 1, data: sm.trend.interaction, smooth: true, itemStyle: { color: '#ef4b6c' } }
+        ]
+      });
+    }, 200);
+  }
+
+
+
+
+
+
+
+
+  // ── 预警页辅助：一级维度声量与NSR + 二级维度详情 ──
+  function renderWarningPrimaryChart(d) {
+    if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return;
+    const rep = d.brandReputation.reputationDimensions;
+    setTimeout(() => {
+      const el = document.getElementById('warningPrimaryChart');
+      if (!el) return;
+      const c = echarts.init(el);
+      c.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['声量', 'NSR'], bottom: 0 },
+        grid: { left: '3%', right: '8%', bottom: '10%', containLabel: true },
+        xAxis: { type: 'category', data: rep.primary.map(p => p.name) },
+        yAxis: [
+          { type: 'value', name: '声量', position: 'left' },
+          { type: 'value', name: 'NSR%', position: 'right', max: 100 }
+        ],
+        series: [
+          { name: '声量', type: 'bar', data: rep.primary.map(p => p.volume), itemStyle: { color: '#1687ff' }, barWidth: '35%' },
+          { name: 'NSR', type: 'line', yAxisIndex: 1, data: rep.primary.map(p => p.nsr), smooth: true, itemStyle: { color: '#10b981' } }
+        ]
+      });
+    }, 150);
+  }
+
+  function renderWarningSecondary(d) {
+    if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return "";
+    const rep = d.brandReputation.reputationDimensions;
+    return table(["维度", "声量", "声量环比", "NSR"], rep.secondary.map(s => [
+      s.name, fmt(s.volume), (s.volumeChange > 0 ? '+' : '') + s.volumeChange + '%', s.nsr.toFixed(1) + '%'
+    ]));
+  }
+
+  // ── 区域页辅助：省份 NSR 分析表 ──
+  function renderRegionNsrTable(d) {
+    if (!d || !d.brandReputation || !d.brandReputation.reputationDimensions) return "";
+    const rep = d.brandReputation.reputationDimensions;
+    return table(["排名", "省份", "声量", "声量环比", "NSR", "NSR变化", "正面声量", "负面声量"], rep.nsrProvinces.map(p => [
+      p.rank, p.province, fmt(p.volume), (p.volumeChange > 0 ? '+' : '') + p.volumeChange + '%',
+      p.nsr.toFixed(2) + '%', (p.nsrChange > 0 ? '+' : '') + p.nsrChange + '%', fmt(p.positive), fmt(p.negative)
+    ]));
+  }
+
 
   function setupTabs() {
     $$(".tab").forEach(tab => {
@@ -2154,8 +2479,23 @@
         $$(".tab").forEach(item => item.classList.toggle("active", item === tab));
         $$(".page").forEach(page => page.classList.toggle("active", page.id === target));
         document.body.classList.toggle("ai-tab-active", target === "aiInsights");
-        if (target === "serviceRegions") {
+        if (target === "warning") {
+          setTimeout(() => renderWarningPrimaryChart(data), 100);
+        }
+                if (target === "serviceRegions") {
           setTimeout(() => initChinaRiskMap(serviceRegionMap().rows), 80);
+          setTimeout(() => {
+            const tables = document.querySelectorAll("#serviceRegions table");
+            if (tables.length < 2) return;
+            const rankTable = tables[1];
+            rankTable.querySelectorAll("tbody tr").forEach(tr => {
+              tr.style.cursor = "pointer";
+              tr.addEventListener("click", () => {
+                const regionName = tr.cells[1]?.textContent?.trim();
+                if (regionName) showRegionEvidence(regionName);
+              });
+            });
+          }, 200);
         }
         // 外卖看板：切换到问题风险归因或区域风险试点地图时，触发渲染
         if (target === "issues") {
@@ -2165,6 +2505,19 @@
         if (target === "regions") {
           if (!currentDeliveryData && data.delivery) currentDeliveryData = filteredDelivery(data.delivery);
           if (currentDeliveryData) renderRegionPage(currentDeliveryData);
+        }
+        // 社媒品牌心智 tab：首次点击时渲染，后续切换时 resize 图表
+        if (target === "brandMind") {
+          if (!brandMindRendered) {
+            renderBrandMind();
+          }
+          setTimeout(() => {
+            const brandChartIds = ['brandPlatformChart','brandTrendChart'];
+            brandChartIds.forEach(id => {
+              const el = document.getElementById(id);
+              if (el) { const c = echarts.getInstanceByDom(el); if (c) c.resize(); }
+            });
+          }, 300);
         }
       });
     });
@@ -2205,6 +2558,7 @@
     const app = document.body.dataset.app;
     if (app === "delivery") renderDelivery();
     if (app === "service") renderService();
+    // brand app deprecated, use brandMind tab instead
 
     $$(".ai-report-btn").forEach(btn => {
       btn.addEventListener("click", () => {
