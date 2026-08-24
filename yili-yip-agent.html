@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="data:," />
   <title>趋势洞察 Agent - 完整交互原型</title>
   <style>
     :root {
@@ -197,6 +198,25 @@
     .prompt-right,.composer-send-tools{display:flex;align-items:center;gap:5px}.mention-button{width:31px;height:31px;display:grid;place-items:center;padding:0;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:8px}.mention-button:hover{color:var(--green-dark);background:var(--green-soft);border-color:#b9dba9}.mention-button .lucide{width:14px;height:14px}.composer-send-tools .mention-button{width:29px;height:29px;border-radius:7px}.composer-foot{grid-template-columns:auto minmax(0,1fr) auto}
     .workspace-final-actions{display:flex;align-items:center;gap:5px;margin:0 0 9px}.workspace-final-actions button{height:27px;display:flex;align-items:center;gap:5px;padding:0 7px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:5px;font-size:8px;white-space:nowrap}.workspace-final-actions button:hover{color:var(--green-dark);background:var(--green-soft);border-color:#b9dba9}.workspace-final-actions button:disabled{cursor:not-allowed;color:#a5ada6;background:#f5f6f5;border-color:#e2e6e1}.workspace-final-actions .lucide{width:12px;height:12px}
     @media(max-width:1050px){.workspace-final-actions button span{display:none}.workspace-final-actions button{width:28px;justify-content:center;padding:0}}
+    /* Customer-confirmed grouped navigation. Keep the task list as the flexible scroll region. */
+    .agent-nav{display:block;flex:0 0 auto;padding:6px 9px 7px}
+    .agent-nav-group+.agent-nav-group{margin-top:3px}
+    .agent-nav>.agent-nav-group>.agent-nav-label{height:15px;display:flex;align-items:center;padding:1px 9px 0;color:#929b92;font-size:8px;font-weight:600;line-height:12px}
+    .agent-nav-group button{min-height:29px;margin-bottom:1px;gap:8px;padding:0 9px;border-radius:5px;font-size:10px}
+    .agent-nav-group button span{font-size:10px}
+    .agent-nav-group button .lucide{width:14px;height:14px}
+    .agent-nav-group button.active:before{top:7px;bottom:7px;width:2px}
+    .agent-context-host{min-height:112px;flex:1 1 auto}
+    .agent-utility-nav{display:none}
+    .agent-shell.agent-sidebar-collapsed .agent-nav{padding:6px 7px}
+    .agent-shell.agent-sidebar-collapsed .agent-nav-label{display:none}
+    .agent-shell.agent-sidebar-collapsed .agent-nav-group+.agent-nav-group{margin-top:3px}
+    .agent-shell.agent-sidebar-collapsed .agent-nav-group button{min-height:34px;margin-bottom:2px}
+    #page-assets .asset-primary-tabs{display:none!important}
+    #page-assets .center-workspace.catalog-page{grid-template-rows:67px minmax(0,1fr)}
+    #page-assets .prompt-surface,#page-assets .knowledge-surface{grid-row:2}
+    .result-type-hidden{display:none!important}
+    @media(max-height:760px){.agent-nav{padding-top:4px;padding-bottom:5px}.agent-nav>.agent-nav-group>.agent-nav-label{height:13px;padding-top:0;font-size:7px}.agent-nav-group button{min-height:27px}.agent-nav-group+.agent-nav-group{margin-top:2px}.agent-context-heading{height:44px}}
   </style>
   <script>
 /**
@@ -235,16 +255,25 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
           <button class="agent-sidebar-toggle icon-only" id="agent-sidebar-toggle" title="收起 Agent 导航" aria-label="收起 Agent 导航"><i data-lucide="panel-left-close"></i></button>
         </div>
         <nav class="agent-nav" aria-label="趋势洞察 Agent 主要功能">
-          <button class="active" data-page="analysis"><i data-lucide="plus-square"></i><span>新建分析</span></button>
-          <button data-page="assets"><i data-lucide="library"></i><span>资产中心</span></button>
-          <button data-page="results"><i data-lucide="file-chart-column"></i><span>成果中心</span></button>
-          <button data-page="subscriptions"><i data-lucide="calendar-clock"></i><span>自动化</span></button>
+          <section class="agent-nav-group" aria-labelledby="nav-task-label">
+            <span class="agent-nav-label" id="nav-task-label">任务入口</span>
+            <button class="active" data-page="analysis"><i data-lucide="plus-square"></i><span>新建分析</span></button>
+          </section>
+          <section class="agent-nav-group" aria-labelledby="nav-assets-label">
+            <span class="agent-nav-label" id="nav-assets-label">资产与成果</span>
+            <button data-page="assets"><i data-lucide="library"></i><span>资产中心</span></button>
+            <button data-page="dashboards"><i data-lucide="layout-dashboard"></i><span>看板中心</span></button>
+            <button data-page="reports"><i data-lucide="file-chart-column"></i><span>报告中心</span></button>
+            <button data-page="knowledge"><i data-lucide="folder-closed"></i><span>个人知识库</span></button>
+          </section>
+          <section class="agent-nav-group" aria-labelledby="nav-governance-label">
+            <span class="agent-nav-label" id="nav-governance-label">能力与治理</span>
+            <button data-page="subscriptions"><i data-lucide="calendar-clock"></i><span>自动化</span></button>
+            <button data-page="admin"><i data-lucide="settings-2"></i><span>评估与优化中心</span></button>
+          </section>
         </nav>
         <div class="agent-context-heading"><div class="context-heading-copy"><span class="context-heading-title">分析任务</span><em class="task-total" id="task-total" title="当前分析数量">7</em></div><div class="compact-analysis-tools"><label class="task-search compact-search" title="搜索分析"><i data-lucide="search"></i><input id="task-search" aria-label="搜索分析名称" placeholder="搜索分析名称" /></label><div class="filter-wrap compact-filter"><button class="compact-tool" id="task-filter-toggle" title="筛选状态与类型" aria-label="筛选状态与类型"><i data-lucide="list-filter"></i><i class="filter-active-dot"></i></button><div class="mini-menu combined-filter-menu" id="task-filter-menu"><span class="filter-menu-label">分析状态</span><button class="active" data-status="全部状态">全部状态</button><button data-status="执行中">执行中</button><button data-status="已结束">已结束</button><button data-status="已归档">已归档</button><span class="filter-menu-label">分析类型</span><button class="active" data-task-type-filter="全部类型">全部类型</button><button data-task-type-filter="智能问数">智能问数</button><button data-task-type-filter="专题分析">专题分析</button><button data-task-type-filter="自由探索">自由探索</button></div></div><button class="compact-tool" id="add-folder" title="新建项目" aria-label="新建项目"><i data-lucide="folder-plus"></i></button></div></div>
         <div class="agent-context-host" id="agent-context-host"></div>
-        <nav class="agent-utility-nav" aria-label="趋势洞察 Agent 管理入口">
-          <button data-page="admin"><i data-lucide="settings-2"></i><span>管理与评估</span></button>
-        </nav>
       </header>
 
       <div class="module-page analysis-layout active" id="page-analysis">
@@ -340,7 +369,7 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       <section class="module-page center-layout" id="page-results">
         <button class="task-sidebar-toggle icon-only" data-center-open title="展开中心侧栏" aria-label="展开中心侧栏"><i data-lucide="panel-left-open"></i></button>
         <aside class="center-sidebar"><div class="space-block"><div class="space-head"><div class="space-select static-space"><span class="space-main"><i class="space-icon">个</i><span>个人空间</span></span></div><button class="sidebar-collapse icon-only" data-center-close title="收起中心侧栏" aria-label="收起中心侧栏"><i data-lucide="panel-left-close"></i></button></div></div><div class="center-side-scroll"><section class="center-nav-section"><div class="center-nav-title"><b>成果范围</b></div><button class="center-nav-button active" data-result-scope="public"><i data-lucide="library-big"></i><span>组织公开</span><em>5</em></button><button class="center-nav-button" data-result-scope="shared"><i data-lucide="share-2"></i><span>共享给我的</span><em>2</em></button></section></div></aside>
-        <main class="center-workspace catalog-page"><header class="catalog-head"><div class="catalog-title"><h1>成果中心</h1><p id="result-scope-description">查看审核通过并在组织内公开的分析成果</p></div></header><div class="catalog-surface"><nav class="subnav"><div class="subnav-label"><span id="result-scope-label">组织公开</span></div><div class="toolbar"><input class="mini-search" id="result-search" placeholder="搜索成果名称"/><select class="tool-select" id="result-type"><option value="all">全部输出类型</option><option value="分析报告">分析报告</option><option value="数据简报">数据简报</option><option value="提案报告">提案报告</option><option value="交互看板">交互看板</option></select><select class="tool-select" id="result-scene"><option value="all">全部场景</option><option value="区域洞察">区域洞察</option><option value="新品创新">新品创新</option><option value="趋势追踪">趋势追踪</option><option value="消费场景">消费场景</option></select><select class="tool-select" id="result-sort" aria-label="成果排序"><option value="latest">最近发布</option><option value="oldest">最早发布</option><option value="name">名称排序</option></select></div></nav><div class="catalog-body"><div class="result-grid" id="result-grid"></div></div></div></main>
+        <main class="center-workspace catalog-page"><header class="catalog-head"><div class="catalog-title"><h1 id="result-page-title">报告中心</h1><p id="result-scope-description">查看审核通过并在组织内公开的分析报告</p></div></header><div class="catalog-surface"><nav class="subnav"><div class="subnav-label"><span id="result-scope-label">组织公开</span></div><div class="toolbar"><input class="mini-search" id="result-search" placeholder="搜索成果名称"/><select class="tool-select" id="result-type"><option value="all">全部报告类型</option><option value="分析报告">分析报告</option><option value="数据简报">数据简报</option><option value="提案报告">提案报告</option></select><select class="tool-select" id="result-scene"><option value="all">全部场景</option><option value="区域洞察">区域洞察</option><option value="新品创新">新品创新</option><option value="趋势追踪">趋势追踪</option><option value="消费场景">消费场景</option></select><select class="tool-select" id="result-sort" aria-label="成果排序"><option value="latest">最近发布</option><option value="oldest">最早发布</option><option value="name">名称排序</option></select></div></nav><div class="catalog-body"><div class="result-grid" id="result-grid"></div></div></div></main>
       </section>
 
       <section class="module-page center-layout" id="page-subscriptions">
@@ -352,7 +381,7 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       <section class="module-page center-layout" id="page-admin">
         <button class="task-sidebar-toggle icon-only" data-center-open title="展开中心侧栏" aria-label="展开中心侧栏"><i data-lucide="panel-left-open"></i></button>
         <aside class="center-sidebar"><div class="space-block"><div class="space-head"><div class="space-select static-space"><span class="space-main"><i class="space-icon">个</i><span>个人空间</span></span></div><button class="sidebar-collapse icon-only" data-center-close title="收起中心侧栏" aria-label="收起中心侧栏"><i data-lucide="panel-left-close"></i></button></div><button class="center-sidebar-action" id="refresh-admin"><i data-lucide="refresh-cw"></i><span>刷新数据</span></button></div><div class="center-side-scroll"><section class="center-nav-section"><div class="center-nav-title"><b>管理与审核</b></div><div class="admin-nav"><button class="center-nav-button active" data-admin-view="review"><i data-lucide="badge-check"></i><span>成果审核</span><em>6</em></button><button class="center-nav-button" data-admin-view="assets"><i data-lucide="library-big"></i><span>公共资产管理</span><em>4</em></button></div></section></div></aside>
-        <main class="center-workspace catalog-page"><header class="catalog-head"><div class="catalog-title"><h1>管理与评估</h1><p>审核组织公开成果，维护可复用的公共资产</p></div></header><div class="catalog-surface single-pane"><div class="admin-content" id="admin-content">
+        <main class="center-workspace catalog-page"><header class="catalog-head"><div class="catalog-title"><h1>评估与优化中心</h1><p>审核组织公开成果，维护可复用的公共资产</p></div></header><div class="catalog-surface single-pane"><div class="admin-content" id="admin-content">
             <div class="metrics"><div class="metric"><span>待审核成果</span><b>6</b><small>2 项即将超时</small></div><div class="metric"><span>本月审核通过</span><b>18</b><small>本月累计</small></div><div class="metric"><span>待设置可见范围</span><b>4</b><small>审核通过后发布</small></div><div class="metric"><span>已上架报告中心</span><b>12</b><small>本月新增</small></div></div>
             <table class="data-table"><thead><tr><th>成果名称</th><th>提交人</th><th>成果类型</th><th>提交时间</th><th>状态</th><th></th></tr></thead><tbody>
               <tr><td><b>奶酪轻乳新品创意提案</b><small>来源：新品趋势研究</small></td><td>王晶</td><td>提案报告</td><td>今天 14:20</td><td><span class="row-status wait">待审核</span></td><td><button class="table-action" data-review-title="奶酪轻乳新品创意提案">开始审核</button></td></tr>
@@ -466,7 +495,7 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
     const agentContextHeading=document.querySelector('.context-heading-title');
     const analysisHeadingTools=document.querySelector('.compact-analysis-tools');
     const taskTotal=document.getElementById('task-total');
-    const contextLabels={analysis:'洞察分析',assets:'资产中心',results:'成果中心',subscriptions:'自动化',admin:'管理与评估'};
+    const contextLabels={analysis:'新建分析',assets:'资产中心',dashboards:'看板中心',reports:'报告中心',knowledge:'个人知识库',subscriptions:'自动化',admin:'评估与优化中心'};
     const contextSidebars=Object.fromEntries(pages.map(page=>[page.id.replace('page-',''),page.querySelector('.task-sidebar,.center-sidebar')]));
     function appendPageHeadControls(pageName){
       const controls=document.createElement('div');controls.className='fixed-page-head-controls';document.querySelector(`#page-${pageName} .catalog-head`).append(controls);return controls;
@@ -498,10 +527,15 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       createWorkspace.classList.toggle('active', visible);
     }
     function showPage(name){
-      pages.forEach(page => page.classList.toggle('active', page.id === `page-${name}`));
-      document.querySelectorAll('.agent-header [data-page]').forEach(item => item.classList.toggle('active', item.dataset.page === name));
-      if(name === 'analysis' && !createWorkspace.classList.contains('active')) setCreateVisible(false);
-      document.title = name === 'analysis' ? '趋势洞察 Agent - 洞察分析' : `趋势洞察 Agent - ${document.querySelector(`[data-page="${name}"]`)?.textContent?.trim() || '管理与评估'}`;
+      const logicalName=name==='results'?'reports':name;
+      const routeName={knowledge:'assets',dashboards:'results',reports:'results'}[logicalName]||logicalName;
+      pages.forEach(page => page.classList.toggle('active', page.id === `page-${routeName}`));
+      document.querySelectorAll('.agent-header [data-page]').forEach(item => item.classList.toggle('active', item.dataset.page === logicalName));
+      if(logicalName==='assets')setAssetKind('prompt');
+      if(logicalName==='knowledge')setAssetKind('knowledge');
+      if(logicalName==='dashboards'||logicalName==='reports')configureResultCenter(logicalName);
+      if(logicalName === 'analysis' && !createWorkspace.classList.contains('active')) setCreateVisible(false);
+      document.title = `趋势洞察 Agent - ${contextLabels[logicalName]||'新建分析'}`;
     }
     document.querySelectorAll('[data-page]').forEach(item => item.addEventListener('click', () => {showPage(item.dataset.page);if(item.dataset.page==='analysis'){setCreateVisible(true);document.getElementById('create-prompt')?.focus()}}));
     document.querySelectorAll('[data-toast]').forEach(item => item.addEventListener('click', () => showToast(item.dataset.toast)));
@@ -1105,7 +1139,7 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
     function useResultAsReference(item){if(!item)return;showPage('analysis');setCreateVisible(true);addAttachment(createAttachment,item.title,'成果');createPrompt.focus()}
     function setAssetKind(kind){
       assetKind=kind;document.querySelectorAll('[data-asset-kind]').forEach(button=>button.classList.toggle('active',button.dataset.assetKind===kind));
-      const knowledge=kind==='knowledge';document.getElementById('prompt-surface').hidden=knowledge;document.getElementById('knowledge-surface').hidden=!knowledge;document.getElementById('new-instruction').hidden=knowledge;document.getElementById('upload-knowledge').hidden=!knowledge;document.getElementById('asset-page-title').textContent='资产中心';document.getElementById('asset-page-description').textContent=knowledge?'维护分析可直接引用的个人知识文件':'按场景查找、收藏并复用分析指令';knowledge?renderKnowledgeFiles():renderPromptList();
+      const knowledge=kind==='knowledge';document.getElementById('prompt-surface').hidden=knowledge;document.getElementById('knowledge-surface').hidden=!knowledge;document.getElementById('new-instruction').hidden=knowledge;document.getElementById('upload-knowledge').hidden=!knowledge;document.getElementById('asset-page-title').textContent=knowledge?'个人知识库':'资产中心';document.getElementById('asset-page-description').textContent=knowledge?'维护分析可直接引用的个人知识文件':'按场景查找、收藏并复用分析指令';knowledge?renderKnowledgeFiles():renderPromptList();
     }
     document.querySelectorAll('[data-asset-kind]').forEach(button=>button.addEventListener('click',()=>setAssetKind(button.dataset.assetKind)));
     document.getElementById('knowledge-root-back').addEventListener('click',()=>{knowledgeFolder=knowledgeFolderParents[knowledgeFolder]||'root';selectedKnowledgeIds.clear();renderKnowledgeFiles()});
@@ -1155,10 +1189,21 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       {title:'华东乳品趋势监测看板',type:'交互看板',scene:'区域洞察',author:'王晶',date:'8月7日',scope:'public',color:'blue'},
       {title:'早餐营养场景创新提案',type:'提案报告',scene:'新品创新',author:'周宁',date:'8月6日',scope:'shared',color:'blue'}
     ];
-    let resultScope='public',resultType='all',resultSort='latest';
+    let resultScope='public',resultType='all',resultSort='latest',resultCenterMode='reports';
+    function syncResultCenterCopy(){
+      const shared=resultScope==='shared',dashboard=resultCenterMode==='dashboards',noun=dashboard?'看板':'报告';
+      document.getElementById('result-page-title').textContent=dashboard?'看板中心':'报告中心';
+      document.getElementById('result-scope-description').textContent=shared?`查看其他用户指定共享给我的只读${noun}`:`查看审核通过并在组织内公开的分析${noun}`;
+      document.getElementById('result-search').placeholder=`搜索${noun}名称`;
+    }
+    function configureResultCenter(mode){
+      resultCenterMode=mode;resultType='all';const select=document.getElementById('result-type'),dashboard=mode==='dashboards';
+      select.innerHTML=dashboard?'<option value="all">全部看板</option>':'<option value="all">全部报告类型</option><option value="分析报告">分析报告</option><option value="数据简报">数据简报</option><option value="提案报告">提案报告</option>';
+      select.value='all';rebuildCustomSelect(select);select.classList.toggle('result-type-hidden',dashboard);select.nextElementSibling?.classList.toggle('result-type-hidden',dashboard);syncResultCenterCopy();renderResults();
+    }
     function renderResults(){
       const query=document.getElementById('result-search').value.trim().toLowerCase(),scene=document.getElementById('result-scene').value;
-      const visible=results.filter(item=>item.scope===resultScope&&(resultType==='all'||item.type===resultType)&&(scene==='all'||item.scene===scene)&&(!query||item.title.toLowerCase().includes(query)));
+      const visible=results.filter(item=>item.scope===resultScope&&(resultCenterMode==='dashboards'?item.type==='交互看板':item.type!=='交互看板')&&(resultType==='all'||item.type===resultType)&&(scene==='all'||item.scene===scene)&&(!query||item.title.toLowerCase().includes(query)));
       if(resultSort==='oldest')visible.reverse();
       if(resultSort==='name')visible.sort((a,b)=>a.title.localeCompare(b.title,'zh-CN'));
       document.getElementById('result-grid').innerHTML=visible.length?visible.map(item=>`<article class="result-tile"><div class="tile-cover ${item.color}"><b>${escapeHtml(item.title)}</b><i></i></div><div class="tile-body"><h3>${escapeHtml(item.title)}</h3><div class="tile-meta">${item.type} · ${item.author} · ${item.date}</div><div class="tile-actions"><span class="row-status ${item.scope==='shared'?'blue':''}">${item.scope==='shared'?'共享给我':'组织公开'}</span><button class="asset-use" data-result-open="${results.indexOf(item)}">查看${item.type==='数据简报'?'简报':item.type==='交互看板'?'看板':'报告'}</button></div></div></article>`).join(''):'<div class="result-empty">当前范围下暂无匹配成果</div>';
@@ -1167,7 +1212,7 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
     function openResultDetail(item){
       openFlow({title:item.title,wide:true,body:`<div class="review-grid"><div class="detail-preview"><span class="row-status ${item.scope==='shared'?'blue':''}">${item.scope==='shared'?'共享给我的':'组织公开'}</span><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.type)} · ${escapeHtml(item.scene)} · ${escapeHtml(item.author)} · ${escapeHtml(item.date)}</p><div class="preview-kpis"><div class="preview-kpi"><span>关键结论</span><b>8</b></div><div class="preview-kpi"><span>参考来源</span><b>13</b></div><div class="preview-kpi"><span>输出类型</span><b>${escapeHtml(item.type)}</b></div></div><h3>成果摘要</h3><p>围绕目标场景梳理趋势信号、重点人群、供需缺口和可执行机会，并保留指标口径与来源引用。</p></div><aside class="review-side"><b>成果信息</b><span>输出类型<br/><strong>${escapeHtml(item.type)}</strong></span><span>业务场景<br/><strong>${escapeHtml(item.scene)}</strong></span><span>发布人<br/><strong>${escapeHtml(item.author)}</strong></span><span>可见范围<br/><strong>${item.scope==='shared'?'指定人员':'组织内公开'}</strong></span></aside></div>`,actions:[{label:'关闭',onClick:({close})=>close()},{label:'引用到新分析',primary:true,onClick:({close})=>{close();useResultAsReference(item)}}]});
     }
-    document.querySelectorAll('[data-result-scope]').forEach(tab=>tab.addEventListener('click',()=>{resultScope=tab.dataset.resultScope;document.querySelectorAll('[data-result-scope]').forEach(x=>x.classList.toggle('active',x===tab));const shared=resultScope==='shared';document.getElementById('result-scope-label').textContent=shared?'共享给我的':'组织公开';document.getElementById('result-scope-description').textContent=shared?'查看其他用户指定共享给我的只读成果':'查看审核通过并在组织内公开的分析成果';renderResults()}));
+    document.querySelectorAll('[data-result-scope]').forEach(tab=>tab.addEventListener('click',()=>{resultScope=tab.dataset.resultScope;document.querySelectorAll('[data-result-scope]').forEach(x=>x.classList.toggle('active',x===tab));document.getElementById('result-scope-label').textContent=resultScope==='shared'?'共享给我的':'组织公开';syncResultCenterCopy();renderResults()}));
     document.getElementById('result-type').addEventListener('change',event=>{resultType=event.target.value;renderResults()});
     document.getElementById('result-search').addEventListener('input',renderResults);document.getElementById('result-scene').addEventListener('change',renderResults);document.getElementById('result-sort').addEventListener('change',event=>{resultSort=event.target.value;renderResults()});renderResults();
 
